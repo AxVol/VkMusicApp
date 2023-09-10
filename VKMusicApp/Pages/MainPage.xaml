@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="VKMusicApp.Pages.MainPage">
+             x:Class="VKMusicApp.Pages.MainPage"
+             NavigationPage.HasNavigationBar="False">
 
     <ScrollView>
         <VerticalStackLayout
@@ -31,7 +32,7 @@
             <Label
                 Text="{Binding Count}"
                 FontSize="18"
-                HorizontalOptions="Center"/>
+                HorizontalOptions="Center" />
 
             <Button
                 x:Name="CounterBtn"
@@ -39,6 +40,10 @@
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding Test}"
                 HorizontalOptions="Center" />
+
+            <Button
+                Text="Вперед"
+                Command="{Binding Next}" />
 
         </VerticalStackLayout>
     </ScrollView>

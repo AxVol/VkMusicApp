@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
+using Microsoft.Maui.Controls;
 using VKMusicApp.Core;
+using VKMusicApp.Pages;
 
 namespace VKMusicApp.ViewModels
 {
@@ -9,6 +11,7 @@ namespace VKMusicApp.ViewModels
         private int count;
 
         public ICommand Test { get; set; }
+        public ICommand Next { get; set; }
         public int Count
         {
             get => count;
@@ -24,6 +27,11 @@ namespace VKMusicApp.ViewModels
             Test = new Command(() =>
             {
                 Count++;
+            });
+            Next = new Command(() =>
+            {
+                INavigation navigation = App.Current.MainPage.Navigation;
+                navigation.PushAsync(new NewPage1());
             });
         }
     }
