@@ -1,4 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
+using VkNet;
+using VkNet.AudioBypassService.Extensions;
+using VKMusicApp.Pages;
+using VKMusicApp.ViewModels;
+using VKMusicApp.Services.Interfaces;
+using VKMusicApp.Services.Implementations;
 
 namespace VKMusicApp;
 
@@ -19,8 +25,13 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-		//builder.Services.
+        builder.Services.AddAudioBypass();
+		builder.Services.AddSingleton<IVkApiProvider>(new VkApiProvider(new VkApi(builder.Services)));
 
-		return builder.Build();
+        builder.Services.AddTransient<LoginPage>();
+
+		builder.Services.AddTransient<LoginViewModel>();
+
+        return builder.Build();
 	}
 }

@@ -4,10 +4,10 @@ namespace VKMusicApp;
 
 public partial class App : Application
 {
-	public App()
+	public App(LoginPage page)
 	{
 		InitializeComponent();
 
-		MainPage = new NavigationPage(new MainPage());
+		MainPage = new NavigationPage(page);
 	}
 }
