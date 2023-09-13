@@ -1,15 +1,144 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
              x:Class="VKMusicApp.Pages.MusicLibraryPage"
              x:DataType="vm:MusicLibraryViewModel"
              Shell.NavBarIsVisible="False">
-    
-    <VerticalStackLayout>
-        <Label 
-            Text=""
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <ContentPage.Resources>
+        <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+        
+        <Grid 
+            Grid.Row="0"
+            BackgroundColor="#2C2E44">
+
+            <ImageButton
+                Margin="340,10,10,10"
+                Source="settings.png"
+                HorizontalOptions="End"/>
+            <ImageButton
+                Source="search.png"
+                Margin="230,10,10,10"
+                HeightRequest="30"
+                WidthRequest="30"
+                Command="{Binding SearchCommand}"/>
+            <Entry 
+                Text="{Binding SearchText}"
+                Style="{StaticResource SearchBox}"
+                HeightRequest="40"
+                WidthRequest="150"
+                IsVisible="{Binding SearchIsFocus}"
+                x:Name="Search">
+                <Entry.Behaviors>
+                    <behaviors:EventToCommandBehavior
+                        EventName="Unfocused"
+                        Command="{Binding UnFocus}"/>
+                </Entry.Behaviors>
+            </Entry>
+            <Label
+                Text="Vk Music"
+                FontSize="24"
+                HorizontalTextAlignment="Start"
+                Margin="10,10,10,10"
+                TextColor="White"/>
+
+        </Grid>
+
+        <Grid 
+            Grid.Row="1"
+            BackgroundColor="#1D1E33">
+
+            <ScrollView>
+                <ListView 
+                    ItemsSource="{Binding Audios}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.View>
+                                    <StackLayout>
+                                        <Label Text="{Binding Audios.Count}" TextColor="Wheat" FontSize="24"/>
+                                    </StackLayout>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
+
+        </Grid>
+
+        <Grid 
+            Grid.Row="2"
+            BackgroundColor="#2C2E44">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid
+                Grid.Column="0">
+                <Border
+                    Style="{StaticResource NavigationPanel}">
+                    <Label 
+                        Style="{StaticResource PanelLabel}"
+                        Text="Моя музыка"/>
+                </Border>
+                <Image 
+                    Style="{StaticResource PanelImage}"
+                    Scale="0.8"
+                    Source="music.png"/>
+            </Grid>
+            <Grid
+                Grid.Column="1">
+                <Border
+                    Style="{StaticResource NavigationPanel}">
+                    <Label 
+                        Style="{StaticResource PanelLabel}"
+                        Text="Плейлисты" />
+                </Border>
+                <Image 
+                    Style="{StaticResource PanelImage}"
+                    Scale="0.8"
+                    Source="playlist.png"/>
+            </Grid>
+            <Grid
+                Grid.Column="2">
+                <Border
+                    Style="{StaticResource NavigationPanel}">
+                    <Label 
+                        Style="{StaticResource PanelLabel}"
+                        Text="На телефоне" />
+                </Border>
+                <Image 
+                    Style="{StaticResource PanelImage}"
+                    Scale="0.8"
+                    Source="dowload_music.png"/>
+            </Grid>
+            <Grid
+                Grid.Column="3">
+                <Border
+                    Style="{StaticResource NavigationPanel}">
+                    <Label 
+                        Style="{StaticResource PanelLabel}"
+                        Text="Поиск музыки" />
+                </Border>
+                <Image 
+                    Style="{StaticResource PanelImage}"
+                    Scale="0.8"
+                    Source="search_music.png"/>
+            </Grid>
+        </Grid>
+    </Grid>
 </ContentPage>

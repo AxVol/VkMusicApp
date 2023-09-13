@@ -19,4 +19,32 @@
         <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
     </Style>
 
+    <Style x:Key="NavigationPanel" TargetType="Border">
+        <Setter Property="Stroke" Value="Black"/>
+        <Setter Property="StrokeThickness" Value="1"/>
+        <Setter Property="BackgroundColor" Value="#2C2E44"/>
+        <Setter Property="Background" Value="#2C2E44"/>
+        <Setter Property="Margin" Value="-2"/>
+    </Style>
+
+    <Style x:Key="PanelLabel" TargetType="Label">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="TextColor" Value="White"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,30,0,0"/>
+    </Style>
+        
+    <Style x:Key="PanelImage" TargetType="Image">
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="Margin" Value="0,0,0,30"/>
+    </Style>
+
+    <Style x:Key="SearchBox" TargetType="Entry">
+        <Setter Property="IsTextPredictionEnabled" Value="True"/>
+        <Setter Property="ClearButtonVisibility" Value="WhileEditing"/>
+        <Setter Property="TextColor" Value="White"/>
+    </Style>
+
 </ResourceDictionary>

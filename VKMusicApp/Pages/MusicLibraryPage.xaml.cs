@@ -6,8 +6,15 @@ public partial class MusicLibraryPage : ContentPage
 {
 	public MusicLibraryPage(MusicLibraryViewModel vm)
 	{
-		InitializeComponent();
+        InitializeComponent();
 
-		BindingContext = vm;
+        BindingContext = vm;
+
+        vm.EntryFocus += EntryFocus;
 	}
+
+	private void EntryFocus()
+	{
+		Search.Focus();
+    }
 }
