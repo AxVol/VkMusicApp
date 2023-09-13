@@ -1,6 +1,6 @@
 ﻿using VkNet;
 
-namespace VKMusicApp.Services.Interfaces
+namespace VKMusicApp.DataProviders.Interfaces
 {
     public interface IVkApiProvider
     {

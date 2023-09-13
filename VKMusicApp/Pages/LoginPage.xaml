@@ -4,7 +4,7 @@
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
              x:Class="VKMusicApp.Pages.LoginPage"
              x:DataType="vm:LoginViewModel"
-             NavigationPage.HasNavigationBar="False">
+             Shell.NavBarIsVisible="False">
 
     <ContentPage.Resources>
         <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
@@ -16,13 +16,19 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label
-            FontSize="50"
-            Text="{Binding Test}"/>
+            FontSize="18"
+            Text="{Binding Exception}"
+            Style="{StaticResource LoginLabel}"
+            Margin="0,200,0,0"/>
         <Label
             FontSize="24"
-            Margin="0,0,0,180"
+            Margin="0,0,0,350"
             Style="{StaticResource LoginLabel}"
             Text="Добро пожаловать"/>
+        <Image
+            Source="vkontakte.png"
+            HeightRequest="100"
+            Margin="0,0,0,200"/>
         <Entry 
             Margin="0,0,0,70"
             WidthRequest="300"

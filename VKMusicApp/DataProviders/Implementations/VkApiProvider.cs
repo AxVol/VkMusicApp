@@ -1,7 +1,7 @@
-﻿using VKMusicApp.Services.Interfaces;
+﻿using VKMusicApp.DataProviders.Interfaces;
 using VkNet;
 
-namespace VKMusicApp.Services.Implementations
+namespace VKMusicApp.DataProviders.Implementations
 {
     public class VkApiProvider : IVkApiProvider
     {

@@ -3,8 +3,6 @@ using VkNet;
 using VkNet.AudioBypassService.Extensions;
 using VKMusicApp.Pages;
 using VKMusicApp.ViewModels;
-using VKMusicApp.Services.Interfaces;
-using VKMusicApp.Services.Implementations;
 
 namespace VKMusicApp;
 
@@ -26,11 +24,14 @@ public static class MauiProgram
 #endif
 
         builder.Services.AddAudioBypass();
-		builder.Services.AddSingleton<IVkApiProvider>(new VkApiProvider(new VkApi(builder.Services)));
+		builder.Services.AddSingleton(new VkApi(builder.Services));
+		//builder.Services.AddSingleton<IVkApiProvider>(new VkApiProvider(new VkApi(builder.Services)));
 
         builder.Services.AddTransient<LoginPage>();
+		builder.Services.AddTransient<MusicLibraryPage>();
 
 		builder.Services.AddTransient<LoginViewModel>();
+		builder.Services.AddTransient<MusicLibraryViewModel>();
 
         return builder.Build();
 	}

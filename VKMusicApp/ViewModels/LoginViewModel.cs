@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 using VKMusicApp.Core;
-using VKMusicApp.Services.Interfaces;
+using VKMusicApp.Pages;
 using VkNet;
 using VkNet.Model;
 
@@ -12,7 +12,7 @@ namespace VKMusicApp.ViewModels
         private string password;
         private bool buttonStatus = true;
         private VkApi vkApi;
-        private string test;
+        private string exception;
 
         public ICommand LoginCommand { get; set; }
         public bool ButtonStatus 
@@ -42,33 +42,40 @@ namespace VKMusicApp.ViewModels
                 OnPropertyChanged();
             }
         }
-        public string Test
+        public string Exception
         {
-            get => test;
+            get => exception;
             set
             {
-                test = value;
+                exception = value;
                 OnPropertyChanged();
             }
         }
 
-        public LoginViewModel(IVkApiProvider VKApi)
+        public LoginViewModel(VkApi VKApi)
         {
-            vkApi = VKApi.VkApi;
+            vkApi = VKApi;
             LoginCommand = new Command(InCommand);
         }
 
         private void InCommand()
         {
-            vkApi.Authorize(new ApiAuthParams()
+            try
             {
-                Login = login,
-                Password = password,
-                ApplicationId = 51745723,
-                Settings = VkNet.Enums.Filters.Settings.Audio
-            });
+                vkApi.Authorize(new ApiAuthParams()
+                {
+                    Login = login,
+                    Password = password,
+                    ApplicationId = 51745723,
+                    Settings = VkNet.Enums.Filters.Settings.Audio
+                });
 
-            Test = vkApi.Token;
+                Shell.Current.GoToAsync(nameof(MusicLibraryPage));
+            }
+            catch (Exception ex)
+            {
+                Exception = ex.Message;
+            }
         }
     }
 }

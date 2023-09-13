@@ -1,13 +1,11 @@
-﻿using VKMusicApp.Pages;
-
-namespace VKMusicApp;
+﻿namespace VKMusicApp;
 
 public partial class App : Application
 {
-	public App(LoginPage page)
+	public App()
 	{
 		InitializeComponent();
 
-		MainPage = new NavigationPage(page);
-	}
+		MainPage = new AppShell();
+    }
 }
