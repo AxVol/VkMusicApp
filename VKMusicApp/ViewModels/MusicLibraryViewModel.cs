@@ -9,7 +9,6 @@ namespace VKMusicApp.ViewModels
     public class MusicLibraryViewModel : ObservableObject
     {
         private VkApi vkApi;
-        private ObservableCollection<Audio> audios;
         private bool searchIsFocus = false;
         private string searchText;
 
@@ -19,15 +18,8 @@ namespace VKMusicApp.ViewModels
         public ICommand SearchCommand { get; set; }
         public ICommand UnFocus {  get; set; }
 
-        public ObservableCollection<Audio> Audios
-        {
-            get => audios;
-            set
-            {
-                audios = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<Audio> Audios { get; set; }
+        public ObservableCollection<Audio> ViewAudio {  get; set; }
 
         public bool SearchIsFocus
         {
@@ -46,6 +38,8 @@ namespace VKMusicApp.ViewModels
             {
                 searchText = value;
                 OnPropertyChanged();
+
+                SortMusic();
             }
         }
 
@@ -56,17 +50,13 @@ namespace VKMusicApp.ViewModels
             var music = vkApi.Audio.Get(new AudioGetParams()
             {
                 OwnerId = vkApi.UserId
-            });
+            }).ToList();
 
             SearchCommand = new Command(Search);
             UnFocus = new Command(UnFocused);
 
-            Audios = new ObservableCollection<Audio>();
-            
-            foreach (Audio audio in music)
-            {
-                Audios.Add(audio);
-            }
+            Audios = new ObservableCollection<Audio>(music);
+            ViewAudio = new ObservableCollection<Audio>(music);
         }
 
         public void UnFocused()
@@ -79,6 +69,19 @@ namespace VKMusicApp.ViewModels
             SearchIsFocus = true;
 
             EntryFocus.Invoke();
+        }
+
+        private void SortMusic()
+        {
+            ViewAudio.Clear();
+
+            foreach (var audio in Audios)
+            {
+                if (audio.Title.ToLower().StartsWith(searchText.ToLower()))
+                {
+                    ViewAudio.Add(audio);
+                }
+            }
         }
     }
 }

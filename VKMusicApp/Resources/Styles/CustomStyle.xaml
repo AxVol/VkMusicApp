@@ -47,4 +47,11 @@
         <Setter Property="TextColor" Value="White"/>
     </Style>
 
+    <Style x:Key="MusicPreviewText" TargetType="Label">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="TextColor" Value="White"/>
+        <Setter Property="VerticalOptions" Value="Start"/>
+        <Setter Property="HorizontalOptions" Value="Start"/>
+    </Style>
+
 </ResourceDictionary>

@@ -3,6 +3,7 @@
              xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
+             xmlns:model="clr-namespace:VkNet.Model;assembly=VkNet"
              x:Class="VKMusicApp.Pages.MusicLibraryPage"
              x:DataType="vm:MusicLibraryViewModel"
              Shell.NavBarIsVisible="False">
@@ -57,24 +58,42 @@
         <Grid 
             Grid.Row="1"
             BackgroundColor="#1D1E33">
-
             <ScrollView>
-                <ListView 
-                    ItemsSource="{Binding Audios}">
+                <ListView
+                    SeparatorVisibility="None"
+                    ItemsSource="{Binding ViewAudio}"
+                    RowHeight="60">
                     <ListView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="model:Audio">
                             <ViewCell>
-                                <ViewCell.View>
-                                    <StackLayout>
-                                        <Label Text="{Binding Audios.Count}" TextColor="Wheat" FontSize="24"/>
-                                    </StackLayout>
-                                </ViewCell.View>
+                                <Grid
+                                    Margin="10">
+                                    <Image
+                                        HorizontalOptions="Start"
+                                        Source="player.png"
+                                        HeightRequest="40"
+                                        WidthRequest="40"/>
+                                    <Label
+                                        FontSize="18"
+                                        HeightRequest="40"
+                                        Margin="50,0,0,10"
+                                        Text="{Binding Title}"
+                                        Style="{StaticResource MusicPreviewText}"/>
+                                    <Label 
+                                        Margin="51,25,0,0"
+                                        Text="{Binding Artist}"
+                                        Style="{StaticResource MusicPreviewText}"/>
+                                    <Label
+                                        HorizontalOptions="End"
+                                        Margin="0,15,50,0"
+                                        Text="{Binding Duration}"
+                                        Style="{StaticResource MusicPreviewText}"/>
+                                </Grid>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollView>
-
         </Grid>
 
         <Grid 

@@ -11,7 +11,7 @@ public partial class MusicLibraryPage : ContentPage
         BindingContext = vm;
 
         vm.EntryFocus += EntryFocus;
-	}
+    }
 
 	private void EntryFocus()
 	{
