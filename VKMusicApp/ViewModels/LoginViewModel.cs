@@ -58,11 +58,11 @@ namespace VKMusicApp.ViewModels
             LoginCommand = new Command(InCommand);
         }
 
-        private void InCommand()
+        private async void InCommand()
         {
             try
             {
-                vkApi.Authorize(new ApiAuthParams()
+                await vkApi.AuthorizeAsync(new ApiAuthParams()
                 {
                     Login = login,
                     Password = password,
@@ -70,7 +70,7 @@ namespace VKMusicApp.ViewModels
                     Settings = VkNet.Enums.Filters.Settings.Audio
                 });
 
-                Shell.Current.GoToAsync(nameof(MusicLibraryPage));
+                await Shell.Current.GoToAsync(nameof(MusicLibraryPage));
             }
             catch (Exception ex)
             {

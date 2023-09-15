@@ -52,47 +52,43 @@
                 HorizontalTextAlignment="Start"
                 Margin="10,10,10,10"
                 TextColor="White"/>
-
         </Grid>
 
         <Grid 
             Grid.Row="1"
             BackgroundColor="#1D1E33">
             <ScrollView>
-                <ListView
-                    SeparatorVisibility="None"
-                    ItemsSource="{Binding ViewAudio}"
-                    RowHeight="60">
-                    <ListView.ItemTemplate>
+                <CollectionView
+                    SelectionMode="Single"
+                    ItemsSource="{Binding ViewAudio}">
+                    <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Audio">
-                            <ViewCell>
-                                <Grid
-                                    Margin="10">
-                                    <Image
-                                        HorizontalOptions="Start"
-                                        Source="player.png"
-                                        HeightRequest="40"
-                                        WidthRequest="40"/>
-                                    <Label
-                                        FontSize="18"
-                                        HeightRequest="40"
-                                        Margin="50,0,0,10"
-                                        Text="{Binding Title}"
-                                        Style="{StaticResource MusicPreviewText}"/>
-                                    <Label 
-                                        Margin="51,25,0,0"
-                                        Text="{Binding Artist}"
-                                        Style="{StaticResource MusicPreviewText}"/>
-                                    <Label
-                                        HorizontalOptions="End"
-                                        Margin="0,15,50,0"
-                                        Text="{Binding Duration}"
-                                        Style="{StaticResource MusicPreviewText}"/>
-                                </Grid>
-                            </ViewCell>
+                            <Grid
+                                Margin="10">
+                                <Image
+                                    HorizontalOptions="Start"
+                                    Source="player.png"
+                                    HeightRequest="40"
+                                    WidthRequest="40"/>
+                                <Label
+                                    FontSize="18"
+                                    HeightRequest="40"  
+                                    Margin="50,0,0,10"
+                                    Text="{Binding Title}"
+                                    Style="{StaticResource MusicPreviewText}"/>
+                                <Label 
+                                    Margin="51,25,0,0"
+                                    Text="{Binding Artist}"
+                                    Style="{StaticResource MusicPreviewText}"/>
+                                <Label
+                                    HorizontalOptions="End"
+                                    Margin="0,15,50,0"
+                                    Text="{Binding Duration}"
+                                    Style="{StaticResource MusicPreviewText}"/>
+                            </Grid>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </ScrollView>
         </Grid>
 

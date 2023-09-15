@@ -9,17 +9,26 @@ namespace VKMusicApp.ViewModels
     public class MusicLibraryViewModel : ObservableObject
     {
         private VkApi vkApi;
-        private bool searchIsFocus = false;
+        private bool searchIsFocus = true;
         private string searchText;
+        private readonly List<Audio> audios;
+        private ObservableCollection<Audio> viewAudio;
 
         public delegate void EntryFocusHandler();
         public event EntryFocusHandler EntryFocus;
 
         public ICommand SearchCommand { get; set; }
-        public ICommand UnFocus {  get; set; }
+        public ICommand UnFocus { get; set; }
 
-        public ObservableCollection<Audio> Audios { get; set; }
-        public ObservableCollection<Audio> ViewAudio {  get; set; }
+        public ObservableCollection<Audio> ViewAudio 
+        { 
+            get => viewAudio; 
+            set
+            {
+                viewAudio = value;
+                OnPropertyChanged(nameof(ViewAudio));
+            }
+        }
 
         public bool SearchIsFocus
         {
@@ -37,9 +46,8 @@ namespace VKMusicApp.ViewModels
             set
             {
                 searchText = value;
-                OnPropertyChanged();
-
                 SortMusic();
+                OnPropertyChanged();
             }
         }
 
@@ -55,7 +63,7 @@ namespace VKMusicApp.ViewModels
             SearchCommand = new Command(Search);
             UnFocus = new Command(UnFocused);
 
-            Audios = new ObservableCollection<Audio>(music);
+            audios = new List<Audio>(music);
             ViewAudio = new ObservableCollection<Audio>(music);
         }
 
@@ -75,13 +83,25 @@ namespace VKMusicApp.ViewModels
         {
             ViewAudio.Clear();
 
-            foreach (var audio in Audios)
+            _ = Task.Run(() =>
             {
-                if (audio.Title.ToLower().StartsWith(searchText.ToLower()))
+                if (!searchText.Any())
                 {
-                    ViewAudio.Add(audio);
+                    List<Audio> tmp = new List<Audio>(audios);
+
+                    ViewAudio = new ObservableCollection<Audio>(tmp);
+
+                    return;
                 }
-            }
+
+                foreach (Audio audio in audios)
+                {
+                    if (audio.Title.ToLower().StartsWith(searchText.ToLower()))
+                    {
+                        ViewAudio.Add(audio);
+                    }
+                }
+            });
         }
     }
 }
