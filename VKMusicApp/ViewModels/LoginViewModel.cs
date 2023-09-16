@@ -77,6 +77,8 @@ namespace VKMusicApp.ViewModels
             catch (Exception ex)
             {
                 Exception = ex.Message;
+
+                ButtonStatus = true;
                 
                 return;
             }

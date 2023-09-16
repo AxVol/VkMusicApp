@@ -18,11 +18,10 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
-        
+
         <Grid 
             Grid.Row="0"
             BackgroundColor="#2C2E44">
-
             <ImageButton
                 Margin="340,10,10,10"
                 Source="settings.png"
@@ -140,7 +139,7 @@
                 Grid.Column="0">
                 <Border
                     Style="{StaticResource NavigationPanel}">
-                    <Label 
+                    <Label
                         Style="{StaticResource PanelLabel}"
                         Text="Моя музыка"/>
                 </Border>
@@ -151,38 +150,73 @@
             </Grid>
             <Grid
                 Grid.Column="1">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer
+                        NumberOfTapsRequired="1"
+                        Command="{Binding GoTo}"
+                        CommandParameter="{Binding Source={x:Reference Name=PlaylistPage}, Path=Text}"/>
+                </Grid.GestureRecognizers>
                 <Border
                     Style="{StaticResource NavigationPanel}">
                     <Label 
                         Style="{StaticResource PanelLabel}"
-                        Text="Плейлисты" />
+                        Text="Плейлисты"/>
                 </Border>
+                <Label 
+                    IsVisible="false"
+                    IsEnabled="false"
+                    x:Name="PlaylistPage"
+                    Text="PlaylistPage"/>
                 <Image 
                     Style="{StaticResource PanelImage}"
                     Scale="0.8"
                     Source="playlist.png"/>
             </Grid>
             <Grid
-                Grid.Column="2">
+                Grid.Column="2"
+                ClassId="PhoneMusicPage">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer
+                        NumberOfTapsRequired="1"
+                        Command="{Binding GoTo}"
+                        CommandParameter="{Binding Source={x:Reference Name=PhoneMusicPage}, Path=Text}"/>
+                </Grid.GestureRecognizers>
                 <Border
                     Style="{StaticResource NavigationPanel}">
                     <Label 
                         Style="{StaticResource PanelLabel}"
                         Text="На телефоне" />
                 </Border>
+                <Label
+                    IsEnabled="false"
+                    IsVisible="false"
+                    x:Name="PhoneMusicPage"
+                    Text="PhoneMusicPage"/>
                 <Image 
                     Style="{StaticResource PanelImage}"
                     Scale="0.8"
                     Source="dowload_music.png"/>
             </Grid>
             <Grid
-                Grid.Column="3">
+                Grid.Column="3"
+                ClassId="SearchMusicPage">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer
+                        NumberOfTapsRequired="1"
+                        Command="{Binding GoTo}"
+                        CommandParameter="{Binding Source={x:Reference Name=SearchMusicPage}, Path=Text}"/>
+                </Grid.GestureRecognizers>
                 <Border
                     Style="{StaticResource NavigationPanel}">
                     <Label 
                         Style="{StaticResource PanelLabel}"
                         Text="Поиск музыки" />
                 </Border>
+                <Label 
+                    IsVisible="false"
+                    IsEnabled="false"
+                    x:Name="SearchMusicPage"
+                    Text="SearchMusicPage"/>
                 <Image 
                     Style="{StaticResource PanelImage}"
                     Scale="0.8"

@@ -30,9 +30,15 @@ public static class MauiProgram
 
         builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<MusicLibraryPage>();
+		builder.Services.AddTransient<PlaylistPage>();
+		builder.Services.AddTransient<PhoneMusicPage>();
+		builder.Services.AddTransient<SearchMusicPage>();
 
 		builder.Services.AddTransient<LoginViewModel>();
 		builder.Services.AddTransient<MusicLibraryViewModel>();
+		builder.Services.AddTransient<PlaylistViewModel>();
+		builder.Services.AddTransient<PhoneMusicViewModel>();
+		builder.Services.AddTransient<SearchMusicViewModel>();
 
         return builder.Build();
 	}

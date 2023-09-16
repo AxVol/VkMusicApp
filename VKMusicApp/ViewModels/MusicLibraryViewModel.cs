@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using VKMusicApp.Core;
+using VKMusicApp.Pages;
 using VkNet;
 using VkNet.Model;
 
@@ -9,7 +10,7 @@ namespace VKMusicApp.ViewModels
     public class MusicLibraryViewModel : ObservableObject
     {
         private VkApi vkApi;
-        private bool searchIsFocus = true;
+        private bool searchIsFocus = false;
         private string searchText;
         private bool viewAudioIsVisable = true;
         private bool searchAudioIsVisable = false;
@@ -19,6 +20,7 @@ namespace VKMusicApp.ViewModels
 
         public ICommand SearchCommand { get; set; }
         public ICommand UnFocus { get; set; }
+        public ICommand GoTo {  get; set; }
 
         public ObservableCollection<Audio> ViewAudio { get; set; }
         public ObservableCollection<Audio> SearchAudio { get; set; }
@@ -75,6 +77,7 @@ namespace VKMusicApp.ViewModels
 
             SearchCommand = new Command(Search);
             UnFocus = new Command(UnFocused);
+            GoTo = new Command(GoToPage);
 
             SearchAudio = new ObservableCollection<Audio>();
             ViewAudio = new ObservableCollection<Audio>(music);
@@ -117,6 +120,13 @@ namespace VKMusicApp.ViewModels
                     }
                 }
             });
+        }
+
+        private async void GoToPage(object obj)
+        {
+            string page = obj as string;
+
+            await Shell.Current.GoToAsync(page);
         }
     }
 }
