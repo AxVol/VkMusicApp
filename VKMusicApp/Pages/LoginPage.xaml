@@ -47,6 +47,7 @@
             Style="{StaticResource LoginBtn}"
             Grid.Row="0"
             Text="Войти"
+            IsEnabled="{Binding ButtonStatus}"
             Command="{Binding LoginCommand}"/>
     </Grid>
 </ContentPage>

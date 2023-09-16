@@ -55,6 +55,7 @@ namespace VKMusicApp.ViewModels
         public LoginViewModel(VkApi VKApi)
         {
             vkApi = VKApi;
+
             LoginCommand = new Command(InCommand);
         }
 
@@ -62,20 +63,25 @@ namespace VKMusicApp.ViewModels
         {
             try
             {
+                ButtonStatus = false;
+
                 await vkApi.AuthorizeAsync(new ApiAuthParams()
                 {
                     Login = login,
                     Password = password,
                     ApplicationId = 51745723,
-                    Settings = VkNet.Enums.Filters.Settings.Audio
+                    Settings = VkNet.Enums.Filters.Settings.Audio,
+                    TokenExpireTime = 0
                 });
-
-                await Shell.Current.GoToAsync(nameof(MusicLibraryPage));
             }
             catch (Exception ex)
             {
                 Exception = ex.Message;
+                
+                return;
             }
+
+            await Shell.Current.GoToAsync(nameof(MusicLibraryPage));
         }
     }
 }

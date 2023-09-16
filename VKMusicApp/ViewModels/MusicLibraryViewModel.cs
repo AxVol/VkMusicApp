@@ -11,8 +11,8 @@ namespace VKMusicApp.ViewModels
         private VkApi vkApi;
         private bool searchIsFocus = true;
         private string searchText;
-        private readonly List<Audio> audios;
-        private ObservableCollection<Audio> viewAudio;
+        private bool viewAudioIsVisable = true;
+        private bool searchAudioIsVisable = false;
 
         public delegate void EntryFocusHandler();
         public event EntryFocusHandler EntryFocus;
@@ -20,15 +20,8 @@ namespace VKMusicApp.ViewModels
         public ICommand SearchCommand { get; set; }
         public ICommand UnFocus { get; set; }
 
-        public ObservableCollection<Audio> ViewAudio 
-        { 
-            get => viewAudio; 
-            set
-            {
-                viewAudio = value;
-                OnPropertyChanged(nameof(ViewAudio));
-            }
-        }
+        public ObservableCollection<Audio> ViewAudio { get; set; }
+        public ObservableCollection<Audio> SearchAudio { get; set; }
 
         public bool SearchIsFocus
         {
@@ -51,6 +44,26 @@ namespace VKMusicApp.ViewModels
             }
         }
 
+        public bool ViewAudioIsVisable
+        {
+            get => viewAudioIsVisable;
+            set
+            {
+                viewAudioIsVisable = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool SearchAudioIsVisable
+        {
+            get => searchAudioIsVisable;
+            set
+            {
+                searchAudioIsVisable = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MusicLibraryViewModel(VkApi VKApi)
         {
             vkApi = VKApi;
@@ -63,7 +76,7 @@ namespace VKMusicApp.ViewModels
             SearchCommand = new Command(Search);
             UnFocus = new Command(UnFocused);
 
-            audios = new List<Audio>(music);
+            SearchAudio = new ObservableCollection<Audio>();
             ViewAudio = new ObservableCollection<Audio>(music);
         }
 
@@ -81,24 +94,26 @@ namespace VKMusicApp.ViewModels
 
         private void SortMusic()
         {
-            ViewAudio.Clear();
+            if (!searchText.Any())
+            {
+                ViewAudioIsVisable = true;
+                SearchAudioIsVisable = false;
+
+                return;
+            }
+
+            SearchAudio.Clear();
+
+            ViewAudioIsVisable = false;
+            SearchAudioIsVisable = true;
 
             _ = Task.Run(() =>
             {
-                if (!searchText.Any())
-                {
-                    List<Audio> tmp = new List<Audio>(audios);
-
-                    ViewAudio = new ObservableCollection<Audio>(tmp);
-
-                    return;
-                }
-
-                foreach (Audio audio in audios)
+                foreach (Audio audio in ViewAudio)
                 {
                     if (audio.Title.ToLower().StartsWith(searchText.ToLower()))
                     {
-                        ViewAudio.Add(audio);
+                        SearchAudio.Add(audio);
                     }
                 }
             });
