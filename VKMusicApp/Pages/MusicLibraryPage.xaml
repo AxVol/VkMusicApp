@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
              xmlns:model="clr-namespace:VkNet.Model;assembly=VkNet"
+             xmlns:views="clr-namespace:VKMusicApp.Pages.ContentViewsPage"
              x:Class="VKMusicApp.Pages.MusicLibraryPage"
              x:DataType="vm:MusicLibraryViewModel"
              Shell.NavBarIsVisible="False">
@@ -125,103 +126,10 @@
                 </CollectionView>
             </ScrollView>
         </Grid>
-        <Grid 
+        <Grid
             Grid.Row="2"
             BackgroundColor="#2C2E44">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid
-                Grid.Column="0">
-                <Border
-                    Style="{StaticResource NavigationPanel}">
-                    <Label
-                        Style="{StaticResource PanelLabel}"
-                        Text="Моя музыка"/>
-                </Border>
-                <Image 
-                    Style="{StaticResource PanelImage}"
-                    Scale="0.8"
-                    Source="music.png"/>
-            </Grid>
-            <Grid
-                Grid.Column="1">
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer
-                        NumberOfTapsRequired="1"
-                        Command="{Binding GoTo}"
-                        CommandParameter="{Binding Source={x:Reference Name=PlaylistPage}, Path=Text}"/>
-                </Grid.GestureRecognizers>
-                <Border
-                    Style="{StaticResource NavigationPanel}">
-                    <Label 
-                        Style="{StaticResource PanelLabel}"
-                        Text="Плейлисты"/>
-                </Border>
-                <Label 
-                    IsVisible="false"
-                    IsEnabled="false"
-                    x:Name="PlaylistPage"
-                    Text="PlaylistPage"/>
-                <Image 
-                    Style="{StaticResource PanelImage}"
-                    Scale="0.8"
-                    Source="playlist.png"/>
-            </Grid>
-            <Grid
-                Grid.Column="2"
-                ClassId="PhoneMusicPage">
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer
-                        NumberOfTapsRequired="1"
-                        Command="{Binding GoTo}"
-                        CommandParameter="{Binding Source={x:Reference Name=PhoneMusicPage}, Path=Text}"/>
-                </Grid.GestureRecognizers>
-                <Border
-                    Style="{StaticResource NavigationPanel}">
-                    <Label 
-                        Style="{StaticResource PanelLabel}"
-                        Text="На телефоне" />
-                </Border>
-                <Label
-                    IsEnabled="false"
-                    IsVisible="false"
-                    x:Name="PhoneMusicPage"
-                    Text="PhoneMusicPage"/>
-                <Image 
-                    Style="{StaticResource PanelImage}"
-                    Scale="0.8"
-                    Source="dowload_music.png"/>
-            </Grid>
-            <Grid
-                Grid.Column="3"
-                ClassId="SearchMusicPage">
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer
-                        NumberOfTapsRequired="1"
-                        Command="{Binding GoTo}"
-                        CommandParameter="{Binding Source={x:Reference Name=SearchMusicPage}, Path=Text}"/>
-                </Grid.GestureRecognizers>
-                <Border
-                    Style="{StaticResource NavigationPanel}">
-                    <Label 
-                        Style="{StaticResource PanelLabel}"
-                        Text="Поиск музыки" />
-                </Border>
-                <Label 
-                    IsVisible="false"
-                    IsEnabled="false"
-                    x:Name="SearchMusicPage"
-                    Text="SearchMusicPage"/>
-                <Image 
-                    Style="{StaticResource PanelImage}"
-                    Scale="0.8"
-                    Source="search_music.png"/>
-            </Grid>
+            <views:NavigationPanelView/>
         </Grid>
     </Grid>
 </ContentPage>

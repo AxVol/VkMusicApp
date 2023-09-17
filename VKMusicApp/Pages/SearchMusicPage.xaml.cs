@@ -1,13 +1,9 @@
-using VKMusicApp.ViewModels;
-
 namespace VKMusicApp.Pages;
 
 public partial class SearchMusicPage : ContentPage
 {
-	public SearchMusicPage(SearchMusicViewModel vm)
+	public SearchMusicPage()
 	{
 		InitializeComponent();
-
-        BindingContext = vm;
     }
 }

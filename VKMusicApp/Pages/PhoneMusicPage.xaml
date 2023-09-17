@@ -1,19 +1,69 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
+             xmlns:views="clr-namespace:VKMusicApp.Pages.ContentViewsPage"
+             xmlns:model="clr-namespace:VkNet.Model;assembly=VkNet"
              x:Class="VKMusicApp.Pages.PhoneMusicPage"
              x:DataType="vm:PhoneMusicViewModel"
              Shell.NavBarIsVisible="False">
-    
+
     <ContentPage.Resources>
         <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
     </ContentPage.Resources>
 
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+        <Grid 
+            Grid.Row="0"
+            BackgroundColor="#2C2E44">
+            <ImageButton
+                Margin="340,10,10,10"
+                Source="settings.png"
+                HorizontalOptions="End"/>
+            <ImageButton
+                Source="search.png"
+                Margin="230,10,10,10"
+                HeightRequest="30"
+                WidthRequest="30"
+                Command="{Binding SearchCommand}"/>
+            <Entry 
+                Text="{Binding SearchText}"
+                Style="{StaticResource SearchBox}"
+                HeightRequest="40"
+                WidthRequest="150"
+                IsVisible="{Binding SearchIsFocus}"
+                x:Name="Search">
+                <Entry.Behaviors>
+                    <behaviors:EventToCommandBehavior
+                        EventName="Unfocused"
+                        Command="{Binding UnFocus}"/>
+                </Entry.Behaviors>
+            </Entry>
+            <Label
+                Text="Vk Music"
+                FontSize="24"
+                HorizontalTextAlignment="Start"
+                Margin="10,10,10,10"
+                TextColor="White"/>
+        </Grid>
+
+        <Grid 
+        Grid.Row="1"
+        BackgroundColor="#1D1E33">
+
+        </Grid>
+
+        <Grid
+            Grid.Row="2"
+            BackgroundColor="#2C2E44">
+            <views:NavigationPanelView/>
+        </Grid>
+    </Grid>
 </ContentPage>

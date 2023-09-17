@@ -20,7 +20,6 @@ namespace VKMusicApp.ViewModels
 
         public ICommand SearchCommand { get; set; }
         public ICommand UnFocus { get; set; }
-        public ICommand GoTo {  get; set; }
 
         public ObservableCollection<Audio> ViewAudio { get; set; }
         public ObservableCollection<Audio> SearchAudio { get; set; }
@@ -77,7 +76,6 @@ namespace VKMusicApp.ViewModels
 
             SearchCommand = new Command(Search);
             UnFocus = new Command(UnFocused);
-            GoTo = new Command(GoToPage);
 
             SearchAudio = new ObservableCollection<Audio>();
             ViewAudio = new ObservableCollection<Audio>(music);
@@ -120,13 +118,6 @@ namespace VKMusicApp.ViewModels
                     }
                 }
             });
-        }
-
-        private async void GoToPage(object obj)
-        {
-            string page = obj as string;
-
-            await Shell.Current.GoToAsync(page);
         }
     }
 }

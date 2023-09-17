@@ -29,15 +29,15 @@ public static class MauiProgram
 		builder.Services.AddSingleton<VkApi>(new VkApi(builder.Services));
 
         builder.Services.AddTransient<LoginPage>();
-		builder.Services.AddTransient<MusicLibraryPage>();
+		builder.Services.AddSingleton<MusicLibraryPage>();
 		builder.Services.AddTransient<PlaylistPage>();
-		builder.Services.AddTransient<PhoneMusicPage>();
+		builder.Services.AddSingleton<PhoneMusicPage>();
 		builder.Services.AddTransient<SearchMusicPage>();
 
 		builder.Services.AddTransient<LoginViewModel>();
-		builder.Services.AddTransient<MusicLibraryViewModel>();
+		builder.Services.AddSingleton<MusicLibraryViewModel>();
 		builder.Services.AddTransient<PlaylistViewModel>();
-		builder.Services.AddTransient<PhoneMusicViewModel>();
+		builder.Services.AddSingleton<PhoneMusicViewModel>();
 		builder.Services.AddTransient<SearchMusicViewModel>();
 
         return builder.Build();
