@@ -40,9 +40,17 @@ namespace VKMusicApp.Services.Interfaces
             throw new NotImplementedException();
         }
 
-        public Audio GetAudio()
+        public ObservableCollection<Audio> GetAudio(string music)
         {
-            throw new NotImplementedException();
+            var audios = vkApi.Audio.Search(new AudioSearchParams()
+            {
+                Query = music,
+                Autocomplete = true,
+                Sort = VkNet.Enums.AudioSort.Popularity
+
+            }).ToList();
+
+            return new ObservableCollection<Audio>(audios);
         }
     }
 }

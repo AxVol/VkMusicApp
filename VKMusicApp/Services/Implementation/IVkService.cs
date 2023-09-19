@@ -9,6 +9,6 @@ namespace VKMusicApp.Services.Implementation
         public ObservableCollection<Audio> GetAudios(AccountMusicViewModel vm);
         public ObservableCollection<Audio> GetAudios(PhoneMusicViewModel vm);
         public ObservableCollection<Audio> GetPlayList();
-        public Audio GetAudio();
+        public ObservableCollection<Audio> GetAudio(string music);
     }
 }

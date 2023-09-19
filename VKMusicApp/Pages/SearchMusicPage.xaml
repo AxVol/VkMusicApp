@@ -4,7 +4,6 @@
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
              xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:views="clr-namespace:VKMusicApp.Pages.ContentViewsPage"
-             xmlns:model="clr-namespace:VkNet.Model;assembly=VkNet"
              x:Class="VKMusicApp.Pages.SearchMusicPage"
              x:DataType="vm:SearchMusicViewModel"
              Shell.NavBarIsVisible="False">
@@ -28,12 +27,13 @@
                 Margin="230,10,10,10"
                 HeightRequest="30"
                 WidthRequest="30"
-                Command="{Binding SearchCommand}"/>
+                Command="{Binding SearchFocusCommand}"/>
             <Entry 
                 Text="{Binding SearchText}"
                 Style="{StaticResource SearchBox}"
                 HeightRequest="40"
                 WidthRequest="150"
+                IsVisible="{Binding SearchIsFocus}"
                 IsEnabled="{Binding SearchIsFocus}"
                 x:Name="Search">
                 <Entry.Behaviors>
@@ -53,6 +53,7 @@
         <Grid 
             Grid.Row="1"
             BackgroundColor="#1D1E33">
+            <views:AudioListView/>
         </Grid>
 
         <Grid

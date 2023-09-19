@@ -9,5 +9,12 @@ public partial class PhoneMusicPage : ContentPage
 		InitializeComponent();
 
         BindingContext = vm;
+
+        vm.EntryFocus += EntryFocus;
+    }
+
+    private void EntryFocus()
+    {
+        Search.Focus();
     }
 }

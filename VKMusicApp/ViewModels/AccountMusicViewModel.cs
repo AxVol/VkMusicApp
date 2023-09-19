@@ -13,9 +13,7 @@ namespace VKMusicApp.ViewModels
         private bool viewAudioIsVisable = true;
         private bool searchAudioIsVisable = false;
 
-        public ObservableCollection<Audio> ViewAudio { get; set; }
         public ObservableCollection<Audio> SearchAudio { get; set; }
-
 
         public string SearchText
         {
@@ -53,7 +51,7 @@ namespace VKMusicApp.ViewModels
             vkService = VkService;
 
             UnFocus = new Command(UnFocused);
-            SearchCommand = new Command(Search);
+            SearchFocusCommand = new Command(SearchFocus);
 
             SearchAudio = new ObservableCollection<Audio>();
             ViewAudio = new ObservableCollection<Audio>(vkService.GetAudios(this));

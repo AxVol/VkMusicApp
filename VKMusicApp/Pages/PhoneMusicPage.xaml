@@ -32,7 +32,7 @@
                 Margin="230,10,10,10"
                 HeightRequest="30"
                 WidthRequest="30"
-                Command="{Binding SearchCommand}"/>
+                Command="{Binding SearchFocusCommand}"/>
             <Entry 
                 Text="{Binding SearchText}"
                 Style="{StaticResource SearchBox}"
