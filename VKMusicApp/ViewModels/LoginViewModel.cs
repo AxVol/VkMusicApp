@@ -83,7 +83,7 @@ namespace VKMusicApp.ViewModels
                 return;
             }
 
-            await Shell.Current.GoToAsync(nameof(MusicLibraryPage));
+            await Shell.Current.GoToAsync(nameof(AccountMusicPage));
         }
     }
 }

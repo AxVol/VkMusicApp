@@ -2,9 +2,9 @@ using VKMusicApp.ViewModels;
 
 namespace VKMusicApp.Pages;
 
-public partial class MusicLibraryPage : ContentPage
+public partial class AccountMusicPage : ContentPage
 {
-	public MusicLibraryPage(MusicLibraryViewModel vm)
+	public AccountMusicPage(AccountMusicViewModel vm)
 	{
         InitializeComponent();
 

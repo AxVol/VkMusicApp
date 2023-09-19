@@ -1,38 +1,21 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
+using System.Net.Http.Headers;
 using VKMusicApp.Core;
-using VKMusicApp.Pages;
-using VkNet;
+using VKMusicApp.Services.Implementation;
 using VkNet.Model;
 
 namespace VKMusicApp.ViewModels
 {
-    public class MusicLibraryViewModel : ObservableObject
+    public class AccountMusicViewModel : MusicLibrary
     {
-        private VkApi vkApi;
-        private bool searchIsFocus = false;
+        private IVkService vkService;
         private string searchText;
         private bool viewAudioIsVisable = true;
         private bool searchAudioIsVisable = false;
 
-        public delegate void EntryFocusHandler();
-        public event EntryFocusHandler EntryFocus;
-
-        public ICommand SearchCommand { get; set; }
-        public ICommand UnFocus { get; set; }
-
         public ObservableCollection<Audio> ViewAudio { get; set; }
         public ObservableCollection<Audio> SearchAudio { get; set; }
 
-        public bool SearchIsFocus
-        {
-            get => searchIsFocus;
-            set
-            {
-                searchIsFocus = value;
-                OnPropertyChanged();
-            }
-        }
 
         public string SearchText
         {
@@ -65,32 +48,15 @@ namespace VKMusicApp.ViewModels
             }
         }
 
-        public MusicLibraryViewModel(VkApi VKApi)
+        public AccountMusicViewModel(IVkService VkService)
         {
-            vkApi = VKApi;
+            vkService = VkService;
 
-            var music = vkApi.Audio.Get(new AudioGetParams()
-            {
-                OwnerId = vkApi.UserId
-            }).ToList();
-
-            SearchCommand = new Command(Search);
             UnFocus = new Command(UnFocused);
+            SearchCommand = new Command(Search);
 
             SearchAudio = new ObservableCollection<Audio>();
-            ViewAudio = new ObservableCollection<Audio>(music);
-        }
-
-        public void UnFocused()
-        {
-            SearchIsFocus = false;
-        }
-
-        private void Search()
-        {
-            SearchIsFocus = true;
-
-            EntryFocus.Invoke();
+            ViewAudio = new ObservableCollection<Audio>(vkService.GetAudios(this));
         }
 
         private void SortMusic()

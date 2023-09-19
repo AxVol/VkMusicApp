@@ -34,7 +34,7 @@
                 Style="{StaticResource SearchBox}"
                 HeightRequest="40"
                 WidthRequest="150"
-                IsVisible="{Binding SearchIsFocus}"
+                IsEnabled="{Binding SearchIsFocus}"
                 x:Name="Search">
                 <Entry.Behaviors>
                     <behaviors:EventToCommandBehavior

@@ -4,14 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VKMusicApp.Core;
+using VkNet;
 
 namespace VKMusicApp.ViewModels
 {
-    public class PhoneMusicViewModel : ObservableObject
+    public class PhoneMusicViewModel : MusicLibrary
     {
-        public PhoneMusicViewModel()
-        {
+        private string searchText;
 
+        public PhoneMusicViewModel(VkApi VKApi)
+        {
+            
+        }
+
+        public string SearchText
+        {
+            get => searchText;
+            set
+            {
+                searchText = value;
+                
+                OnPropertyChanged();
+            }
         }
     }
 }

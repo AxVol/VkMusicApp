@@ -5,8 +5,8 @@
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
              xmlns:model="clr-namespace:VkNet.Model;assembly=VkNet"
              xmlns:views="clr-namespace:VKMusicApp.Pages.ContentViewsPage"
-             x:Class="VKMusicApp.Pages.MusicLibraryPage"
-             x:DataType="vm:MusicLibraryViewModel"
+             x:Class="VKMusicApp.Pages.AccountMusicPage"
+             x:DataType="vm:AccountMusicViewModel"
              Shell.NavBarIsVisible="False">
 
     <ContentPage.Resources>
@@ -38,7 +38,7 @@
                 Style="{StaticResource SearchBox}"
                 HeightRequest="40"
                 WidthRequest="150"
-                IsVisible="{Binding SearchIsFocus}"
+                IsEnabled="{Binding SearchIsFocus}"
                 x:Name="Search">
                 <Entry.Behaviors>
                     <behaviors:EventToCommandBehavior

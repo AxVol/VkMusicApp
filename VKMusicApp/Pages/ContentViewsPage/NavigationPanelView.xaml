@@ -22,7 +22,7 @@
                 <TapGestureRecognizer
                     NumberOfTapsRequired="1"
                     Command="{Binding GoTo}"
-                    CommandParameter="{Binding Source={x:Reference Name=MusicLibraryPage}, Path=Text}"/>
+                    CommandParameter="{Binding Source={x:Reference Name=AccountMusicPage}, Path=Text}"/>
             </Grid.GestureRecognizers>
             <Border
                 Style="{StaticResource NavigationPanel}">
@@ -33,8 +33,8 @@
             <Label 
                 IsVisible="false"
                 IsEnabled="false"
-                x:Name="MusicLibraryPage"
-                Text="MusicLibraryPage"/>
+                x:Name="AccountMusicPage"
+                Text="AccountMusicPage"/>
             <Image 
                 Style="{StaticResource PanelImage}"
                 Scale="0.8"
