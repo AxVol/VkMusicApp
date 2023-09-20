@@ -8,6 +8,10 @@
              x:DataType="vm:SearchMusicViewModel"
              Shell.NavBarIsVisible="False">
 
+    <ContentPage.Resources>
+        <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
+    </ContentPage.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -29,8 +33,8 @@
                 WidthRequest="30"
                 Command="{Binding SearchFocusCommand}"/>
             <Entry 
-                Text="{Binding SearchText}"
                 Style="{StaticResource SearchBox}"
+                TextColor="White"
                 HeightRequest="40"
                 WidthRequest="150"
                 IsVisible="{Binding SearchIsFocus}"
@@ -38,8 +42,12 @@
                 x:Name="Search">
                 <Entry.Behaviors>
                     <behaviors:EventToCommandBehavior
-                    EventName="Unfocused"
-                    Command="{Binding UnFocus}"/>
+                        EventName="Unfocused"
+                        Command="{Binding UnFocus}"/>
+                    <behaviors:EventToCommandBehavior
+                        EventName="Completed"
+                        Command="{Binding SearchCommand}"
+                        CommandParameter="{Binding Source={x:Reference Name=Search}, Path=Text}"/>
                 </Entry.Behaviors>
             </Entry>
             <Label

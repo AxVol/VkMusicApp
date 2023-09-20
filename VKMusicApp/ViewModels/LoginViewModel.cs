@@ -11,7 +11,7 @@ namespace VKMusicApp.ViewModels
         private string login;
         private string password;
         private bool buttonStatus = true;
-        private VkApi vkApi;
+        private readonly VkApi vkApi;
         private string exception;
 
         public ICommand LoginCommand { get; set; }

@@ -20,7 +20,7 @@
                     Margin="10">
                         <Image
                         HorizontalOptions="Start"
-                        Source="player.png"
+                        Source="{Binding Album.Thumb.Photo600}"
                         HeightRequest="40"
                         WidthRequest="40"/>
                         <Label

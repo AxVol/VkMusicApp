@@ -9,6 +9,7 @@ namespace VKMusicApp.Core
         protected bool searchIsFocus = false;
 
         public delegate void EntryFocusHandler();
+
         public event EntryFocusHandler EntryFocus;
 
         public ICommand GoTo { get; set; } = new Command(GoToPage);

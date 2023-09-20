@@ -8,7 +8,6 @@ namespace VKMusicApp.ViewModels
 {
     public class SearchMusicViewModel : MusicLibrary
     {
-        private string searchText;
         private readonly IVkService vkService;
 
         public ICommand SearchCommand { get; set; }
@@ -20,38 +19,17 @@ namespace VKMusicApp.ViewModels
             UnFocus = new Command(UnFocused);
             SearchFocusCommand = new Command(SearchFocus);
             SearchCommand = new Command(Search);
+
+            ViewAudio = new ObservableCollection<Audio>();
         }
 
-        public string SearchText
-        {
-            get => searchText;
-            set
-            {
-                searchText = value;
-                
-                if (!searchText.Any())
-                    searchButtonStatus = false;
-
-                searchButtonStatus = true;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool SearchButtonStatus
-        {
-            get => searchButtonStatus;
-            set
-            {
-                searchButtonStatus = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private void Search(object obj)
+        private async void Search(object obj)
         {
             string musicName = obj as string;
 
-            ViewAudio = vkService.GetAudio(musicName);
+            ViewAudio.Clear();
+
+            await vkService.GetAudio(musicName, ViewAudio);
         }
     }
 }

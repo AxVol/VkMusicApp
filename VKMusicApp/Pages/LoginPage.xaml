@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
+             xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              x:Class="VKMusicApp.Pages.LoginPage"
              x:DataType="vm:LoginViewModel"
              Shell.NavBarIsVisible="False">
@@ -34,13 +35,21 @@
             WidthRequest="300"
             Style="{StaticResource LoginEntry}"
             Placeholder="Логин"
-            Text="{Binding Login, UpdateSourceEventName=PropertyChanged}"/>
+            Text="{Binding Login, UpdateSourceEventName=PropertyChanged}"
+            behaviors:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference PasswordEntry}"/>
         <Entry
+            x:Name="PasswordEntry"
             Style="{StaticResource LoginEntry}"
             WidthRequest="300"
             Placeholder="Пароль"
             IsPassword="True"
-            Text="{Binding Password, UpdateSourceEventName=PropertyChanged}"/>
+            Text="{Binding Password, UpdateSourceEventName=PropertyChanged}">
+            <Entry.Behaviors>
+                <behaviors:EventToCommandBehavior 
+                    EventName="Completed" 
+                    Command="{Binding LoginCommand}"/>
+            </Entry.Behaviors>
+        </Entry>
         <Button
             Margin="0,110,0,0"
             WidthRequest="300"
