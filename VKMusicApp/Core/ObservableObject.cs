@@ -8,9 +8,18 @@ namespace VKMusicApp.Core
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        public ICommand GoTo { get; set; } = new Command(GoToPage);
+
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private static void GoToPage(object obj)
+        {
+            string page = obj as string;
+
+            Shell.Current.GoToAsync(page);
         }
     }
 }

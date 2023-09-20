@@ -13,6 +13,7 @@ namespace VKMusicApp
             Routing.RegisterRoute(nameof(PlaylistPage), typeof(PlaylistPage));
             Routing.RegisterRoute(nameof(PhoneMusicPage), typeof(PhoneMusicPage));
             Routing.RegisterRoute(nameof(SearchMusicPage), typeof(SearchMusicPage));
+            Routing.RegisterRoute(nameof(MusicPlaylistPage), typeof(MusicPlaylistPage));
         }
     }
 }

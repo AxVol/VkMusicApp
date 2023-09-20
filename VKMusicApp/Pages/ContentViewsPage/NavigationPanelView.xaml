@@ -62,7 +62,7 @@
             <Image 
                 Style="{StaticResource PanelImage}"
                 Scale="0.8"
-                Source="playlist.png"/>
+                Source="playlists.png"/>
         </Grid>
         <Grid
             Grid.Column="2"

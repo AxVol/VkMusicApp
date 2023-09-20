@@ -10,34 +10,34 @@
     </ContentView.Resources>
 
     <ScrollView
-    IsVisible="{Binding ViewAudioIsVisable}">
+        IsVisible="{Binding ViewAudioIsVisable}">
         <CollectionView
         SelectionMode="Single"
         ItemsSource="{Binding ViewAudio}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Audio">
                     <Grid
-                    Margin="10">
+                        Margin="10">
                         <Image
-                        HorizontalOptions="Start"
-                        Source="{Binding Album.Thumb.Photo600}"
-                        HeightRequest="40"
-                        WidthRequest="40"/>
+                            HorizontalOptions="Start"
+                            Source="{Binding Album.Thumb.Photo600}"
+                            HeightRequest="40"
+                            WidthRequest="40"/>
                         <Label
-                        FontSize="14"
-                        HeightRequest="40"  
-                        Margin="50,0,0,10"
-                        Text="{Binding Title}"
-                        Style="{StaticResource MusicPreviewText}"/>
+                            FontSize="14"
+                            HeightRequest="40"  
+                            Margin="50,0,0,10"
+                            Text="{Binding Title}"
+                            Style="{StaticResource MusicPreviewText}"/>
                         <Label 
-                        Margin="51,25,0,0"
-                        Text="{Binding Artist}"
-                        Style="{StaticResource MusicPreviewText}"/>
+                            Margin="51,25,0,0"
+                            Text="{Binding Artist}"
+                            Style="{StaticResource MusicPreviewText}"/>
                         <Label
-                        HorizontalOptions="End"
-                        Margin="0,15,50,0"
-                        Text="{Binding Duration}"
-                        Style="{StaticResource MusicPreviewText}"/>
+                            HorizontalOptions="End"
+                            Margin="0,15,50,0"
+                            Text="{Binding Duration}"
+                            Style="{StaticResource MusicPreviewText}"/>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

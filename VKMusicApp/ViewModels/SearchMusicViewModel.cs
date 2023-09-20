@@ -29,7 +29,7 @@ namespace VKMusicApp.ViewModels
 
             ViewAudio.Clear();
 
-            await vkService.GetAudio(musicName, ViewAudio);
+            await vkService.GetAudioByString(musicName, ViewAudio);
         }
     }
 }

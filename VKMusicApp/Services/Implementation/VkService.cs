@@ -18,7 +18,7 @@ namespace VKMusicApp.Services.Interfaces
 
         public ObservableCollection<Audio> GetAudios(AccountMusicViewModel vm)
         {
-            var music = vkApi.Audio.Get(new AudioGetParams()
+            VkCollection<Audio> music = vkApi.Audio.Get(new AudioGetParams()
             {
                 OwnerId = vkApi.UserId
             });
@@ -33,14 +33,44 @@ namespace VKMusicApp.Services.Interfaces
             throw new NotImplementedException();
         }
 
-        public ObservableCollection<Audio> GetPlayList()
+        public ObservableCollection<AudioPlaylist> GetPlayLists()
         {
-            throw new NotImplementedException();
+            VkCollection<AudioPlaylist> playlists = vkApi.Audio.GetPlaylists((long)vkApi.UserId);
+
+            foreach (AudioPlaylist playlist in playlists) 
+            {
+                if (playlist.Photo == null)
+                {
+                    AudioCover photo = new AudioCover();
+
+                    photo.Photo600 = "playlist.png";
+
+                    playlist.Photo = photo;
+                }
+                else if (playlist.Photo.Photo600 == string.Empty)
+                {
+                    playlist.Photo.Photo600 = "playlist.png";
+                }
+            }
+            return new ObservableCollection<AudioPlaylist>(playlists);
         }
 
-        public async Task<IEnumerable<Audio>> GetAudio(string music, ObservableCollection<Audio> audios)
+        public ObservableCollection<Audio> GetAudioById(long id)
         {
-            var musics = await vkApi.Audio.SearchAsync(new AudioSearchParams()
+            VkCollection<Audio> music = vkApi.Audio.Get(new AudioGetParams()
+            {
+                OwnerId = vkApi.UserId,
+                PlaylistId = id
+            });
+
+            music = SetThumb(music);
+
+            return new ObservableCollection<Audio>(music);
+        }
+
+        public async Task<IEnumerable<Audio>> GetAudioByString(string music, ObservableCollection<Audio> audios)
+        {
+            VkCollection<Audio> musics = await vkApi.Audio.SearchAsync(new AudioSearchParams()
             {
                 Query = music,
                 Autocomplete = true,

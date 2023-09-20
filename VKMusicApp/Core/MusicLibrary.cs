@@ -12,7 +12,6 @@ namespace VKMusicApp.Core
 
         public event EntryFocusHandler EntryFocus;
 
-        public ICommand GoTo { get; set; } = new Command(GoToPage);
         public ICommand UnFocus { get; set; }
         public ICommand SearchFocusCommand { get; set; }
 
@@ -38,13 +37,6 @@ namespace VKMusicApp.Core
             SearchIsFocus = true;
 
             EntryFocus.Invoke();
-        }
-
-        private static void GoToPage(object obj)
-        {
-            string page = obj as string;
-
-            Shell.Current.GoToAsync(page);
         }
     }
 }

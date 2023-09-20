@@ -8,6 +8,10 @@
              x:DataType="vm:PlaylistViewModel"
              Shell.NavBarIsVisible="False">
 
+    <ContentPage.Resources>
+        <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
+    </ContentPage.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -33,6 +37,41 @@
         <Grid 
             Grid.Row="1"
             BackgroundColor="#1D1E33">
+            <ScrollView>
+                <CollectionView 
+                    x:Name="Collection"
+                    SelectionMode="Single"
+                    ItemsSource="{Binding Playlists}"
+                    SelectionChangedCommand="{Binding OpenPlaylistCommand}"
+                    SelectionChangedCommandParameter="{Binding Source={x:Reference Name=Collection}, Path=SelectedItem}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:AudioPlaylist">
+                            <Grid
+                                Margin="10">
+                                <Image
+                                    HeightRequest="100"
+                                    HorizontalOptions="Start"
+                                    Source="{Binding Photo.Photo600}"/>
+                                <Label
+                                    Style="{StaticResource MusicPreviewText}"
+                                    Margin="110,0,0,0"
+                                    FontSize="14"
+                                    Text="{Binding Title}"/>
+                                <Label
+                                    Style="{StaticResource MusicPreviewText}"
+                                    FontSize="12"
+                                    Margin="110,30,0,0"
+                                    Text="{Binding MainArtists[0].Name}"/>
+                                <Label
+                                    Style="{StaticResource MusicPreviewText}"
+                                    FontSize="10"
+                                    Margin="110,60,0,0"
+                                    Text="{Binding Year}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
         </Grid>
 
         <Grid

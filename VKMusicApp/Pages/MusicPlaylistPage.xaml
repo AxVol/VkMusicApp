@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
+             xmlns:views="clr-namespace:VKMusicApp.Pages.ContentViewsPage"
+             x:Class="VKMusicApp.Pages.MusicPlaylistPage"
+             x:DataType="vm:MusicPlaylistViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+        <Grid 
+            Grid.Row="0"
+            BackgroundColor="#2C2E44">
+            <ImageButton
+                Margin="340,10,10,10"
+                Source="settings.png"
+                HorizontalOptions="End"/>
+            <Label
+                Text="Vk Music"
+                FontSize="24"
+                HorizontalTextAlignment="Start"
+                Margin="10,10,10,10"
+                TextColor="White"/>
+        </Grid>
+
+        <Grid 
+            Grid.Row="1"
+            BackgroundColor="#1D1E33">
+            <views:AudioListView/>
+        </Grid>
+
+        <Grid
+        Grid.Row="2"
+        BackgroundColor="#2C2E44">
+            <views:NavigationPanelView/>
+        </Grid>
+    </Grid>
+
+</ContentPage>
