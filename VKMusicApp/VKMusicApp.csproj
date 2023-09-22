@@ -53,6 +53,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="5.3.0" />
+		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="2.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
@@ -62,6 +63,8 @@
 
 	<ItemGroup>
 	  <Folder Include="Models\" />
+	  <Folder Include="Services\AudioPlayer\Implementation\" />
+	  <Folder Include="Services\AudioPlayer\Interfaces\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -72,6 +75,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="AppShell.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\AudioPlayerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\ContentViewsPage\AudioListView.xaml">

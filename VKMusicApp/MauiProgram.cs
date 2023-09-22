@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
+using CommunityToolkit.Maui;
 using VkNet;
 using VkNet.AudioBypassService.Extensions;
 using VKMusicApp.Pages;
 using VKMusicApp.ViewModels;
-using CommunityToolkit.Maui;
 using VKMusicApp.Services.Implementation;
 using VKMusicApp.Services.Interfaces;
 
@@ -16,7 +16,8 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-            .UseMauiCommunityToolkit()
+			.UseMauiCommunityToolkit()
+            .UseMauiCommunityToolkitMediaElement()
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -38,6 +39,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<PhoneMusicPage>();
 		builder.Services.AddTransient<SearchMusicPage>();
 		builder.Services.AddTransient<MusicPlaylistPage>();
+		builder.Services.AddSingleton<AudioPlayerPage>();
 
 		builder.Services.AddTransient<LoginViewModel>();
 		builder.Services.AddSingleton<AccountMusicViewModel>();
@@ -45,6 +47,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<PhoneMusicViewModel>();
 		builder.Services.AddTransient<SearchMusicViewModel>();
 		builder.Services.AddTransient<MusicPlaylistViewModel>();
+		builder.Services.AddSingleton<AudioPlayerViewModel>();
 
         return builder.Build();
 	}

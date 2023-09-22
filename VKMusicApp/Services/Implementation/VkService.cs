@@ -9,7 +9,7 @@ namespace VKMusicApp.Services.Interfaces
 {
     public class VkService : IVkService
     {
-        private VkApi vkApi;
+        private readonly VkApi vkApi;
 
         public VkService(VkApi VKApi)
         {
@@ -107,7 +107,6 @@ namespace VKMusicApp.Services.Interfaces
                     audio.Album.Thumb.Photo600 = "player.png";
                 }
             }
-
             return audios;
         }
     }
