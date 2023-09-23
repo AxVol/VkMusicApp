@@ -1,14 +1,29 @@
 ﻿using CommunityToolkit.Maui.Views;
 using System.Windows.Input;
 using VKMusicApp.Core;
+using VKMusicApp.Models;
 
 namespace VKMusicApp.ViewModels
 {
+    [QueryProperty(nameof(PlayerAudios), nameof(PlayerAudios))]
     public class AudioPlayerViewModel : ObservableObject
     {
         private MediaElement player;
         private string imageState = "play.png";
         private MediaSource musicPath = MediaSource.FromResource("nf_change.mp3");
+        private PlayerAudios playerAudios;
+
+        public PlayerAudios PlayerAudios 
+        { 
+            get => playerAudios;
+            set
+            {
+                playerAudios = value;
+                MusicPath = MediaSource.FromUri(playerAudios.PathToAudio);
+
+                OnPropertyChanged();
+            }
+        }
 
         public string ImageState 
         { 

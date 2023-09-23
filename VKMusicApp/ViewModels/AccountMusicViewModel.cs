@@ -51,6 +51,7 @@ namespace VKMusicApp.ViewModels
 
             UnFocus = new Command(UnFocused);
             SearchFocusCommand = new Command(SearchFocus);
+            OpenMusicCommand = new Command(OpenMusic);
 
             SearchAudio = new ObservableCollection<Audio>();
             ViewAudio = new ObservableCollection<Audio>(vkService.GetAudios(this));

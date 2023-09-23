@@ -14,8 +14,11 @@
     <ScrollView 
     IsVisible="{Binding SearchAudioIsVisable}">
         <CollectionView
-        SelectionMode="Single"
-        ItemsSource="{Binding SearchAudio}">
+            x:Name="Collection"
+            SelectionMode="Single"
+            ItemsSource="{Binding SearchAudio}"
+            SelectionChangedCommand="{Binding OpenMusicCommand}"
+            SelectionChangedCommandParameter="{Binding Source={x:Reference Name=Collection}, Path=SelectedItem}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Audio">
                     <Grid 

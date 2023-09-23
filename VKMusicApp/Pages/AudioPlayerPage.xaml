@@ -21,7 +21,7 @@
             x:Name="mediaElement"
             IsVisible="false"
             HeightRequest="500"
-            Source="embed://nf_change.mp3"/>
+            Source="{Binding MusicPath}"/>
         <Grid
             Margin="20">
             <Border
@@ -40,12 +40,12 @@
                 VerticalOptions="Start"/>
             <Label
                 Style="{StaticResource PlayerText}"
-                Text="Название трека"
+                Text="{Binding PlayerAudios.PlayingAudio.Title}"
                 FontSize="24"
                 Margin="0,470,0,0"/>
             <Label
                 Style="{StaticResource PlayerText}"
-                Text="Исполнитель"
+                Text="{Binding PlayerAudios.PlayingAudio.Artist}"
                 FontSize="12"
                 Margin="0,510,0,0"/>
             <ImageButton
@@ -118,7 +118,7 @@
                 </Border>
                 <Image
                     HeightRequest="200"
-                    Source="player.png"/>
+                    Source="{Binding PlayerAudios.PlayingAudio.Album.Thumb.Photo600}"/>
             </Grid>
         </Grid>
     </Grid>

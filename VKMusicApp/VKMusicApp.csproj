@@ -62,7 +62,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\" />
 	  <Folder Include="Services\AudioPlayer\Implementation\" />
 	  <Folder Include="Services\AudioPlayer\Interfaces\" />
 	</ItemGroup>
