@@ -8,7 +8,7 @@
     Shell.NavBarIsVisible="False">
 
     <ShellContent
-        ContentTemplate="{DataTemplate local:AudioPlayerPage}"
-        Route="AudioPlayerPage" />
+        ContentTemplate="{DataTemplate local:LoginPage}"
+        Route="LoginPage"/>
 
 </Shell>

@@ -2,25 +2,125 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:media="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
+             xmlns:converters="clr-namespace:VKMusicApp.Converters"
              x:Class="VKMusicApp.Pages.AudioPlayerPage"
-             x:DataType="vm:SearchMusicViewModel"
+             x:DataType="vm:AudioPlayerViewModel"
              Shell.NavBarIsVisible="False">
-    
-    <Grid>
-        <Label BackgroundColor="White"
-               VerticalOptions="Start"
-               FontSize="12"
-               x:Name="label1"/>
+
+    <ContentPage.Resources>
+        <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
+        <media:TimeSpanToSecondsConverter x:Key="TimeSpanConverter"/>
+        <converters:SecondsToString x:Key="SecondsToStringConverter"/>
+    </ContentPage.Resources>
+
+    <Grid
+        BackgroundColor="#2C2E44">
         <media:MediaElement
-            x:Name="mediaElement" 
+            x:Name="mediaElement"
             IsVisible="false"
             HeightRequest="500"
-            Source="embed://nf_running.mp3" />
-        <Button 
-            x:Name="PlayAudio"
-            HeightRequest="100"
-            Clicked="OnClicked"/>
+            Source="embed://nf_change.mp3"/>
+        <Grid
+            Margin="20">
+            <Border
+                StrokeThickness="0"
+                BackgroundColor="#1D1E33">
+                <Border.StrokeShape>
+                    <RoundRectangle 
+                        CornerRadius="10"/>
+                </Border.StrokeShape>
+            </Border>
+            <Label 
+                Margin="0,7,0,0"
+                Text="Vk Music"
+                Style="{StaticResource PlayerText}"
+                FontSize="26"
+                VerticalOptions="Start"/>
+            <Label
+                Style="{StaticResource PlayerText}"
+                Text="Название трека"
+                FontSize="24"
+                Margin="0,470,0,0"/>
+            <Label
+                Style="{StaticResource PlayerText}"
+                Text="Исполнитель"
+                FontSize="12"
+                Margin="0,510,0,0"/>
+            <ImageButton
+                Style="{StaticResource PlayerButton}"
+                Source="{Binding ImageState}"
+                Margin="0,500,0,0"
+                Command="{Binding PlayCommand}"
+                CommandParameter="{Binding Source={x:Reference Name=mediaElement}}"/>
+            <ImageButton
+                Style="{StaticResource PlayerButton}"
+                Source="next.png"
+                Margin="150,500,0,0"
+                Command="{Binding NextCommand}"
+                CommandParameter="{Binding Source={x:Reference Name=mediaElement}}"/>
+            <ImageButton
+                Style="{StaticResource PlayerButton}"
+                Source="back.png"
+                Margin="0,500,160,0"
+                Command="{Binding BackCommand}"
+                CommandParameter="{Binding Source={x:Reference Name=mediaElement}}"/>
+            <ImageButton
+                Style="{StaticResource PlayerButton}"
+                Source="shuffle.png"
+                Margin="0,620,75,0"
+                Command="{Binding ShuffleCommand}"
+                CommandParameter="{Binding Source={x:Reference Name=mediaElement}}"/>
+            <ImageButton
+                Style="{StaticResource PlayerButton}"
+                Source="loop.png"
+                Margin="70,620,0,0"
+                Command="{Binding LoopCommand}"
+                CommandParameter="{Binding Source={x:Reference Name=mediaElement}}"/>
+            <Slider
+                Margin="0,400,0,0"
+                HeightRequest="30"
+                WidthRequest="300"
+                Maximum="{Binding Duration, Source={x:Reference Name=mediaElement}, Converter={StaticResource TimeSpanConverter}}"
+                Value="{Binding Position, Source={x:Reference Name=mediaElement}, Converter={StaticResource TimeSpanConverter}}">
+                <Slider.Behaviors>
+                    <behaviors:EventToCommandBehavior
+                        EventName="ValueChanged"
+                        x:TypeArguments="ValueChangedEventArgs"
+                        Command="{Binding RewindCommand}"
+                        CommandParameter="{Binding Source={x:Reference Name=mediaElement}, Mode=OneWayToSource}"/>
+                </Slider.Behaviors>
+            </Slider>
+            <Label
+                Style="{StaticResource PlayerText}"
+                Margin="0,559,5,0"
+                HorizontalOptions="End"
+                FontSize="12"
+                Text="{Binding Duration, Source={x:Reference Name=mediaElement}, Converter={StaticResource SecondsToStringConverter}}"/>
+            <Label
+                Style="{StaticResource PlayerText}"
+                Margin="5,559,0,0"
+                HorizontalOptions="Start"
+                FontSize="12"
+                Text="{Binding Position, Source={x:Reference Name=mediaElement}, Converter={StaticResource SecondsToStringConverter}}"/>
+            <Grid
+                Margin="50"
+                HeightRequest="400"
+                VerticalOptions="Start">
+                <Border
+                    StrokeThickness="0"
+                    BackgroundColor="#2C2E44">
+                    <Border.StrokeShape>
+                        <RoundRectangle 
+                            CornerRadius="30"/>
+                    </Border.StrokeShape>
+                </Border>
+                <Image
+                    HeightRequest="200"
+                    Source="player.png"/>
+            </Grid>
+        </Grid>
     </Grid>
     
 </ContentPage>

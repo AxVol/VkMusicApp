@@ -54,4 +54,13 @@
         <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
 
+    <Style x:Key="PlayerButton" TargetType="ImageButton">
+        <Setter Property="HeightRequest" Value="40"/>
+        <Setter Property="WidthRequest" Value="40"/>
+    </Style>
+
+    <Style x:Key="PlayerText" TargetType="Label">
+        <Setter Property="TextColor" Value="White"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+    </Style>
 </ResourceDictionary>
