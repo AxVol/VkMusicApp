@@ -4,6 +4,7 @@
              xmlns:model="clr-namespace:VkNet.Model;assembly=VkNet"
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
              xmlns:converters="clr-namespace:VKMusicApp.Converters"
+             xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              x:Class="VKMusicApp.Pages.ContentViewsPage.AudioListView">
     
     <ContentView.Resources>
@@ -18,7 +19,7 @@
             SelectionMode="Single"
             ItemsSource="{Binding ViewAudio}"
             SelectionChangedCommand="{Binding OpenMusicCommand}"
-            SelectionChangedCommandParameter="{Binding Source={x:Reference Name=Collection}, Path=SelectedItem}">
+            SelectionChangedCommandParameter="{Binding Source={x:Reference Name=Collection}}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Audio">
                     <Grid

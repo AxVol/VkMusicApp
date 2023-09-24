@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Views;
+﻿using CommunityToolkit.Maui.Core.Primitives;
+using CommunityToolkit.Maui.Views;
 using System.Windows.Input;
 using VKMusicApp.Core;
 using VKMusicApp.Models;
@@ -64,7 +65,7 @@ namespace VKMusicApp.ViewModels
 
         private void Play(object obj)
         {
-            player = obj as MediaElement;
+           player = obj as MediaElement;
 
             if (player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Playing)
             {
@@ -100,9 +101,9 @@ namespace VKMusicApp.ViewModels
 
         private void Rewind(object obj) 
         {
-            ValueChangedEventArgs position = obj as ValueChangedEventArgs;
+            double position = (double)obj;
 
-            TimeSpan time = TimeSpan.FromSeconds(position.NewValue);
+            TimeSpan time = TimeSpan.FromSeconds(position);
 
             player.SeekTo(time);
         }

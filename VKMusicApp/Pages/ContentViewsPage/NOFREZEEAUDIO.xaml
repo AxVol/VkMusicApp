@@ -18,7 +18,7 @@
             SelectionMode="Single"
             ItemsSource="{Binding SearchAudio}"
             SelectionChangedCommand="{Binding OpenMusicCommand}"
-            SelectionChangedCommandParameter="{Binding Source={x:Reference Name=Collection}, Path=SelectedItem}">
+            SelectionChangedCommandParameter="{Binding Source={x:Reference Name=Collection}}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Audio">
                     <Grid 

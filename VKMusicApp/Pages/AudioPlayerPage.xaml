@@ -5,6 +5,7 @@
              xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
              xmlns:converters="clr-namespace:VKMusicApp.Converters"
+             xmlns:prism="http://prismlibrary.com"
              x:Class="VKMusicApp.Pages.AudioPlayerPage"
              x:DataType="vm:AudioPlayerViewModel"
              Shell.NavBarIsVisible="False">
@@ -79,6 +80,7 @@
                 Command="{Binding LoopCommand}"
                 CommandParameter="{Binding Source={x:Reference Name=mediaElement}}"/>
             <Slider
+                x:Name="Slider"
                 Margin="0,400,0,0"
                 HeightRequest="30"
                 WidthRequest="300"
@@ -86,10 +88,9 @@
                 Value="{Binding Position, Source={x:Reference Name=mediaElement}, Converter={StaticResource TimeSpanConverter}}">
                 <Slider.Behaviors>
                     <behaviors:EventToCommandBehavior
-                        EventName="ValueChanged"
-                        x:TypeArguments="ValueChangedEventArgs"
+                        EventName="DragCompleted"
                         Command="{Binding RewindCommand}"
-                        CommandParameter="{Binding Source={x:Reference Name=mediaElement}, Mode=OneWayToSource}"/>
+                        CommandParameter="{Binding Source={x:Reference Name=Slider}, Path=Value}"/>
                 </Slider.Behaviors>
             </Slider>
             <Label

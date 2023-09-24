@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
 using VKMusicApp.Models;
 using VKMusicApp.Pages;
@@ -55,30 +54,34 @@ namespace VKMusicApp.Core
 
         protected void OpenMusic(object obj)
         {
-            Audio audio = obj as Audio;
+            CollectionView collectionView = obj as CollectionView;
+
+            Audio audio = collectionView.SelectedItem as Audio;
+            ObservableCollection<Audio> audioCollection = collectionView.ItemsSource as ObservableCollection<Audio>;
+            int AudioIndex = 0;
+
+            foreach (Audio Audio in audioCollection)
+            {
+                if (audio.Artist == Audio.Artist && audio.Title == Audio.Title)
+                    break;
+
+                AudioIndex++;
+            }
 
             PlayerAudios playerAudios = new PlayerAudios()
             {
                 PlayingAudio = audio,
-                Audios = ViewAudio,
-                PathToAudio = UrlConverter(audio.Url)
+                Audios = audioCollection,
+                AudioIndex = AudioIndex
             };
+
+            playerAudios.PathToAudio = playerAudios.UrlConverter(audio.Url);
 
             Shell.Current.GoToAsync($"{nameof(AudioPlayerPage)}",
                 new Dictionary<string, object>
                 {
                     ["PlayerAudios"] = playerAudios
                 });
-        }
-
-        private string UrlConverter(Uri Url)
-        {
-            string url = Regex.Replace(
-                Url.ToString(),
-                @"/[a-zA-Z\d]{6,}(/.*?[a-zA-Z\d]+?)/index.m3u8()",
-                @"$1$2.mp3");
-
-            return url;
         }
     }
 }
