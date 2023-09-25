@@ -60,8 +60,13 @@ namespace VKMusicApp.Core
             CollectionView collectionView = obj as CollectionView;
 
             Audio audio = collectionView.SelectedItem as Audio;
-            ObservableCollection<Audio> audioCollection = collectionView.ItemsSource as ObservableCollection<Audio>;
+            ObservableCollection<Audio> audioCollection = new ObservableCollection<Audio>();
             int AudioIndex = 0;
+
+            foreach (var music in collectionView.ItemsSource)
+            {
+                audioCollection.Add((Audio)music);
+            }
 
             foreach (Audio Audio in audioCollection)
             {

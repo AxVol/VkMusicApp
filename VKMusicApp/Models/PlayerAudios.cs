@@ -10,5 +10,6 @@ namespace VKMusicApp.Models
         public Audio PlayingAudio { get; set; }
         public string PathToAudio { get; set; }
         public int AudioIndex { get; set; }
+        public bool IsShuffle { get; set; } = false;
     }
 }

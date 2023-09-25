@@ -10,6 +10,8 @@ namespace VKMusicApp.ViewModels
         public MusicPlaylistViewModel()
         {
             ViewAudio = new ObservableCollection<Audio>();
+
+            OpenMusicCommand = new Command(OpenMusic);
         }
     }
 }

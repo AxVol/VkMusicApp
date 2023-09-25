@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Maui.Core.Primitives;
 using CommunityToolkit.Maui.Views;
+using System;
 using System.Windows.Input;
 using VKMusicApp.Core;
 using VKMusicApp.Models;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
+using VkNet.Model;
 
 namespace VKMusicApp.ViewModels
 {
@@ -43,7 +45,10 @@ namespace VKMusicApp.ViewModels
             set
             {
                 playerAudios = value;
-                MusicPath = MediaSource.FromUri(playerAudios.PathToAudio);
+                if (!playerAudios.IsShuffle)
+                {
+                    MusicPath = MediaSource.FromUri(playerAudios.PathToAudio);
+                }
 
                 OnPropertyChanged();
             }
@@ -131,7 +136,26 @@ namespace VKMusicApp.ViewModels
 
         private void Shuffle()
         {
-            
+            Random random = new Random();
+            int listLength = audioPlyerService.PlayerAudios.Audios.Count;
+
+            while (listLength > 1)
+            {
+                listLength--;
+
+                int randNumber = random.Next(listLength + 1);
+                Audio audio = audioPlyerService.PlayerAudios.Audios[randNumber];
+                audioPlyerService.PlayerAudios.Audios[randNumber] = audioPlyerService.PlayerAudios.Audios[listLength];
+                audioPlyerService.PlayerAudios.Audios[listLength] = audio;
+            }
+
+            audioPlyerService.PlayerAudios.Audios.Remove(audioPlyerService.PlayerAudios.PlayingAudio);
+            audioPlyerService.PlayerAudios.Audios.Insert(0, audioPlyerService.PlayerAudios.PlayingAudio);
+            audioPlyerService.PlayerAudios.AudioIndex = 0;
+
+            audioPlyerService.PlayerAudios.IsShuffle = true;
+            PlayerAudios = audioPlyerService.PlayerAudios;
+            audioPlyerService.PlayerAudios.IsShuffle = false;
         }
 
         private void Loop()
