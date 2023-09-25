@@ -6,6 +6,8 @@ using VKMusicApp.Pages;
 using VKMusicApp.ViewModels;
 using VKMusicApp.Services.Implementation;
 using VKMusicApp.Services.Interfaces;
+using VKMusicApp.Services.AudioPlayer.Interfaces;
+using VKMusicApp.Services.AudioPlayer.Implementation;
 
 namespace VKMusicApp;
 
@@ -32,6 +34,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<VkApi>(new VkApi(builder.Services));
 
 		builder.Services.AddTransient<IVkService, VkService>();
+		builder.Services.AddSingleton<IAudioPlayerService, AudioPlayerService>();
 
         builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddSingleton<AccountMusicPage>();

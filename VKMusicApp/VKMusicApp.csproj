@@ -62,11 +62,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Services\AudioPlayer\Implementation\" />
-	  <Folder Include="Services\AudioPlayer\Interfaces\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Compile Update="Pages\AccountMusicPage.xaml.cs">
 	    <DependentUpon>AccountMusicPage.xaml</DependentUpon>
 	  </Compile>

@@ -3,19 +3,42 @@ using CommunityToolkit.Maui.Views;
 using System.Windows.Input;
 using VKMusicApp.Core;
 using VKMusicApp.Models;
+using VKMusicApp.Services.AudioPlayer.Interfaces;
 
 namespace VKMusicApp.ViewModels
 {
-    [QueryProperty(nameof(PlayerAudios), nameof(PlayerAudios))]
     public class AudioPlayerViewModel : ObservableObject
     {
-        private MediaElement player;
-        private string imageState = "play.png";
+        private string imageState = "pause.png";
+        private string loopimage = "loop.png";
         private MediaSource musicPath = MediaSource.FromResource("nf_change.mp3");
+        private MediaElement player;
+        private IAudioPlayerService audioPlyerService;
         private PlayerAudios playerAudios;
 
-        public PlayerAudios PlayerAudios 
-        { 
+        public MediaElement Player 
+        {   get => player; 
+            set
+            {
+                player = value;
+                Player.MediaEnded += NextMedia;
+
+                OnPropertyChanged();
+            }
+        }
+
+        public string LoopImage
+        {
+            get => loopimage;
+            set
+            {
+                loopimage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public PlayerAudios PlayerAudios
+        {
             get => playerAudios;
             set
             {
@@ -53,8 +76,11 @@ namespace VKMusicApp.ViewModels
         public ICommand LoopCommand { get; set; }
         public ICommand RewindCommand { get; set; }
 
-        public AudioPlayerViewModel()
+        public AudioPlayerViewModel(IAudioPlayerService service)
         {
+            audioPlyerService = service;
+            PlayerAudios = service.PlayerAudios;
+
             PlayCommand = new Command(Play);
             NextCommand = new Command(Next);
             BackCommand = new Command(Back);
@@ -65,38 +91,61 @@ namespace VKMusicApp.ViewModels
 
         private void Play(object obj)
         {
-           player = obj as MediaElement;
-
-            if (player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Playing)
+            if (Player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Playing)
             {
-                player.Pause();
+                Player.Pause();
                 ImageState = "play.png";
             }
             else
             {
-                player.Play();
+                Player.Play();
                 ImageState = "pause.png";
             }
         }
 
-        private void Next(object obj)
+        private void Next()
+        {
+            Player.Stop();
+
+            audioPlyerService.SetNextAudio();
+            PlayerAudios = audioPlyerService.PlayerAudios;
+
+            if (Player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Stopped)
+                ImageState = "pause.png";
+
+            Player.Play();
+        }
+
+        private void Back()
+        {
+            Player.Stop();
+
+            audioPlyerService.SetBackAudio();
+            PlayerAudios = audioPlyerService.PlayerAudios;
+
+            if (Player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Stopped)
+                ImageState = "pause.png";
+
+            Player.Play();
+        }
+
+        private void Shuffle()
         {
             
         }
 
-        private void Back(object obj)
+        private void Loop()
         {
-            
-        }
+            if (!Player.ShouldLoopPlayback)
+            {
+                LoopImage = "loopactive.png";
+                Player.ShouldLoopPlayback = true;
 
-        private void Shuffle(object obj)
-        {
-            
-        }
+                return;
+            }
 
-        private void Loop(object obj)
-        {
-            
+            Player.ShouldLoopPlayback = false;
+            LoopImage = "loop.png";
         }
 
         private void Rewind(object obj) 
@@ -105,7 +154,15 @@ namespace VKMusicApp.ViewModels
 
             TimeSpan time = TimeSpan.FromSeconds(position);
 
-            player.SeekTo(time);
+            Player.SeekTo(time);
+        }
+
+        private void NextMedia(object sender, EventArgs e)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Next();
+            });
         }
     }
 }

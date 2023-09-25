@@ -22,6 +22,7 @@
             x:Name="mediaElement"
             IsVisible="false"
             HeightRequest="500"
+            ShouldAutoPlay="True"
             Source="{Binding MusicPath}"/>
         <Grid
             Margin="20">
@@ -59,26 +60,22 @@
                 Style="{StaticResource PlayerButton}"
                 Source="next.png"
                 Margin="150,500,0,0"
-                Command="{Binding NextCommand}"
-                CommandParameter="{Binding Source={x:Reference Name=mediaElement}}"/>
+                Command="{Binding NextCommand}"/>
             <ImageButton
                 Style="{StaticResource PlayerButton}"
                 Source="back.png"
                 Margin="0,500,160,0"
-                Command="{Binding BackCommand}"
-                CommandParameter="{Binding Source={x:Reference Name=mediaElement}}"/>
+                Command="{Binding BackCommand}"/>
             <ImageButton
                 Style="{StaticResource PlayerButton}"
                 Source="shuffle.png"
                 Margin="0,620,75,0"
-                Command="{Binding ShuffleCommand}"
-                CommandParameter="{Binding Source={x:Reference Name=mediaElement}}"/>
+                Command="{Binding ShuffleCommand}"/>
             <ImageButton
                 Style="{StaticResource PlayerButton}"
-                Source="loop.png"
+                Source="{Binding LoopImage}"
                 Margin="70,620,0,0"
-                Command="{Binding LoopCommand}"
-                CommandParameter="{Binding Source={x:Reference Name=mediaElement}}"/>
+                Command="{Binding LoopCommand}"/>
             <Slider
                 x:Name="Slider"
                 Margin="0,400,0,0"

@@ -8,5 +8,7 @@ public partial class AudioPlayerPage : ContentPage
 	{
 		InitializeComponent();
 		BindingContext = vm;
+
+		vm.Player = mediaElement;
     }
 }

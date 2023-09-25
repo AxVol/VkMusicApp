@@ -2,6 +2,8 @@
 using System.Windows.Input;
 using VKMusicApp.Models;
 using VKMusicApp.Pages;
+using VKMusicApp.Services.AudioPlayer.Implementation;
+using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VkNet.Model;
 
 namespace VKMusicApp.Core
@@ -9,6 +11,7 @@ namespace VKMusicApp.Core
     public class MusicLibrary : ObservableObject
     {
         private ObservableCollection<Audio> viewAudio;
+        protected IAudioPlayerService audioPlayerService;
 
         protected bool searchIsFocus = false;
 
@@ -75,13 +78,11 @@ namespace VKMusicApp.Core
                 AudioIndex = AudioIndex
             };
 
-            playerAudios.PathToAudio = playerAudios.UrlConverter(audio.Url);
+            playerAudios.PathToAudio = audioPlayerService.UrlConverter(audio.Url);
 
-            Shell.Current.GoToAsync($"{nameof(AudioPlayerPage)}",
-                new Dictionary<string, object>
-                {
-                    ["PlayerAudios"] = playerAudios
-                });
+            audioPlayerService.PlayerAudios = playerAudios;
+
+            Shell.Current.GoToAsync(nameof(AudioPlayerPage));
         }
     }
 }

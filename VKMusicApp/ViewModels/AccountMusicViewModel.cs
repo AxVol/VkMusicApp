@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using VKMusicApp.Core;
+using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.Services.Implementation;
 using VkNet.Model;
 
@@ -45,9 +46,10 @@ namespace VKMusicApp.ViewModels
             }
         }
 
-        public AccountMusicViewModel(IVkService VkService)
+        public AccountMusicViewModel(IVkService VkService, IAudioPlayerService service)
         {
             vkService = VkService;
+            audioPlayerService = service;
 
             UnFocus = new Command(UnFocused);
             SearchFocusCommand = new Command(SearchFocus);
