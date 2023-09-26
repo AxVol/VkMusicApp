@@ -6,7 +6,8 @@
              xmlns:media="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="VKMusicApp.Pages.LoginPage"
              x:DataType="vm:LoginViewModel"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             Title="LoginPage">
 
     <ContentPage.Resources>
         <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>

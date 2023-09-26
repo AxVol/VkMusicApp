@@ -7,7 +7,8 @@
              xmlns:converters="clr-namespace:VKMusicApp.Converters"
              xmlns:prism="http://prismlibrary.com"
              x:Class="VKMusicApp.Pages.AudioPlayerPage"
-             x:DataType="vm:AudioPlayerViewModel">
+             x:DataType="vm:AudioPlayerViewModel"
+             Shell.NavBarIsVisible="False">
 
     <ContentPage.Resources>
         <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
