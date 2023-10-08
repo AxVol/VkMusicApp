@@ -62,6 +62,7 @@
             Grid.Row="1"
             BackgroundColor="#1D1E33">
             <views:AudioListView/>
+            <views:PlayerView/>
         </Grid>
 
         <Grid

@@ -16,7 +16,7 @@ namespace VKMusicApp.ViewModels
         public SearchMusicViewModel(IVkService VkService, IAudioPlayerService service)
         {
             vkService = VkService;
-            audioPlayerService = service;
+            AudioPlayerService = service;
 
             UnFocus = new Command(UnFocused);
             SearchFocusCommand = new Command(SearchFocus);

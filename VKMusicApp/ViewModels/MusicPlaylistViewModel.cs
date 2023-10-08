@@ -10,7 +10,7 @@ namespace VKMusicApp.ViewModels
     {
         public MusicPlaylistViewModel(IAudioPlayerService service)
         {
-            audioPlayerService = service;
+            AudioPlayerService = service;
 
             ViewAudio = new ObservableCollection<Audio>();
 

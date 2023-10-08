@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Maui.Core.Primitives;
-using CommunityToolkit.Maui.Views;
-using System;
+﻿using CommunityToolkit.Maui.Views;
 using System.Windows.Input;
 using VKMusicApp.Core;
 using VKMusicApp.Models;
@@ -86,15 +84,19 @@ namespace VKMusicApp.ViewModels
             audioPlyerService = service;
             PlayerAudios = service.PlayerAudios;
 
+            audioPlyerService.MusicSet = true;
+
             PlayCommand = new Command(Play);
             NextCommand = new Command(Next);
             BackCommand = new Command(Back);
             ShuffleCommand = new Command(Shuffle);
             LoopCommand = new Command(Loop);
             RewindCommand = new Command(Rewind);
+
+            audioPlyerService.Player = this;
         }
 
-        private void Play(object obj)
+        private void Play()
         {
             if (Player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Playing)
             {

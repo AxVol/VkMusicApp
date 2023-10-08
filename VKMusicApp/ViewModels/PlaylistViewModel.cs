@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using VKMusicApp.Core;
 using VKMusicApp.Pages;
+using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.Services.Implementation;
 using VkNet.Model;
 
@@ -15,9 +16,10 @@ namespace VKMusicApp.ViewModels
 
         public ICommand OpenPlaylistCommand { get; set; }
 
-        public PlaylistViewModel(IVkService VkService)
+        public PlaylistViewModel(IVkService VkService, IAudioPlayerService service)
         {
             vkService = VkService;
+            AudioPlayerService = service;
 
             OpenPlaylistCommand = new Command(OpenPlayList);
 

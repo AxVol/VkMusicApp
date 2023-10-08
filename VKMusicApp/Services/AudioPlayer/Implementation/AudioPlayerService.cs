@@ -1,14 +1,47 @@
 ﻿using System.Text.RegularExpressions;
+using VKMusicApp.Core;
 using VKMusicApp.Models;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
+using VKMusicApp.ViewModels;
 using VkNet.Model;
 
 namespace VKMusicApp.Services.AudioPlayer.Implementation
 {
-    public class AudioPlayerService : IAudioPlayerService
+    public class AudioPlayerService : ObservableObject, IAudioPlayerService
     {
+        private AudioPlayerViewModel player;
+        private bool isOnline;
+        private bool musicSet = false;
+
         public PlayerAudios PlayerAudios { get; set; }
-        public bool IsOnline { get; set; }
+        public AudioPlayerViewModel Player 
+        { 
+            get => player;
+            set
+            {
+                player ??= value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsOnline 
+        {
+            get => isOnline;
+            set
+            {
+                isOnline = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool MusicSet 
+        { 
+            get => musicSet; 
+            set
+            {
+                musicSet = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void SetBackAudio()
         {

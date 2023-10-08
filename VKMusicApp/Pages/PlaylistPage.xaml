@@ -10,6 +10,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
+        
     </ContentPage.Resources>
 
     <Grid>
@@ -72,6 +73,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </ScrollView>
+            <views:PlayerView/>
         </Grid>
 
         <Grid

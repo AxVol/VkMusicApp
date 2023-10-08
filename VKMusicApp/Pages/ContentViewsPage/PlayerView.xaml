@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
+             x:Class="VKMusicApp.Pages.ContentViewsPage.PlayerView">
+    
+    <ContentView.Resources>
+        <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
+    </ContentView.Resources>
+
+    <Grid 
+        VerticalOptions="End"
+        HeightRequest="60"
+        BackgroundColor="#2C2E44"
+        IsVisible="{Binding AudioPlayerService.MusicSet}">
+        <Image 
+            Margin="10,0,0,0"
+            HorizontalOptions="Start"
+            Source="player.png"
+            HeightRequest="30"
+            WidthRequest="30"/>
+        <Label 
+            FontSize="16"
+            Margin="50,5,0,0"
+            Text="{Binding AudioPlayerService.Player.PlayerAudios.PlayingAudio.Title}"
+            Style="{StaticResource MusicPreviewText}"/>
+        <Label 
+            FontSize="12"
+            Margin="50,30,0,0"
+            Text="{Binding AudioPlayerService.Player.PlayerAudios.PlayingAudio.Artist}"
+            Style="{StaticResource MusicPreviewText}"/>
+        <ImageButton
+            Style="{StaticResource PlayerButton}"
+            Source="back.png"
+            HorizontalOptions="End"
+            Margin="0,0,105,0"
+            Command="{Binding AudioPlayerService.Player.BackCommand}"/>
+        <ImageButton
+            Style="{StaticResource PlayerButton}"
+            Source="{Binding AudioPlayerService.Player.ImageState}"
+            HorizontalOptions="End"
+            HeightRequest="30"
+            Margin="0,0,55,0"
+            Command="{Binding AudioPlayerService.Player.PlayCommand}"/>
+        <ImageButton
+            Style="{StaticResource PlayerButton}"
+            Source="next.png"
+            HorizontalOptions="End"
+            HeightRequest="30"
+            Margin="0,0,10,0"
+            Command="{Binding AudioPlayerService.Player.NextCommand}"/>
+    </Grid>
+</ContentView>

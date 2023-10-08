@@ -10,7 +10,6 @@ namespace VKMusicApp.Core
     public class MusicLibrary : ObservableObject
     {
         private ObservableCollection<Audio> viewAudio;
-        protected IAudioPlayerService audioPlayerService;
 
         protected bool searchIsFocus = false;
 
@@ -84,7 +83,13 @@ namespace VKMusicApp.Core
 
             playerAudios.PathToAudio = audioPlayerService.UrlConverter(audio.Url);
 
-            audioPlayerService.PlayerAudios = playerAudios;
+            AudioPlayerService.PlayerAudios = playerAudios;
+
+            if (AudioPlayerService.MusicSet)
+            {
+                AudioPlayerService.Player.MusicPath = AudioPlayerService.PlayerAudios.PathToAudio;
+                AudioPlayerService.Player.PlayerAudios = AudioPlayerService.PlayerAudios;
+            }
 
             Shell.Current.GoToAsync(nameof(AudioPlayerPage));
         }
