@@ -13,10 +13,18 @@
         HeightRequest="60"
         BackgroundColor="#2C2E44"
         IsVisible="{Binding AudioPlayerService.MusicSet}">
+
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer
+                    NumberOfTapsRequired="1"
+                    Command="{Binding GoTo}"
+                    CommandParameter="AudioPlayerPage"/>
+        </Grid.GestureRecognizers>
+        
         <Image 
             Margin="10,0,0,0"
             HorizontalOptions="Start"
-            Source="player.png"
+            Source="{Binding AudioPlayerService.Player.PlayerAudios.PlayingAudio.Album.Thumb.Photo600}"
             HeightRequest="30"
             WidthRequest="30"/>
         <Label 

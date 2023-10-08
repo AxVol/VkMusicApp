@@ -97,6 +97,12 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
 
         public string UrlConverter(Uri Url)
         {
+            if (Url == null)
+            {
+                SetNextAudio();
+                return "Exception";
+            }
+
             string url = Regex.Replace(
                 Url.ToString(),
                 @"/[a-zA-Z\d]{6,}(/.*?[a-zA-Z\d]+?)/index.m3u8()",

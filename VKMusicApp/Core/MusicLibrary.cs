@@ -58,6 +58,7 @@ namespace VKMusicApp.Core
             CollectionView collectionView = obj as CollectionView;
 
             Audio audio = collectionView.SelectedItem as Audio;
+
             ObservableCollection<Audio> audioCollection = new ObservableCollection<Audio>();
             int AudioIndex = 0;
 
@@ -89,6 +90,14 @@ namespace VKMusicApp.Core
             {
                 AudioPlayerService.Player.MusicPath = AudioPlayerService.PlayerAudios.PathToAudio;
                 AudioPlayerService.Player.PlayerAudios = AudioPlayerService.PlayerAudios;
+
+                if (AudioPlayerService.PlayerAudios.PlayingAudio.Title == audio.Title
+                && AudioPlayerService.PlayerAudios.PlayingAudio.Artist == audio.Artist)
+                {
+                    Shell.Current.GoToAsync(nameof(AudioPlayerPage));
+
+                    return;
+                }
             }
 
             Shell.Current.GoToAsync(nameof(AudioPlayerPage));

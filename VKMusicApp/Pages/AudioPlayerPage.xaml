@@ -6,6 +6,7 @@
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
              xmlns:converters="clr-namespace:VKMusicApp.Converters"
              xmlns:prism="http://prismlibrary.com"
+             xmlns:model="clr-namespace:VkNet.Model;assembly=VkNet"
              x:Class="VKMusicApp.Pages.AudioPlayerPage"
              x:DataType="vm:AudioPlayerViewModel"
              Shell.NavBarIsVisible="False">
@@ -18,6 +19,65 @@
 
     <Grid
         BackgroundColor="#2C2E44">
+
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Label 
+                    Style="{StaticResource PlayerText}"
+                    Text="Очередь треков"/>
+                <ImageButton
+                    HorizontalOptions="Start"
+                    Margin="0,0,170,0"
+                    Source="shuffle.png"
+                    HeightRequest="20"
+                    Command="{Binding ShuffleCommand}"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.GestureRecognizers>
+                    <SwipeGestureRecognizer Direction="Right" Swiped="HideMusicQueen"/>
+                </Grid.GestureRecognizers>
+                <CollectionView
+                        x:Name="Collection"
+                        SelectionMode="Single"
+                        ItemsSource="{Binding PlayerAudios.Audios}"
+                        SelectionChangedCommand="{Binding ChangeMusicCommand}"
+                        SelectionChangedCommandParameter="{Binding Source={x:Reference Name=Collection}}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Audio">
+                            <Grid
+                                Margin="10">
+                                <Image
+                                    HorizontalOptions="Start"
+                                    Source="{Binding Album.Thumb.Photo600}"
+                                    HeightRequest="40"
+                                    WidthRequest="40"/>
+                                <Label
+                                    FontSize="14"
+                                    HeightRequest="40"  
+                                    Margin="50,0,0,10"
+                                    Text="{Binding Title}"
+                                    Style="{StaticResource MusicPreviewText}"/>
+                                <Label 
+                                    Margin="51,25,0,0"
+                                    Text="{Binding Artist}"
+                                    Style="{StaticResource MusicPreviewText}"/>
+                                <Label
+                                    HorizontalOptions="End"
+                                    Margin="0,15,50,0"
+                                    Text="{Binding Duration, Converter={StaticResource SecondsToStringConverter}}"
+                                    Style="{StaticResource MusicPreviewText}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+
         <media:MediaElement
             x:Name="mediaElement"
             IsVisible="false"
@@ -25,7 +85,13 @@
             ShouldAutoPlay="True"
             Source="{Binding MusicPath}"/>
         <Grid
-            Margin="20">
+            Margin="20"
+            x:Name="Player">
+
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Left" Swiped="ShowMusicQueen"/>
+            </Grid.GestureRecognizers>
+
             <Border
                 StrokeThickness="0"
                 BackgroundColor="#1D1E33">

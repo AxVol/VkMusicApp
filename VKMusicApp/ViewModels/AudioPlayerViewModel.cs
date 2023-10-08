@@ -13,7 +13,6 @@ namespace VKMusicApp.ViewModels
         private string loopimage = "loop.png";
         private MediaSource musicPath = MediaSource.FromResource("nf_change.mp3");
         private MediaElement player;
-        private IAudioPlayerService audioPlyerService;
         private PlayerAudios playerAudios;
 
         public MediaElement Player 
@@ -78,13 +77,14 @@ namespace VKMusicApp.ViewModels
         public ICommand ShuffleCommand { get; set; }
         public ICommand LoopCommand { get; set; }
         public ICommand RewindCommand { get; set; }
+        public ICommand ChangeMusicCommand { get; set; }
 
         public AudioPlayerViewModel(IAudioPlayerService service)
         {
-            audioPlyerService = service;
+            audioPlayerService = service;
             PlayerAudios = service.PlayerAudios;
 
-            audioPlyerService.MusicSet = true;
+            audioPlayerService.MusicSet = true;
 
             PlayCommand = new Command(Play);
             NextCommand = new Command(Next);
@@ -92,8 +92,9 @@ namespace VKMusicApp.ViewModels
             ShuffleCommand = new Command(Shuffle);
             LoopCommand = new Command(Loop);
             RewindCommand = new Command(Rewind);
+            ChangeMusicCommand = new Command(ChangeMusic);
 
-            audioPlyerService.Player = this;
+            audioPlayerService.Player = this;
         }
 
         private void Play()
@@ -114,8 +115,8 @@ namespace VKMusicApp.ViewModels
         {
             Player.Stop();
 
-            audioPlyerService.SetNextAudio();
-            PlayerAudios = audioPlyerService.PlayerAudios;
+            audioPlayerService.SetNextAudio();
+            PlayerAudios = audioPlayerService.PlayerAudios;
 
             if (Player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Stopped)
                 ImageState = "pause.png";
@@ -127,8 +128,8 @@ namespace VKMusicApp.ViewModels
         {
             Player.Stop();
 
-            audioPlyerService.SetBackAudio();
-            PlayerAudios = audioPlyerService.PlayerAudios;
+            audioPlayerService.SetBackAudio();
+            PlayerAudios = audioPlayerService.PlayerAudios;
 
             if (Player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Stopped)
                 ImageState = "pause.png";
@@ -139,25 +140,25 @@ namespace VKMusicApp.ViewModels
         private void Shuffle()
         {
             Random random = new Random();
-            int listLength = audioPlyerService.PlayerAudios.Audios.Count;
+            int listLength = audioPlayerService.PlayerAudios.Audios.Count;
 
             while (listLength > 1)
             {
                 listLength--;
 
                 int randNumber = random.Next(listLength + 1);
-                Audio audio = audioPlyerService.PlayerAudios.Audios[randNumber];
-                audioPlyerService.PlayerAudios.Audios[randNumber] = audioPlyerService.PlayerAudios.Audios[listLength];
-                audioPlyerService.PlayerAudios.Audios[listLength] = audio;
+                Audio audio = audioPlayerService.PlayerAudios.Audios[randNumber];
+                audioPlayerService.PlayerAudios.Audios[randNumber] = audioPlayerService.PlayerAudios.Audios[listLength];
+                audioPlayerService.PlayerAudios.Audios[listLength] = audio;
             }
 
-            audioPlyerService.PlayerAudios.Audios.Remove(audioPlyerService.PlayerAudios.PlayingAudio);
-            audioPlyerService.PlayerAudios.Audios.Insert(0, audioPlyerService.PlayerAudios.PlayingAudio);
-            audioPlyerService.PlayerAudios.AudioIndex = 0;
+            audioPlayerService.PlayerAudios.Audios.Remove(audioPlayerService.PlayerAudios.PlayingAudio);
+            audioPlayerService.PlayerAudios.Audios.Insert(0, audioPlayerService.PlayerAudios.PlayingAudio);
+            audioPlayerService.PlayerAudios.AudioIndex = 0;
 
-            audioPlyerService.PlayerAudios.IsShuffle = true;
-            PlayerAudios = audioPlyerService.PlayerAudios;
-            audioPlyerService.PlayerAudios.IsShuffle = false;
+            audioPlayerService.PlayerAudios.IsShuffle = true;
+            PlayerAudios = audioPlayerService.PlayerAudios;
+            audioPlayerService.PlayerAudios.IsShuffle = false;
         }
 
         private void Loop()
@@ -189,6 +190,15 @@ namespace VKMusicApp.ViewModels
             {
                 Next();
             });
+        }
+
+        private void ChangeMusic(object obj)
+        {
+            CollectionView collectionView = obj as CollectionView;
+            Audio audio = collectionView.SelectedItem as Audio;
+
+            audioPlayerService.SetNewAudio(audio);
+            PlayerAudios = audioPlayerService.PlayerAudios;
         }
     }
 }

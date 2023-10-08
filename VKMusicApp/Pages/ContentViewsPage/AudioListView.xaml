@@ -12,41 +12,39 @@
         <converters:SecondsToString x:Key="SecondsToStringConverter"/>
     </ContentView.Resources>
 
-    <ScrollView
-        IsVisible="{Binding ViewAudioIsVisable}">
-        <CollectionView
+    <CollectionView
             x:Name="Collection"
             SelectionMode="Single"
+            IsVisible="{Binding ViewAudioIsVisable}"
             ItemsSource="{Binding ViewAudio}"
             SelectionChangedCommand="{Binding OpenMusicCommand}"
             SelectionChangedCommandParameter="{Binding Source={x:Reference Name=Collection}}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:Audio">
-                    <Grid
-                        Margin="10">
-                        <Image
-                            HorizontalOptions="Start"
-                            Source="{Binding Album.Thumb.Photo600}"
-                            HeightRequest="40"
-                            WidthRequest="40"/>
-                        <Label
-                            FontSize="14"
-                            HeightRequest="40"  
-                            Margin="50,0,0,10"
-                            Text="{Binding Title}"
-                            Style="{StaticResource MusicPreviewText}"/>
-                        <Label 
-                            Margin="51,25,0,0"
-                            Text="{Binding Artist}"
-                            Style="{StaticResource MusicPreviewText}"/>
-                        <Label
-                            HorizontalOptions="End"
-                            Margin="0,15,50,0"
-                            Text="{Binding Duration, Converter={StaticResource SecondsToStringConverter}}"
-                            Style="{StaticResource MusicPreviewText}"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </ScrollView>
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="model:Audio">
+                <Grid
+                    Margin="10">
+                    <Image
+                        HorizontalOptions="Start"
+                        Source="{Binding Album.Thumb.Photo600}"
+                        HeightRequest="40"
+                        WidthRequest="40"/>
+                    <Label
+                        FontSize="14"
+                        HeightRequest="40"  
+                        Margin="50,0,0,10"
+                        Text="{Binding Title}"
+                        Style="{StaticResource MusicPreviewText}"/>
+                    <Label 
+                        Margin="51,25,0,0"
+                        Text="{Binding Artist}"
+                        Style="{StaticResource MusicPreviewText}"/>
+                    <Label
+                        HorizontalOptions="End"
+                        Margin="0,15,50,0"
+                        Text="{Binding Duration, Converter={StaticResource SecondsToStringConverter}}"
+                        Style="{StaticResource MusicPreviewText}"/>
+                </Grid>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 </ContentView>
