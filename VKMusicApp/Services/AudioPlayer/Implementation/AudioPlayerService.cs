@@ -49,7 +49,7 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
             {
                 PlayerAudios.PlayingAudio = PlayerAudios.Audios[PlayerAudios.AudioIndex - 1];
                 PlayerAudios.AudioIndex--;
-                PlayerAudios.PathToAudio = UrlConverter(PlayerAudios.PlayingAudio.Url);
+                PlayerAudios.PathToAudio = UrlConverter(PlayerAudios.PlayingAudio.Url, "back");
             }
             catch
             {
@@ -57,7 +57,7 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
 
                 PlayerAudios.PlayingAudio = PlayerAudios.Audios[lastIndex];
                 PlayerAudios.AudioIndex = lastIndex;
-                PlayerAudios.PathToAudio = UrlConverter(PlayerAudios.PlayingAudio.Url);
+                PlayerAudios.PathToAudio = UrlConverter(PlayerAudios.PlayingAudio.Url, "back");
             }
         }
 
@@ -95,12 +95,20 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
             }
         }
 
-        public string UrlConverter(Uri Url)
+        public string UrlConverter(Uri Url, string action = null)
         {
             if (Url == null)
             {
-                SetNextAudio();
-                return "Exception";
+                if (action == "back")
+                {
+                    SetBackAudio();
+                }
+                else
+                {
+                    SetNextAudio();
+                }
+
+                return PlayerAudios.PathToAudio;
             }
 
             string url = Regex.Replace(

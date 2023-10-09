@@ -11,7 +11,7 @@ namespace VKMusicApp.Services.AudioPlayer.Interfaces
         public bool MusicSet { get; set; }
         public AudioPlayerViewModel Player { get; set; }
 
-        public string UrlConverter(Uri Url);
+        public string UrlConverter(Uri Url, string action = null);
         public void SetNextAudio();
         public void SetBackAudio();
         public void SetNewAudio(Audio audio);

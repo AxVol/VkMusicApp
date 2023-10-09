@@ -82,9 +82,8 @@ namespace VKMusicApp.Core
                 AudioIndex = AudioIndex
             };
 
-            playerAudios.PathToAudio = audioPlayerService.UrlConverter(audio.Url);
-
             AudioPlayerService.PlayerAudios = playerAudios;
+            playerAudios.PathToAudio = audioPlayerService.UrlConverter(audio.Url);
 
             if (AudioPlayerService.MusicSet)
             {

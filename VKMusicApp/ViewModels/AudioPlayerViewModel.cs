@@ -199,6 +199,8 @@ namespace VKMusicApp.ViewModels
 
             audioPlayerService.SetNewAudio(audio);
             PlayerAudios = audioPlayerService.PlayerAudios;
+
+            ImageState = "pause.png";
         }
     }
 }

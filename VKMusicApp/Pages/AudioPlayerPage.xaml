@@ -19,17 +19,26 @@
 
     <Grid
         BackgroundColor="#2C2E44">
+        
+        
 
-        <Grid Margin="30">
+        <Grid
+            BackgroundColor="#1D1E33"
+            Margin="30">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
+
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Right" Swiped="HideMusicQueen"/>
+            </Grid.GestureRecognizers>
 
             <Grid Grid.Row="0">
                 <Label 
                     Style="{StaticResource PlayerText}"
-                    Text="Очередь треков"/>
+                    Text="Очередь треков"
+                    Margin="0,5,0,0"/>
                 <ImageButton
                     HorizontalOptions="Start"
                     Margin="0,0,170,0"
@@ -38,9 +47,6 @@
                     Command="{Binding ShuffleCommand}"/>
             </Grid>
             <Grid Grid.Row="1">
-                <Grid.GestureRecognizers>
-                    <SwipeGestureRecognizer Direction="Right" Swiped="HideMusicQueen"/>
-                </Grid.GestureRecognizers>
                 <CollectionView
                         x:Name="Collection"
                         SelectionMode="Single"
@@ -51,18 +57,27 @@
                         <DataTemplate x:DataType="model:Audio">
                             <Grid
                                 Margin="10">
+                                <Grid.GestureRecognizers>
+                                    <SwipeGestureRecognizer 
+                                        Direction="Right" 
+                                        Swiped="HideMusicQueen"
+                                        Threshold="50"/>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                                </Grid.GestureRecognizers>
                                 <Image
                                     HorizontalOptions="Start"
                                     Source="{Binding Album.Thumb.Photo600}"
                                     HeightRequest="40"
                                     WidthRequest="40"/>
                                 <Label
+                                    AutomationId ="Title"
                                     FontSize="14"
                                     HeightRequest="40"  
                                     Margin="50,0,0,10"
                                     Text="{Binding Title}"
                                     Style="{StaticResource MusicPreviewText}"/>
                                 <Label 
+                                    AutomationId ="Artist"
                                     Margin="51,25,0,0"
                                     Text="{Binding Artist}"
                                     Style="{StaticResource MusicPreviewText}"/>
