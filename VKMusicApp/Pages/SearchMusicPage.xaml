@@ -25,7 +25,9 @@
             <ImageButton
                 Margin="340,10,10,10"
                 Source="settings.png"
-                HorizontalOptions="End"/>
+                HorizontalOptions="End"
+                Command="{Binding GoTo}"
+                CommandParameter="SettingsPage"/>
             <ImageButton
                 Source="search.png"
                 Margin="230,10,10,10"

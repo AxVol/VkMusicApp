@@ -4,6 +4,6 @@
     {
         public string Login { get; set; }
         public string Password { get; set; }
-        public string PathFileSave { get; set; } = "storage/emulated/0/VkMusic";
+        public string PathFileSave { get; set; } = "storage/emulated/0/Download/VkMusic";
     }
 }

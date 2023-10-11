@@ -79,8 +79,13 @@ namespace VKMusicApp.ViewModels
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                if (ex.Message.StartsWith("Bad"))
+                {
+                    return IsLogin().Result; 
+                }
+
                 return false;
             }
         }
@@ -116,6 +121,10 @@ namespace VKMusicApp.ViewModels
                 }
 
                 await Shell.Current.GoToAsync(nameof(AccountMusicPage));
+
+                ButtonStatus = true;
+                Login = string.Empty;
+                Password = string.Empty;
             }
             else
             {

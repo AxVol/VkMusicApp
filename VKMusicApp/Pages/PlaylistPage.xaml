@@ -21,18 +21,20 @@
         </Grid.RowDefinitions>
 
         <Grid 
-        Grid.Row="0"
-        BackgroundColor="#2C2E44">
+            Grid.Row="0"
+            BackgroundColor="#2C2E44">
             <ImageButton
-            Margin="340,10,10,10"
-            Source="settings.png"
-            HorizontalOptions="End"/>
+                Margin="340,10,10,10"
+                Source="settings.png"
+                HorizontalOptions="End"
+                Command="{Binding GoTo}"
+                CommandParameter="SettingsPage"/>
             <Label
-        Text="Vk Music"
-        FontSize="24"
-        HorizontalTextAlignment="Start"
-        Margin="10,10,10,10"
-        TextColor="White"/>
+            Text="Vk Music"
+            FontSize="24"
+            HorizontalTextAlignment="Start"
+            Margin="10,10,10,10"
+            TextColor="White"/>
         </Grid>
 
         <Grid 

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
+             x:Class="VKMusicApp.Pages.SettingsPage"
+             Title="SettingsPage"
+             x:DataType="vm:SettingsViewModel"
+             Shell.NavBarIsVisible="False">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid 
+            Grid.Row="0"
+            BackgroundColor="#2C2E44">
+            <ImageButton
+                Margin="-320,10,10,10"
+                Source="backto.png"
+                HorizontalOptions="Start"
+                Command="{Binding BackCommand}"/>
+            <Label
+                Text="Настройки"
+                FontSize="24"
+                HorizontalTextAlignment="Center"
+                TextColor="White"
+                Margin="10,7,10,10"/>
+        </Grid>
+        
+        <Grid 
+            Grid.Row="1"
+            BackgroundColor="#1D1E33">
+            <Grid>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SetPathToSaveCommand}"/>
+                </Grid.GestureRecognizers>
+                
+                <Label 
+                    Text="Папка для скачивания"
+                    TextColor="White"
+                    FontSize="18"
+                    Margin="10"/>
+                <Label 
+                    Text="{Binding PathToSave}"
+                    TextColor="White"
+                    FontSize="12"
+                    Margin="20,35,10,10"/>
+            </Grid>
+            <Button
+                VerticalOptions="End"
+                Margin="0,0,0,10"
+                BackgroundColor="Red"
+                Text="Выйти с аккаунта"
+                WidthRequest="200"
+                HeightRequest="50"
+                Command="{Binding ExitCommand}"/>
+        </Grid>
+    </Grid>
+</ContentPage>

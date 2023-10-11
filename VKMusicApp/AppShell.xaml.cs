@@ -14,6 +14,7 @@ namespace VKMusicApp
             Routing.RegisterRoute(nameof(SearchMusicPage), typeof(SearchMusicPage));
             Routing.RegisterRoute(nameof(MusicPlaylistPage), typeof(MusicPlaylistPage));
             Routing.RegisterRoute(nameof(AudioPlayerPage), typeof(AudioPlayerPage));
+            Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
         }
     }
 }

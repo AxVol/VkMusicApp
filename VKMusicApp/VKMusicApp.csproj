@@ -105,6 +105,9 @@
 	  <MauiXaml Update="Pages\SearchMusicPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\SettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\CustomStyle.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

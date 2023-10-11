@@ -15,20 +15,32 @@ namespace VKMusicApp.Services.Implementation
         private readonly IFileSaver fileSaver;
         private readonly string rootPath = String.Empty;
 
+        public string PathToSave => GetConfig().Result.PathFileSave;
+
         public FileService(IFileSaver FileSaver)
         {
             fileSaver = FileSaver;
-
 #if ANDROID
             rootPath = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath.ToString();
 #endif
         }
 
-        public string PathToSave => GetConfig().Result.PathFileSave;
-
         public async Task DeleteMusic(Audio audio)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task SaveMusic(Audio audio)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task SetPathToSave(string path)
+        {
+            VkPlayerConfig config = await GetConfig();
+
+            config.PathFileSave = path;
+            await File.WriteAllTextAsync($"{rootPath}/Android/media/VkPlayer/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
         }
 
         public async Task DeleteLoginAndPass()
@@ -39,16 +51,6 @@ namespace VKMusicApp.Services.Implementation
             config.Password = "";
 
             await File.WriteAllTextAsync($"{rootPath}/Android/media/VkPlayer/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
-        }
-
-        public async Task SaveMusic(Audio audio)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task SetPathToSave(string path)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task SetConfig(string login, string password)
@@ -71,6 +73,11 @@ namespace VKMusicApp.Services.Implementation
             if (!Directory.Exists(pathToJson))
             {
                 Directory.CreateDirectory(pathToJson);
+            }
+
+            if (!Directory.Exists(config.PathFileSave))
+            {
+                Directory.CreateDirectory(config.PathFileSave);
             }
 
             await File.WriteAllTextAsync($"{pathToJson}/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
