@@ -1,4 +1,5 @@
-﻿using VkNet.Model;
+﻿using VKMusicApp.Models;
+using VkNet.Model;
 
 namespace VKMusicApp.Services.Interfaces
 {
@@ -8,9 +9,9 @@ namespace VKMusicApp.Services.Interfaces
 
         public Task SaveMusic(Audio audio);
         public Task DeleteMusic(Audio audio);
-        public Task<string> GetToken();
-        public Task SetToken(string token);
-        public Task DeleteToken();
+        public Task<VkPlayerConfig> GetConfig();
+        public Task SetConfig(string login, string password);
+        public Task DeleteLoginAndPass();
         public Task SetPathToSave(string path);
     }
 }

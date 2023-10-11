@@ -24,27 +24,21 @@ namespace VKMusicApp.Services.Implementation
 #endif
         }
 
-        public string PathToSave => GetToken().Result;
+        public string PathToSave => GetConfig().Result.PathFileSave;
 
         public async Task DeleteMusic(Audio audio)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteToken()
+        public async Task DeleteLoginAndPass()
         {
             VkPlayerConfig config = await GetConfig();
 
-            config.Token = "";
+            config.Login = "";
+            config.Password = "";
 
             await File.WriteAllTextAsync($"{rootPath}/Android/media/VkPlayer/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
-        }
-
-        public async Task<string> GetToken()
-        {
-            VkPlayerConfig config = await GetConfig();
-
-            return config.Token;
         }
 
         public async Task SaveMusic(Audio audio)
@@ -57,7 +51,7 @@ namespace VKMusicApp.Services.Implementation
             throw new NotImplementedException();
         }
 
-        public async Task SetToken(string token)
+        public async Task SetConfig(string login, string password)
         {
             string pathToJson = $"{rootPath}/Android/media/VkPlayer";
             VkPlayerConfig config;
@@ -71,7 +65,8 @@ namespace VKMusicApp.Services.Implementation
                 config = new VkPlayerConfig();
             }
 
-            config.Token = token;
+            config.Login = login;
+            config.Password = password;
 
             if (!Directory.Exists(pathToJson))
             {
@@ -81,11 +76,11 @@ namespace VKMusicApp.Services.Implementation
             await File.WriteAllTextAsync($"{pathToJson}/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
         }
 
-        private async Task<VkPlayerConfig> GetConfig()
+        public async Task<VkPlayerConfig> GetConfig()
         {
             using StreamReader reader = new StreamReader($"{rootPath}/Android/media/VkPlayer/VkPlayerConfig.json");
 
-            string json = await reader.ReadToEndAsync();
+            string json = reader.ReadToEnd();
             VkPlayerConfig config = JsonConvert.DeserializeObject<VkPlayerConfig>(json);
 
             return config;

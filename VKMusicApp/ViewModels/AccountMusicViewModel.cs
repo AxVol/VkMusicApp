@@ -8,7 +8,7 @@ namespace VKMusicApp.ViewModels
 {
     public class AccountMusicViewModel : MusicLibrary
     {
-        private IVkService vkService;
+        private readonly IVkService vkService;
         private string searchText;
         private bool viewAudioIsVisable = true;
         private bool searchAudioIsVisable = false;

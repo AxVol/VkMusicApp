@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using VKMusicApp.Core;
+using VKMusicApp.Models;
 using VKMusicApp.Pages;
 using VKMusicApp.Services.Interfaces;
 using VkNet;
@@ -58,24 +59,22 @@ namespace VKMusicApp.ViewModels
         {
             vkApi = VKApi;
             fileService = service;
-            
-            if (IsLogin().Result)
-            {
-                Shell.Current.GoToAsync(nameof(AccountMusicPage));
-            }
 
             LoginCommand = new Command(InCommand);
         }
 
-        private async Task<bool> IsLogin()
+        public async Task<bool> IsLogin()
         {
             try
             {
-                string token = await fileService.GetToken();
+                VkPlayerConfig config = await fileService.GetConfig();
 
-                await vkApi.AuthorizeAsync(new ApiAuthParams()
+                vkApi.Authorize(new ApiAuthParams()
                 {
-                    AccessToken = token,
+                    Login = config.Login,
+                    Password = config.Password,
+                    ApplicationId = 51745723,
+                    Settings = VkNet.Enums.Filters.Settings.Audio
                 });
 
                 return true;
@@ -102,11 +101,10 @@ namespace VKMusicApp.ViewModels
                         Login = login,
                         Password = password,
                         ApplicationId = 51745723,
-                        Settings = VkNet.Enums.Filters.Settings.Audio,
-                        TokenExpireTime = 0
+                        Settings = VkNet.Enums.Filters.Settings.Audio
                     });
 
-                    await fileService.SetToken(vkApi.Token);
+                    await fileService.SetConfig(login, password);
                 }
                 catch (Exception ex)
                 {
