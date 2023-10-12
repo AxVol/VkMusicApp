@@ -3,6 +3,7 @@ using System.Windows.Input;
 using VKMusicApp.Core;
 using VKMusicApp.Models;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
+using VKMusicApp.Services.Interfaces;
 using VkNet.Model;
 
 namespace VKMusicApp.ViewModels
@@ -79,10 +80,11 @@ namespace VKMusicApp.ViewModels
         public ICommand RewindCommand { get; set; }
         public ICommand ChangeMusicCommand { get; set; }
 
-        public AudioPlayerViewModel(IAudioPlayerService service)
+        public AudioPlayerViewModel(IAudioPlayerService service, IFileService file)
         {
             audioPlayerService = service;
             PlayerAudios = service.PlayerAudios;
+            fileService = file;
 
             audioPlayerService.MusicSet = true;
 
@@ -93,6 +95,7 @@ namespace VKMusicApp.ViewModels
             LoopCommand = new Command(Loop);
             RewindCommand = new Command(Rewind);
             ChangeMusicCommand = new Command(ChangeMusic);
+            ShowPopUpCommand = new Command(ShowPopUp);
 
             audioPlayerService.Player = this;
         }

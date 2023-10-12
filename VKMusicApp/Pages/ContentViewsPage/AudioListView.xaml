@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:VkNet.Model;assembly=VkNet"
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
+             xmlns:cv="clr-namespace:VKMusicApp.Pages.ContentViewsPage"
              xmlns:converters="clr-namespace:VKMusicApp.Converters"
              xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
-             x:Class="VKMusicApp.Pages.ContentViewsPage.AudioListView">
+             x:Class="VKMusicApp.Pages.ContentViewsPage.AudioListView"
+             x:Name="this">
     
     <ContentView.Resources>
         <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
@@ -43,6 +45,13 @@
                         Margin="0,15,50,0"
                         Text="{Binding Duration, Converter={StaticResource SecondsToStringConverter}}"
                         Style="{StaticResource MusicPreviewText}"/>
+                    <ImageButton 
+                        Source="prop.png"
+                        HorizontalOptions="End"
+                        Margin="330,0,0,5"
+                        HeightRequest="30"
+                        Command="{Binding Path=BindingContext.ShowPopUpCommand, Source={x:Reference this}}"
+                        CommandParameter="{Binding .}"/>
                 </Grid>
             </DataTemplate>
         </CollectionView.ItemTemplate>

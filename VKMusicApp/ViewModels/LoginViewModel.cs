@@ -69,7 +69,7 @@ namespace VKMusicApp.ViewModels
             {
                 VkPlayerConfig config = await fileService.GetConfig();
 
-                vkApi.Authorize(new ApiAuthParams()
+                vkApi.Authorize(new ApiAuthParams
                 {
                     Login = config.Login,
                     Password = config.Password,

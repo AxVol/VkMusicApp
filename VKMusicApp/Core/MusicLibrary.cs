@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Maui.Views;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using VKMusicApp.Models;
 using VKMusicApp.Pages;

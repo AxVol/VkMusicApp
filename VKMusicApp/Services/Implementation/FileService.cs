@@ -1,9 +1,10 @@
-﻿using CommunityToolkit.Maui.Storage;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using VKMusicApp.Models;
 using VKMusicApp.Services.Interfaces;
 using VkNet.Model;
 using Microsoft.Maui.Controls.PlatformConfiguration;
+using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 #if ANDROID
 using Android.OS;
 #endif
@@ -12,14 +13,12 @@ namespace VKMusicApp.Services.Implementation
 {
     public class FileService : IFileService
     {
-        private readonly IFileSaver fileSaver;
         private readonly string rootPath = String.Empty;
 
         public string PathToSave => GetConfig().Result.PathFileSave;
 
-        public FileService(IFileSaver FileSaver)
+        public FileService()
         {
-            fileSaver = FileSaver;
 #if ANDROID
             rootPath = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath.ToString();
 #endif
@@ -27,10 +26,47 @@ namespace VKMusicApp.Services.Implementation
 
         public async Task DeleteMusic(Audio audio)
         {
-            throw new NotImplementedException();
+            if (await MusicInStorage(audio))
+            {
+                File.Delete($"{PathToSave}/{audio.Artist}-{audio.Title}.mp3");
+            }
         }
 
         public async Task SaveMusic(Audio audio)
+        {
+            string url = Regex.Replace(
+                audio.Url.ToString(),
+                @"/[a-zA-Z\d]{6,}(/.*?[a-zA-Z\d]+?)/index.m3u8()",
+                @"$1$2.mp3");
+
+            using (HttpClient client = new HttpClient())
+            {
+                using Stream readStream = await client.GetStreamAsync(url);
+                using Stream writeStream = File.Open($"{PathToSave}/{audio.Artist}-{audio.Title}.mp3", FileMode.CreateNew);
+
+                await readStream.CopyToAsync(writeStream);
+            }
+        }
+
+        public async Task<bool> MusicInStorage(Audio audio)
+        {
+            string[] files = Directory.GetFiles($"{PathToSave}");
+
+            foreach (string file in files)
+            {
+                string[] fileSplit = file.Split('/')[^1].Split('-');
+                string artist = fileSplit[0];
+                string title = fileSplit[1].Split('.')[0];
+
+                if (artist == audio.Artist && title == audio.Title)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public async Task<ObservableCollection<Audio>> GetMusics()
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,5 @@
 ﻿using VKMusicApp.Core;
+using VKMusicApp.Services.Interfaces;
 using VkNet;
 
 namespace VKMusicApp.ViewModels
@@ -7,9 +8,11 @@ namespace VKMusicApp.ViewModels
     {
         private string searchText;
 
-        public PhoneMusicViewModel(VkApi VKApi)
+        public PhoneMusicViewModel(IFileService file)
         {
-            
+            fileService = file;
+
+            ShowPopUpCommand = new Command(ShowPopUp);
         }
 
         public string SearchText

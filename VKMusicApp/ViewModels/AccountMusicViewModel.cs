@@ -2,6 +2,7 @@
 using VKMusicApp.Core;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.Services.Implementation;
+using VKMusicApp.Services.Interfaces;
 using VkNet.Model;
 
 namespace VKMusicApp.ViewModels
@@ -46,14 +47,16 @@ namespace VKMusicApp.ViewModels
             }
         }
 
-        public AccountMusicViewModel(IVkService VkService, IAudioPlayerService service)
+        public AccountMusicViewModel(IVkService VkService, IAudioPlayerService service, IFileService file)
         {
             vkService = VkService;
             AudioPlayerService = service;
+            fileService = file;
 
             UnFocus = new Command(UnFocused);
             SearchFocusCommand = new Command(SearchFocus);
             OpenMusicCommand = new Command(OpenMusic);
+            ShowPopUpCommand = new Command(ShowPopUp);
 
             SearchAudio = new ObservableCollection<Audio>();
             ViewAudio = new ObservableCollection<Audio>(vkService.GetAudios(this));

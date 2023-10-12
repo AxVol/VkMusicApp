@@ -34,7 +34,6 @@ public static class MauiProgram
         builder.Services.AddAudioBypass();
 		builder.Services.AddSingleton<VkApi>(new VkApi(builder.Services));
 
-		builder.Services.AddSingleton<IFileSaver>(FileSaver.Default);
 		builder.Services.AddTransient<IVkService, VkService>();
 		builder.Services.AddSingleton<IAudioPlayerService, AudioPlayerService>();
 		builder.Services.AddSingleton<IFileService, FileService>();
