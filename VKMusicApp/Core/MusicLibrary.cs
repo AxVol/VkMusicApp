@@ -1,9 +1,7 @@
-﻿using CommunityToolkit.Maui.Views;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using VKMusicApp.Models;
 using VKMusicApp.Pages;
-using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VkNet.Model;
 
 namespace VKMusicApp.Core
@@ -56,19 +54,12 @@ namespace VKMusicApp.Core
 
         protected void OpenMusic(object obj)
         {
+            ObservableCollection<Audio> audios = new ObservableCollection<Audio>();
             CollectionView collectionView = obj as CollectionView;
-
             Audio audio = collectionView.SelectedItem as Audio;
-
-            ObservableCollection<Audio> audioCollection = new ObservableCollection<Audio>();
             int AudioIndex = 0;
 
-            foreach (var music in collectionView.ItemsSource)
-            {
-                audioCollection.Add((Audio)music);
-            }
-
-            foreach (Audio Audio in audioCollection)
+            foreach (Audio Audio in collectionView.ItemsSource)
             {
                 if (audio.Artist == Audio.Artist && audio.Title == Audio.Title)
                     break;
@@ -76,10 +67,15 @@ namespace VKMusicApp.Core
                 AudioIndex++;
             }
 
+            foreach (Audio Audio in collectionView.ItemsSource)
+            {
+                audios.Add(audio);
+            }
+
             PlayerAudios playerAudios = new PlayerAudios()
             {
                 PlayingAudio = audio,
-                Audios = audioCollection,
+                Audios = audios,
                 AudioIndex = AudioIndex
             };
 

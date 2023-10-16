@@ -4,7 +4,7 @@ using VKMusicApp.Services.Interfaces;
 using VkNet.Model;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
+using VKMusicApp.Services.M3U8ToMP3;
 #if ANDROID
 using Android.OS;
 #endif
@@ -14,11 +14,14 @@ namespace VKMusicApp.Services.Implementation
     public class FileService : IFileService
     {
         private readonly string rootPath = String.Empty;
+        private readonly M3U8ToMP3.M3U8ToMP3 m3U8ToMP3;
 
         public string PathToSave => GetConfig().Result.PathFileSave;
 
-        public FileService()
+        public FileService(M3U8ToMP3.M3U8ToMP3 converter)
         {
+            m3U8ToMP3 = converter;
+
 #if ANDROID
             rootPath = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath.ToString();
 #endif
@@ -28,24 +31,20 @@ namespace VKMusicApp.Services.Implementation
         {
             if (await MusicInStorage(audio))
             {
-                File.Delete($"{PathToSave}/{audio.Artist}-{audio.Title}.mp3");
+                System.IO.File.Delete($"{PathToSave}/{audio.Artist}-{audio.Title}.mp3");
             }
         }
 
         public async Task SaveMusic(Audio audio)
         {
-            string url = Regex.Replace(
-                audio.Url.ToString(),
-                @"/[a-zA-Z\d]{6,}(/.*?[a-zA-Z\d]+?)/index.m3u8()",
-                @"$1$2.mp3");
-
-            using (HttpClient client = new HttpClient())
+            if (audio.Url != null)
             {
-                using Stream readStream = await client.GetStreamAsync(url);
-                using Stream writeStream = File.Open($"{PathToSave}/{audio.Artist}-{audio.Title}.mp3", FileMode.CreateNew);
+                byte[] mp3 = await m3U8ToMP3.Convert(audio.Url.ToString());
 
-                await readStream.CopyToAsync(writeStream);
+                await System.IO.File.WriteAllBytesAsync($"{PathToSave}/{audio.Artist}-{audio.Title}.mp3", mp3);
+                return;
             }
+            await Shell.Current.CurrentPage.DisplayAlert("Ошибка", "Трек не был найден", "Назад");
         }
 
         public async Task<bool> MusicInStorage(Audio audio)
@@ -68,7 +67,32 @@ namespace VKMusicApp.Services.Implementation
 
         public async Task<ObservableCollection<Audio>> GetMusics()
         {
-            throw new NotImplementedException();
+            ObservableCollection<Audio> audios = new ObservableCollection<Audio>();
+            string[] files = Directory.GetFiles($"{PathToSave}");
+
+            foreach (string file in files)
+            {
+                var music = TagLib.File.Create(file);
+
+                AudioAlbum album = new AudioAlbum();
+                AudioCover thumb = new AudioCover();
+
+                thumb.Photo600 = "player.png";
+                album.Thumb = thumb;
+
+                Audio audio = new Audio()
+                {
+                    Title = music.Tag.Title,
+                    Artist = music.Tag.FirstPerformer,
+                    Album = album,
+                    Duration = Convert.ToInt32(music.Properties.Duration.TotalSeconds),
+                    Url = new Uri(file)
+                };
+
+                audios.Add(audio);
+            }
+
+            return audios;
         }
 
         public async Task SetPathToSave(string path)
@@ -76,7 +100,7 @@ namespace VKMusicApp.Services.Implementation
             VkPlayerConfig config = await GetConfig();
 
             config.PathFileSave = path;
-            await File.WriteAllTextAsync($"{rootPath}/Android/media/VkPlayer/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
+            await System.IO.File.WriteAllTextAsync($"{rootPath}/Android/media/VkPlayer/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
         }
 
         public async Task DeleteLoginAndPass()
@@ -86,7 +110,7 @@ namespace VKMusicApp.Services.Implementation
             config.Login = "";
             config.Password = "";
 
-            await File.WriteAllTextAsync($"{rootPath}/Android/media/VkPlayer/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
+            await System.IO.File.WriteAllTextAsync($"{rootPath}/Android/media/VkPlayer/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
         }
 
         public async Task SetConfig(string login, string password)
@@ -116,7 +140,7 @@ namespace VKMusicApp.Services.Implementation
                 Directory.CreateDirectory(config.PathFileSave);
             }
 
-            await File.WriteAllTextAsync($"{pathToJson}/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
+            await System.IO.File.WriteAllTextAsync($"{pathToJson}/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
         }
 
         public async Task<VkPlayerConfig> GetConfig()

@@ -14,7 +14,6 @@ namespace VKMusicApp.ViewModels
         private string password;
         private bool buttonStatus = true;
         private readonly VkApi vkApi;
-        private readonly IFileService fileService;
         private string exception;
 
         public ICommand LoginCommand { get; set; }
@@ -72,7 +71,7 @@ namespace VKMusicApp.ViewModels
                 vkApi.Authorize(new ApiAuthParams
                 {
                     Login = config.Login,
-                    Password = config.Password,
+                   Password = config.Password,
                     ApplicationId = 51745723,
                     Settings = VkNet.Enums.Filters.Settings.Audio
                 });
@@ -101,7 +100,7 @@ namespace VKMusicApp.ViewModels
                 {
                     ButtonStatus = false;
 
-                    await vkApi.AuthorizeAsync(new ApiAuthParams()
+                    await vkApi.AuthorizeAsync(new ApiAuthParams
                     {
                         Login = login,
                         Password = password,

@@ -9,6 +9,7 @@ using VKMusicApp.Services.Interfaces;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.Services.AudioPlayer.Implementation;
 using CommunityToolkit.Maui.Storage;
+using VKMusicApp.Services.M3U8ToMP3;
 
 namespace VKMusicApp;
 
@@ -37,6 +38,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<IVkService, VkService>();
 		builder.Services.AddSingleton<IAudioPlayerService, AudioPlayerService>();
 		builder.Services.AddSingleton<IFileService, FileService>();
+		builder.Services.AddTransient<M3U8ToMP3>();
 
         builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddSingleton<AccountMusicPage>();

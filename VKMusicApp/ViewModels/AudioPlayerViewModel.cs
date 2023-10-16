@@ -12,7 +12,7 @@ namespace VKMusicApp.ViewModels
     {
         private string imageState = "pause.png";
         private string loopimage = "loop.png";
-        private MediaSource musicPath = MediaSource.FromResource("nf_change.mp3");
+        private MediaSource musicPath;
         private MediaElement player;
         private PlayerAudios playerAudios;
 
@@ -150,9 +150,8 @@ namespace VKMusicApp.ViewModels
                 listLength--;
 
                 int randNumber = random.Next(listLength + 1);
-                Audio audio = audioPlayerService.PlayerAudios.Audios[randNumber];
-                audioPlayerService.PlayerAudios.Audios[randNumber] = audioPlayerService.PlayerAudios.Audios[listLength];
-                audioPlayerService.PlayerAudios.Audios[listLength] = audio;
+                (audioPlayerService.PlayerAudios.Audios[randNumber], audioPlayerService.PlayerAudios.Audios[listLength]) = 
+                    (audioPlayerService.PlayerAudios.Audios[listLength], audioPlayerService.PlayerAudios.Audios[randNumber]);
             }
 
             audioPlayerService.PlayerAudios.Audios.Remove(audioPlayerService.PlayerAudios.PlayingAudio);

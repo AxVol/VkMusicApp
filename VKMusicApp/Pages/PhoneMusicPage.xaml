@@ -60,7 +60,9 @@
         <Grid 
         Grid.Row="1"
         BackgroundColor="#1D1E33">
-
+            <views:NOFREZEEAUDIO/>
+            <views:AudioListView/>
+            <views:PlayerView/>
         </Grid>
 
         <Grid

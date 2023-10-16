@@ -8,7 +8,6 @@ namespace VKMusicApp.ViewModels
 {
     public class SettingsViewModel : ObservableObject
     {
-        private readonly IFileService fileService;
         private string pathToSave;
 
         public string PathToSave 
