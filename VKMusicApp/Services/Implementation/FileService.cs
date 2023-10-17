@@ -65,7 +65,7 @@ namespace VKMusicApp.Services.Implementation
             return false;
         }
 
-        public async Task<ObservableCollection<Audio>> GetMusics()
+        public ObservableCollection<Audio> GetMusics()
         {
             ObservableCollection<Audio> audios = new ObservableCollection<Audio>();
             string[] files = Directory.GetFiles($"{PathToSave}");
@@ -74,6 +74,10 @@ namespace VKMusicApp.Services.Implementation
             {
                 var music = TagLib.File.Create(file);
 
+                string filename = file.Split('/')[^1];
+                string title = filename.Split('-')[1].Replace(".mp3", null);
+                string artist = filename.Split('-')[0];
+                
                 AudioAlbum album = new AudioAlbum();
                 AudioCover thumb = new AudioCover();
 
@@ -82,11 +86,11 @@ namespace VKMusicApp.Services.Implementation
 
                 Audio audio = new Audio()
                 {
-                    Title = music.Tag.Title,
-                    Artist = music.Tag.FirstPerformer,
+                    Title = title,
+                    Artist = artist,
                     Album = album,
                     Duration = Convert.ToInt32(music.Properties.Duration.TotalSeconds),
-                    Url = new Uri(file)
+                    TrackCode = file
                 };
 
                 audios.Add(audio);

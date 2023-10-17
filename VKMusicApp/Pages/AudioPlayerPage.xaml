@@ -9,7 +9,8 @@
              xmlns:model="clr-namespace:VkNet.Model;assembly=VkNet"
              x:Class="VKMusicApp.Pages.AudioPlayerPage"
              x:DataType="vm:AudioPlayerViewModel"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             x:Name="this">
 
     <ContentPage.Resources>
         <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>

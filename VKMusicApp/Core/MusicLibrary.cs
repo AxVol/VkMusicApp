@@ -69,7 +69,7 @@ namespace VKMusicApp.Core
 
             foreach (Audio Audio in collectionView.ItemsSource)
             {
-                audios.Add(audio);
+                audios.Add(Audio);
             }
 
             PlayerAudios playerAudios = new PlayerAudios()

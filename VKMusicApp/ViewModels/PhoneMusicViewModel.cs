@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using ProtoBuf.Meta;
+using System.Collections.ObjectModel;
 using VKMusicApp.Core;
+using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.Services.Interfaces;
 using VkNet.Model;
 
@@ -44,9 +46,10 @@ namespace VKMusicApp.ViewModels
             }
         }
 
-        public PhoneMusicViewModel(IFileService file)
+        public PhoneMusicViewModel(IFileService file, IAudioPlayerService service)
         {
             fileService = file;
+            AudioPlayerService = service;
 
             UnFocus = new Command(UnFocused);
             SearchFocusCommand = new Command(SearchFocus);
@@ -54,7 +57,7 @@ namespace VKMusicApp.ViewModels
             ShowPopUpCommand = new Command(ShowPopUp);
 
             SearchAudio = new ObservableCollection<Audio>();
-            ViewAudio = new ObservableCollection<Audio>(fileService.GetMusics().Result);
+            ViewAudio = new ObservableCollection<Audio>(fileService.GetMusics());
         }
 
         private void SortMusic()
