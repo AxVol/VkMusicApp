@@ -59,6 +59,13 @@ namespace VKMusicApp.Core
             Audio audio = collectionView.SelectedItem as Audio;
             int AudioIndex = 0;
 
+            if (audio.Url == null && !audio.TrackCode.Contains(audio.Title))
+            {
+                Shell.Current.CurrentPage.DisplayAlert("Ошибка", "Трек не был найден", "Назад");
+                
+                return;
+            }
+
             foreach (Audio Audio in collectionView.ItemsSource)
             {
                 if (audio.Artist == Audio.Artist && audio.Title == Audio.Title)
@@ -80,7 +87,15 @@ namespace VKMusicApp.Core
             };
 
             AudioPlayerService.PlayerAudios = playerAudios;
-            playerAudios.PathToAudio = audioPlayerService.UrlConverter(audio.Url);
+
+            if (audio.Url == null)
+            {
+                playerAudios.PathToAudio = audio.TrackCode;
+            }
+            else
+            {
+                playerAudios.PathToAudio = audio.Url.ToString();
+            }
 
             if (AudioPlayerService.MusicSet)
             {

@@ -4,7 +4,8 @@
              xmlns:model="clr-namespace:VkNet.Model;assembly=VkNet"         
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
              xmlns:converters="clr-namespace:VKMusicApp.Converters"
-             x:Class="VKMusicApp.Pages.ContentViewsPage.NOFREZEEAUDIO">
+             x:Class="VKMusicApp.Pages.ContentViewsPage.NOFREZEEAUDIO"
+             x:Name="this">
 
     <ContentView.Resources>
         <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>

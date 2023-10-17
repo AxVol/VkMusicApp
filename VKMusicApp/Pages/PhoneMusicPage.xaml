@@ -4,7 +4,6 @@
              xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
              xmlns:views="clr-namespace:VKMusicApp.Pages.ContentViewsPage"
-             xmlns:model="clr-namespace:VkNet.Model;assembly=VkNet"
              x:Class="VKMusicApp.Pages.PhoneMusicPage"
              x:DataType="vm:PhoneMusicViewModel"
              Shell.NavBarIsVisible="False"
@@ -42,6 +41,7 @@
                 HeightRequest="40"
                 WidthRequest="150"
                 IsEnabled="{Binding SearchIsFocus}"
+                IsVisible="{Binding SearchIsFocus}"
                 x:Name="Search">
                 <Entry.Behaviors>
                     <behaviors:EventToCommandBehavior

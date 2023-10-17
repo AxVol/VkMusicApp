@@ -34,12 +34,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
-	  <Optimize>True</Optimize>
-	  <RunAOTCompilation>False</RunAOTCompilation>
-	  <AndroidEnableMultiDex>True</AndroidEnableMultiDex>
-	  <UseInterpreter>true</UseInterpreter>
-	  <AndroidLinkResources>True</AndroidLinkResources>
-	  <AndroidLinkMode>None</AndroidLinkMode>
+		<RunAOTCompilation>True</RunAOTCompilation>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">

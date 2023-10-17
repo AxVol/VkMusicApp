@@ -45,7 +45,14 @@ namespace VKMusicApp.ViewModels
                 playerAudios = value;
                 if (!playerAudios.IsShuffle)
                 {
-                    MusicPath = MediaSource.FromUri(playerAudios.PathToAudio);
+                    try
+                    {
+                        MusicPath = MediaSource.FromUri(playerAudios.PathToAudio);
+                    }
+                    catch
+                    {
+                        MusicPath = MediaSource.FromFile(playerAudios.PathToAudio);
+                    }
                 }
 
                 OnPropertyChanged();
@@ -83,7 +90,7 @@ namespace VKMusicApp.ViewModels
         public AudioPlayerViewModel(IAudioPlayerService service, IFileService file)
         {
             audioPlayerService = service;
-            PlayerAudios = service.PlayerAudios;
+            PlayerAudios = audioPlayerService.PlayerAudios;
             fileService = file;
 
             audioPlayerService.MusicSet = true;
@@ -118,11 +125,11 @@ namespace VKMusicApp.ViewModels
         {
             Player.Stop();
 
-            audioPlayerService.SetNextAudio();
-            PlayerAudios = audioPlayerService.PlayerAudios;
-
             if (Player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Stopped)
                 ImageState = "pause.png";
+
+            audioPlayerService.SetNextAudio();
+            PlayerAudios = audioPlayerService.PlayerAudios;
 
             Player.Play();
         }
@@ -131,11 +138,11 @@ namespace VKMusicApp.ViewModels
         {
             Player.Stop();
 
-            audioPlayerService.SetBackAudio();
-            PlayerAudios = audioPlayerService.PlayerAudios;
-
             if (Player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Stopped)
                 ImageState = "pause.png";
+
+            audioPlayerService.SetBackAudio();
+            PlayerAudios = audioPlayerService.PlayerAudios;
 
             Player.Play();
         }

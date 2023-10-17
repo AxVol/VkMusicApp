@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using VKMusicApp.Core;
+﻿using VKMusicApp.Core;
 using VKMusicApp.Models;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.ViewModels;
@@ -10,7 +9,6 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
     public class AudioPlayerService : ObservableObject, IAudioPlayerService
     {
         private AudioPlayerViewModel player;
-        private bool isOnline;
         private bool musicSet = false;
 
         public PlayerAudios PlayerAudios { get; set; }
@@ -20,16 +18,6 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
             set
             {
                 player ??= value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsOnline 
-        {
-            get => isOnline;
-            set
-            {
-                isOnline = value;
                 OnPropertyChanged();
             }
         }
@@ -49,7 +37,6 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
             {
                 PlayerAudios.PlayingAudio = PlayerAudios.Audios[PlayerAudios.AudioIndex - 1];
                 PlayerAudios.AudioIndex--;
-                PlayerAudios.PathToAudio = UrlConverter(PlayerAudios.PlayingAudio.Url, "back");
             }
             catch
             {
@@ -57,8 +44,9 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
 
                 PlayerAudios.PlayingAudio = PlayerAudios.Audios[lastIndex];
                 PlayerAudios.AudioIndex = lastIndex;
-                PlayerAudios.PathToAudio = UrlConverter(PlayerAudios.PlayingAudio.Url, "back");
             }
+
+            SetAudioPath();
         }
 
         public void SetNewAudio(Audio audio)
@@ -71,7 +59,7 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
                 {
                     PlayerAudios.AudioIndex = counter;
                     PlayerAudios.PlayingAudio = Audio;
-                    PlayerAudios.PathToAudio = UrlConverter(Audio.Url);
+                    SetAudioPath();
 
                     return;
                 }
@@ -85,38 +73,25 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
             {
                 PlayerAudios.PlayingAudio = PlayerAudios.Audios[PlayerAudios.AudioIndex + 1];
                 PlayerAudios.AudioIndex++;
-                PlayerAudios.PathToAudio = UrlConverter(PlayerAudios.PlayingAudio.Url);
             }
             catch
             {
                 PlayerAudios.PlayingAudio = PlayerAudios.Audios[0];
                 PlayerAudios.AudioIndex = 0;
-                PlayerAudios.PathToAudio = UrlConverter(PlayerAudios.PlayingAudio.Url);
             }
+            SetAudioPath();
         }
 
-        public string UrlConverter(Uri Url, string action = null)
+        private void SetAudioPath()
         {
-            if (Url == null)
+            if (PlayerAudios.PlayingAudio.Url != null)
             {
-                if (action == "back")
-                {
-                    SetBackAudio();
-                }
-                else
-                {
-                    SetNextAudio();
-                }
-
-                return PlayerAudios.PathToAudio;
+                PlayerAudios.PathToAudio = PlayerAudios.PlayingAudio.Url.ToString();
             }
-
-            string url = Regex.Replace(
-                Url.ToString(),
-                @"/[a-zA-Z\d]{6,}(/.*?[a-zA-Z\d]+?)/index.m3u8()",
-                @"$1$2.mp3");
-
-            return url;
+            else
+            {
+                PlayerAudios.PathToAudio = PlayerAudios.PlayingAudio.TrackCode;
+            }
         }
     }
 }

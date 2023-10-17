@@ -16,7 +16,7 @@ namespace VKMusicApp.Services.Interfaces
             vkApi = VKApi;
         }
 
-        public ObservableCollection<Audio> GetAudios(AccountMusicViewModel vm)
+        public ObservableCollection<Audio> GetAudios()
         {
             VkCollection<Audio> music = vkApi.Audio.Get(new AudioGetParams()
             {
@@ -26,11 +26,6 @@ namespace VKMusicApp.Services.Interfaces
             music = SetThumb(music);
 
             return new ObservableCollection<Audio>(music);
-        }
-
-        public ObservableCollection<Audio> GetAudios(PhoneMusicViewModel vm)
-        {
-            throw new NotImplementedException();
         }
 
         public ObservableCollection<AudioPlaylist> GetPlayLists()

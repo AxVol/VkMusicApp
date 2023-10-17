@@ -59,7 +59,7 @@ namespace VKMusicApp.ViewModels
             ShowPopUpCommand = new Command(ShowPopUp);
 
             SearchAudio = new ObservableCollection<Audio>();
-            ViewAudio = new ObservableCollection<Audio>(vkService.GetAudios(this));
+            ViewAudio = new ObservableCollection<Audio>(vkService.GetAudios());
         }
 
         private void SortMusic()
@@ -76,6 +76,7 @@ namespace VKMusicApp.ViewModels
 
             ViewAudioIsVisable = false;
             SearchAudioIsVisable = true;
+            List<Audio> audios = new List<Audio>();
 
             _ = Task.Run(() =>
             {
