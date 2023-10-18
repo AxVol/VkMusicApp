@@ -5,14 +5,22 @@ namespace VKMusicApp.Pages;
 
 public partial class AudioPlayerPage : ContentPage
 {
-	private uint animationDuraction = 400;
+	private readonly uint animationDuraction = 400;
 
     public AudioPlayerPage(AudioPlayerViewModel vm)
 	{
 		InitializeComponent();
 		BindingContext = vm;
 
-		vm.Player = mediaElement;
+        vm.Player = mediaElement;
+    }
+
+    protected override bool OnBackButtonPressed()
+    {
+        string previosPage = Shell.Current.Navigation.NavigationStack[^2].Title;
+        Shell.Current.GoToAsync(previosPage);
+
+        return true;
     }
 
     private void HideMusicQueen(object sender, SwipedEventArgs e)

@@ -6,7 +6,8 @@
              xmlns:views="clr-namespace:VKMusicApp.Pages.ContentViewsPage"
              x:Class="VKMusicApp.Pages.SearchMusicPage"
              x:DataType="vm:SearchMusicViewModel"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             Title="SearchMusicPage">
 
     <ContentPage.Resources>
         <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>

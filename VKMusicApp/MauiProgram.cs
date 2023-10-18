@@ -8,7 +8,6 @@ using VKMusicApp.Services.Implementation;
 using VKMusicApp.Services.Interfaces;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.Services.AudioPlayer.Implementation;
-using CommunityToolkit.Maui.Storage;
 using VKMusicApp.Services.M3U8ToMP3;
 
 namespace VKMusicApp;
@@ -55,7 +54,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<PhoneMusicViewModel>();
 		builder.Services.AddTransient<SearchMusicViewModel>();
 		builder.Services.AddTransient<MusicPlaylistViewModel>();
-		builder.Services.AddSingleton<AudioPlayerViewModel>();
+		builder.Services.AddTransient<AudioPlayerViewModel>();
 		builder.Services.AddTransient<SettingsViewModel>();
 
         return builder.Build();

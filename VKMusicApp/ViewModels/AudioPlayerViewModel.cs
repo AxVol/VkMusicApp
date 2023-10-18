@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using VKMusicApp.Core;
 using VKMusicApp.Models;
+using VKMusicApp.Pages;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.Services.Interfaces;
 using VkNet.Model;

@@ -10,7 +10,8 @@
              x:Class="VKMusicApp.Pages.AudioPlayerPage"
              x:DataType="vm:AudioPlayerViewModel"
              Shell.NavBarIsVisible="False"
-             x:Name="this">
+             x:Name="this"
+             Title="AudioPlayerPage">
 
     <ContentPage.Resources>
         <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
@@ -21,7 +22,6 @@
 
     <Grid
         BackgroundColor="#2C2E44">
-
         <Grid
             BackgroundColor="#1D1E33"
             Margin="30">

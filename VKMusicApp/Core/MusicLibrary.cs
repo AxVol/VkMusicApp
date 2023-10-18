@@ -105,6 +105,8 @@ namespace VKMusicApp.Core
                 if (AudioPlayerService.PlayerAudios.PlayingAudio.Title == audio.Title
                 && AudioPlayerService.PlayerAudios.PlayingAudio.Artist == audio.Artist)
                 {
+                    AudioPlayerService.Player.ImageState = "pause.png";
+
                     Shell.Current.GoToAsync(nameof(AudioPlayerPage));
 
                     return;

@@ -88,7 +88,7 @@ namespace VKMusicApp.Services.Implementation
                     Title = title,
                     Artist = artist,
                     Album = album,
-                    Duration = music,
+                    Duration = music.Properties.Duration.Seconds,
                     TrackCode = file
                 };
 

@@ -2,10 +2,12 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:VKMusicApp.ViewModels"
+             xmlns:converters="clr-namespace:VKMusicApp.Converters"
              x:Class="VKMusicApp.Pages.ContentViewsPage.PlayerView">
     
     <ContentView.Resources>
         <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
+        <converters:LongToShortTitle x:Key="LongToShortTitle"/>
     </ContentView.Resources>
 
     <Grid 
@@ -30,7 +32,7 @@
         <Label 
             FontSize="16"
             Margin="50,5,0,0"
-            Text="{Binding AudioPlayerService.Player.PlayerAudios.PlayingAudio.Title}"
+            Text="{Binding AudioPlayerService.Player.PlayerAudios.PlayingAudio.Title, Converter={StaticResource LongToShortTitle}}"
             Style="{StaticResource MusicPreviewText}"/>
         <Label 
             FontSize="12"
