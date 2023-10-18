@@ -43,6 +43,7 @@ namespace VKMusicApp.Services.Implementation
                 await System.IO.File.WriteAllBytesAsync($"{PathToSave}/{audio.Artist}-{audio.Title}.mp3", mp3);
                 return;
             }
+
             await Shell.Current.CurrentPage.DisplayAlert("Ошибка", "Трек не был найден", "Назад");
         }
 
@@ -87,7 +88,7 @@ namespace VKMusicApp.Services.Implementation
                 {
                     Title = title,
                     Artist = artist,
-                    Album = album,
+                    Album = album, 
                     Duration = music.Properties.Duration.Seconds,
                     TrackCode = file
                 };
