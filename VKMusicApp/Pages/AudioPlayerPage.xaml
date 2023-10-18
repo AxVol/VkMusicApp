@@ -16,6 +16,7 @@
         <ResourceDictionary Source="/Resources/Styles/CustomStyle.xaml"/>
         <media:TimeSpanToSecondsConverter x:Key="TimeSpanConverter"/>
         <converters:SecondsToString x:Key="SecondsToStringConverter"/>
+        <converters:LongToShortTitle x:Key="LongToShortTitle"/>
     </ContentPage.Resources>
 
     <Grid
@@ -73,7 +74,7 @@
                                     FontSize="14"
                                     HeightRequest="40"  
                                     Margin="50,0,0,10"
-                                    Text="{Binding Title}"
+                                    Text="{Binding Title, Converter={StaticResource LongToShortTitle}}"
                                     Style="{StaticResource MusicPreviewText}"/>
                                 <Label 
                                     AutomationId ="Artist"

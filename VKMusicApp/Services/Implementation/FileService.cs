@@ -4,7 +4,6 @@ using VKMusicApp.Services.Interfaces;
 using VkNet.Model;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Collections.ObjectModel;
-using VKMusicApp.Services.M3U8ToMP3;
 #if ANDROID
 using Android.OS;
 #endif
@@ -83,13 +82,13 @@ namespace VKMusicApp.Services.Implementation
 
                 thumb.Photo600 = "player.png";
                 album.Thumb = thumb;
-
+                    
                 Audio audio = new Audio()
                 {
                     Title = title,
                     Artist = artist,
                     Album = album,
-                    Duration = Convert.ToInt32(music.Properties.Duration.TotalSeconds),
+                    Duration = music,
                     TrackCode = file
                 };
 
