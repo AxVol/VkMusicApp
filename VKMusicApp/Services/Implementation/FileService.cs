@@ -4,6 +4,9 @@ using VKMusicApp.Services.Interfaces;
 using VkNet.Model;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Collections.ObjectModel;
+using TagLib;
+using TagLib.Id3v2;
+using VKMusicApp.Services.M3U8ToMP3;
 #if ANDROID
 using Android.OS;
 #endif
@@ -38,9 +41,21 @@ namespace VKMusicApp.Services.Implementation
         {
             if (audio.Url != null)
             {
+                string filePath = $"{PathToSave}/{audio.Artist}-{audio.Title}.mp3";
                 byte[] mp3 = await m3U8ToMP3.Convert(audio.Url.ToString());
+                
+                await System.IO.File.WriteAllBytesAsync(filePath, mp3);
 
-                await System.IO.File.WriteAllBytesAsync($"{PathToSave}/{audio.Artist}-{audio.Title}.mp3", mp3);
+                var file = TagLib.File.Create(filePath);
+                file.Tag.Performers = new string[1] { audio.Artist };
+                file.Tag.Title = audio.Title;
+
+                var tag = (TagLib.Id3v2.Tag)file.GetTag(TagTypes.Id3v2);
+                PrivateFrame frame = PrivateFrame.Get(tag, "CurrentDuration", true);
+                frame.PrivateData = BitConverter.GetBytes(audio.Duration);
+
+                file.Save();
+
                 return;
             }
 
@@ -73,10 +88,15 @@ namespace VKMusicApp.Services.Implementation
             foreach (string file in files)
             {
                 var music = TagLib.File.Create(file);
+                var tag = (TagLib.Id3v2.Tag)music.GetTag(TagTypes.Id3v2);
+                PrivateFrame frame = PrivateFrame.Get(tag, "CurrentDuration", false);
 
                 string filename = file.Split('/')[^1];
-                string title = filename.Split('-')[1].Replace(".mp3", null);
-                string artist = filename.Split('-')[0];
+                string title = tag.Title ?? filename.Split('-')[1].Replace(".mp3", null);
+                string artist = music.Tag.FirstPerformer ?? filename.Split('-')[0];
+                int duration = frame == null ? 
+                    Convert.ToInt32(music.Properties.Duration.TotalSeconds) :
+                    BitConverter.ToInt32(frame.PrivateData.Data);
                 
                 AudioAlbum album = new AudioAlbum();
                 AudioCover thumb = new AudioCover();
@@ -89,7 +109,7 @@ namespace VKMusicApp.Services.Implementation
                     Title = title,
                     Artist = artist,
                     Album = album, 
-                    Duration = music.Properties.Duration.Seconds,
+                    Duration = duration,
                     TrackCode = file
                 };
 
