@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using Microsoft.Maui.Networking;
+using System.Windows.Input;
 using VKMusicApp.Core;
 using VKMusicApp.Models;
 using VKMusicApp.Pages;
@@ -87,6 +88,18 @@ namespace VKMusicApp.ViewModels
 
                 return false;
             }
+        }
+
+        public static bool HasEthernet()
+        {
+            NetworkAccess accessType = Connectivity.Current.NetworkAccess;
+
+            if (accessType == NetworkAccess.Internet)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private async void InCommand()

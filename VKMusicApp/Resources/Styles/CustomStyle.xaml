@@ -22,8 +22,7 @@
     <Style x:Key="NavigationPanel" TargetType="Border">
         <Setter Property="Stroke" Value="Black"/>
         <Setter Property="StrokeThickness" Value="1"/>
-        <Setter Property="BackgroundColor" Value="#2C2E44"/>
-        <Setter Property="Background" Value="#2C2E44"/>
+
         <Setter Property="Margin" Value="-2"/>
     </Style>
 

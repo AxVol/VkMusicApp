@@ -18,9 +18,16 @@ public partial class LoginPage : ContentPage
     {
         base.OnAppearing();
 
-        if (viewModel.IsLogin().Result)
+        if (LoginViewModel.HasEthernet())
         {
-            Shell.Current.GoToAsync(nameof(AccountMusicPage));
+            if (viewModel.IsLogin().Result)
+            {
+                Shell.Current.GoToAsync(nameof(AccountMusicPage));
+            }
+        }
+        else
+        {
+            Shell.Current.GoToAsync(nameof(PhoneMusicPage));
         }
     }
 }

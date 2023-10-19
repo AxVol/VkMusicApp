@@ -17,7 +17,8 @@
         </Grid.ColumnDefinitions>
 
         <Grid
-            Grid.Column="0">
+            Grid.Column="0"
+            IsEnabled="{Binding HasEthernet}">
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer
                     NumberOfTapsRequired="1"
@@ -25,7 +26,8 @@
                     CommandParameter="AccountMusicPage"/>
             </Grid.GestureRecognizers>
             <Border
-                Style="{StaticResource NavigationPanel}">
+                Style="{StaticResource NavigationPanel}"
+                Background="{Binding NavigationBackground}">
                 <Label
                     Style="{StaticResource PanelLabel}"
                     Text="Моя музыка"/>
@@ -36,7 +38,8 @@
                 Source="music.png"/>
         </Grid>
         <Grid
-            Grid.Column="1">
+            Grid.Column="1"
+            IsEnabled="{Binding HasEthernet}">
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer
                     NumberOfTapsRequired="1"
@@ -44,7 +47,8 @@
                     CommandParameter="PlaylistPage"/>
             </Grid.GestureRecognizers>
             <Border
-                Style="{StaticResource NavigationPanel}">
+                Style="{StaticResource NavigationPanel}"
+                Background="{Binding NavigationBackground}">
                 <Label 
                     Style="{StaticResource PanelLabel}"
                     Text="Плейлисты"/>
@@ -64,7 +68,8 @@
                     CommandParameter="PhoneMusicPage"/>
             </Grid.GestureRecognizers>
             <Border
-                Style="{StaticResource NavigationPanel}">
+                Style="{StaticResource NavigationPanel}"
+                Background="{Binding NavigationBackground}">
                 <Label 
                     Style="{StaticResource PanelLabel}"
                     Text="На телефоне" />
@@ -76,7 +81,8 @@
         </Grid>
         <Grid
             Grid.Column="3"
-            ClassId="SearchMusicPage">
+            ClassId="SearchMusicPage"
+            IsEnabled="{Binding HasEthernet}">
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer
                     NumberOfTapsRequired="1"
@@ -84,7 +90,8 @@
                     CommandParameter="SearchMusicPage"/>
             </Grid.GestureRecognizers>
             <Border
-                Style="{StaticResource NavigationPanel}">
+                Style="{StaticResource NavigationPanel}"
+                Background="{Binding NavigationBackground}">
                 <Label 
                     Style="{StaticResource PanelLabel}"
                     Text="Поиск музыки" />

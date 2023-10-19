@@ -11,6 +11,7 @@ namespace VKMusicApp.Core
 {
     public class ObservableObject : INotifyPropertyChanged
     {
+        protected Color navigationBackground = Color.FromArgb("#2C2E44");
         protected IAudioPlayerService audioPlayerService;
         protected IFileService fileService;
 
@@ -18,6 +19,16 @@ namespace VKMusicApp.Core
 
         public ICommand GoTo { get; set; } = new Command(GoToPage);
         public ICommand ShowPopUpCommand { get; set; }
+
+        public Color NavigationBackground
+        {
+            get => navigationBackground;
+            set
+            {
+                navigationBackground = value;
+                OnPropertyChanged();
+            }
+        }
 
         public IAudioPlayerService AudioPlayerService
         {

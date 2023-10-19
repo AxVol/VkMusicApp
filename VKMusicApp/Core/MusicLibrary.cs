@@ -86,8 +86,6 @@ namespace VKMusicApp.Core
                 AudioIndex = AudioIndex
             };
 
-            AudioPlayerService.PlayerAudios = playerAudios;
-
             if (audio.Url == null)
             {
                 playerAudios.PathToAudio = audio.TrackCode;
@@ -96,6 +94,8 @@ namespace VKMusicApp.Core
             {
                 playerAudios.PathToAudio = audio.Url.ToString();
             }
+
+            AudioPlayerService.PlayerAudios = playerAudios;
 
             if (AudioPlayerService.MusicSet)
             {

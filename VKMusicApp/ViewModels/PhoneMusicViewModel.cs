@@ -12,8 +12,19 @@ namespace VKMusicApp.ViewModels
         private string searchText;
         private bool viewAudioIsVisable = true;
         private bool searchAudioIsVisable = false;
+        private bool hasEthernet;
 
         public ObservableCollection<Audio> SearchAudio { get; set; }
+
+        public bool HasEthernet
+        {
+            get => hasEthernet;
+            set
+            {
+                hasEthernet = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string SearchText
         {
@@ -51,6 +62,8 @@ namespace VKMusicApp.ViewModels
             fileService = file;
             AudioPlayerService = service;
 
+            HasEthernet = LoginViewModel.HasEthernet();
+
             UnFocus = new Command(UnFocused);
             SearchFocusCommand = new Command(SearchFocus);
             OpenMusicCommand = new Command(OpenMusic);
@@ -61,6 +74,11 @@ namespace VKMusicApp.ViewModels
 
             fileService.AudioDownloaded += AudioDownload;
             fileService.AudioDeleted += AudioDelete;
+
+            if (!HasEthernet)
+            {
+                NavigationBackground = Colors.Gray;
+            }
         }
 
         private void SortMusic()

@@ -51,15 +51,7 @@ namespace VKMusicApp.Services.Implementation
                 
                 await System.IO.File.WriteAllBytesAsync(filePath, mp3);
 
-                var file = TagLib.File.Create(filePath);
-                file.Tag.Performers = new string[1] { audio.Artist };
-                file.Tag.Title = audio.Title;
-
-                var tag = (TagLib.Id3v2.Tag)file.GetTag(TagTypes.Id3v2);
-                PrivateFrame frame = PrivateFrame.Get(tag, "CurrentDuration", true);
-                frame.PrivateData = BitConverter.GetBytes(audio.Duration);
-
-                file.Save();
+                
                 AudioDownloaded?.Invoke(audio);
 
                 return;
@@ -104,6 +96,7 @@ namespace VKMusicApp.Services.Implementation
                     Convert.ToInt32(music.Properties.Duration.TotalSeconds) :
                     BitConverter.ToInt32(frame.PrivateData.Data);
                 DateTime createAt = new FileInfo(file).CreationTime;
+                string path = file.Remove(0, 1);
                 
                 AudioAlbum album = new AudioAlbum();
                 AudioCover thumb = new AudioCover();
@@ -117,7 +110,7 @@ namespace VKMusicApp.Services.Implementation
                     Artist = artist,
                     Album = album, 
                     Duration = duration,
-                    TrackCode = file,
+                    TrackCode = path,
                     Date = createAt
                 };
 

@@ -46,13 +46,13 @@ namespace VKMusicApp.ViewModels
                 playerAudios = value;
                 if (!playerAudios.IsShuffle)
                 {
-                    try
-                    {
-                        MusicPath = MediaSource.FromUri(playerAudios.PathToAudio);
-                    }
-                    catch
+                    if (playerAudios.PathToAudio.StartsWith("storage/emulated"))
                     {
                         MusicPath = MediaSource.FromFile(playerAudios.PathToAudio);
+                    }
+                    else
+                    {
+                        MusicPath = MediaSource.FromUri(playerAudios.PathToAudio);
                     }
                 }
 
