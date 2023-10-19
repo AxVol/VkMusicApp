@@ -58,6 +58,9 @@ namespace VKMusicApp.ViewModels
 
             SearchAudio = new ObservableCollection<Audio>();
             ViewAudio = new ObservableCollection<Audio>(fileService.GetMusics());
+
+            fileService.AudioDownloaded += AudioDownload;
+            fileService.AudioDeleted += AudioDelete;
         }
 
         private void SortMusic()
@@ -85,6 +88,16 @@ namespace VKMusicApp.ViewModels
                     }
                 }
             });
+        }
+
+        private void AudioDownload(Audio audio)
+        {
+            ViewAudio.Add(audio);
+        }
+
+        private void AudioDelete(Audio audio)
+        {
+            ViewAudio.Remove(audio);
         }
     }
 }

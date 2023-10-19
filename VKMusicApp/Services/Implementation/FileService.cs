@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using VKMusicApp.Models;
 using VKMusicApp.Services.Interfaces;
 using VkNet.Model;
@@ -6,7 +7,6 @@ using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Collections.ObjectModel;
 using TagLib;
 using TagLib.Id3v2;
-using VKMusicApp.Services.M3U8ToMP3;
 #if ANDROID
 using Android.OS;
 #endif
@@ -17,6 +17,9 @@ namespace VKMusicApp.Services.Implementation
     {
         private readonly string rootPath = String.Empty;
         private readonly M3U8ToMP3.M3U8ToMP3 m3U8ToMP3;
+
+        public event DownloadHandler AudioDownloaded;
+        public event DeleteHandler AudioDeleted;
 
         public string PathToSave => GetConfig().Result.PathFileSave;
 
@@ -34,6 +37,8 @@ namespace VKMusicApp.Services.Implementation
             if (await MusicInStorage(audio))
             {
                 System.IO.File.Delete($"{PathToSave}/{audio.Artist}-{audio.Title}.mp3");
+
+                AudioDeleted?.Invoke(audio);
             }
         }
 
@@ -55,6 +60,7 @@ namespace VKMusicApp.Services.Implementation
                 frame.PrivateData = BitConverter.GetBytes(audio.Duration);
 
                 file.Save();
+                AudioDownloaded?.Invoke(audio);
 
                 return;
             }
@@ -82,7 +88,7 @@ namespace VKMusicApp.Services.Implementation
 
         public ObservableCollection<Audio> GetMusics()
         {
-            ObservableCollection<Audio> audios = new ObservableCollection<Audio>();
+            List<Audio> audios = new List<Audio>();
             string[] files = Directory.GetFiles($"{PathToSave}");
 
             foreach (string file in files)
@@ -97,6 +103,7 @@ namespace VKMusicApp.Services.Implementation
                 int duration = frame == null ? 
                     Convert.ToInt32(music.Properties.Duration.TotalSeconds) :
                     BitConverter.ToInt32(frame.PrivateData.Data);
+                DateTime createAt = new FileInfo(file).CreationTime;
                 
                 AudioAlbum album = new AudioAlbum();
                 AudioCover thumb = new AudioCover();
@@ -110,13 +117,14 @@ namespace VKMusicApp.Services.Implementation
                     Artist = artist,
                     Album = album, 
                     Duration = duration,
-                    TrackCode = file
+                    TrackCode = file,
+                    Date = createAt
                 };
 
                 audios.Add(audio);
             }
 
-            return audios;
+            return new ObservableCollection<Audio>(audios.OrderByDescending(a => a.Date));
         }
 
         public async Task SetPathToSave(string path)

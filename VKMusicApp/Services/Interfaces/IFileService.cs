@@ -4,8 +4,14 @@ using VkNet.Model;
 
 namespace VKMusicApp.Services.Interfaces
 {
+    public delegate void DownloadHandler(Audio audio);
+    public delegate void DeleteHandler(Audio audio);
+
     public interface IFileService
     {
+        public event DownloadHandler AudioDownloaded;
+        public event DeleteHandler AudioDeleted;
+
         public string PathToSave { get; }
 
         public Task SaveMusic(Audio audio);
