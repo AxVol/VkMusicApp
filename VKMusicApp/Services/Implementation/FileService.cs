@@ -1,12 +1,9 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using VKMusicApp.Models;
 using VKMusicApp.Services.Interfaces;
 using VkNet.Model;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Collections.ObjectModel;
-using TagLib;
-using TagLib.Id3v2;
 #if ANDROID
 using Android.OS;
 #endif
@@ -36,7 +33,7 @@ namespace VKMusicApp.Services.Implementation
         {
             if (await MusicInStorage(audio))
             {
-                System.IO.File.Delete($"{PathToSave}/{audio.Artist}-{audio.Title}.mp3");
+                File.Delete($"{PathToSave}/{audio.Artist}-{audio.Title}.mp3");
 
                 AudioDeleted?.Invoke(audio);
             }
@@ -48,10 +45,8 @@ namespace VKMusicApp.Services.Implementation
             {
                 string filePath = $"{PathToSave}/{audio.Artist}-{audio.Title}.mp3";
                 byte[] mp3 = await m3U8ToMP3.Convert(audio.Url.ToString());
-                
-                await System.IO.File.WriteAllBytesAsync(filePath, mp3);
 
-                
+                await File.WriteAllBytesAsync(filePath, mp3);
                 AudioDownloaded?.Invoke(audio);
 
                 return;
@@ -85,18 +80,11 @@ namespace VKMusicApp.Services.Implementation
 
             foreach (string file in files)
             {
-                var music = TagLib.File.Create(file);
-                var tag = (TagLib.Id3v2.Tag)music.GetTag(TagTypes.Id3v2);
-                PrivateFrame frame = PrivateFrame.Get(tag, "CurrentDuration", false);
-
+                int duration = 12; //need fix
                 string filename = file.Split('/')[^1];
-                string title = tag.Title ?? filename.Split('-')[1].Replace(".mp3", null);
-                string artist = music.Tag.FirstPerformer ?? filename.Split('-')[0];
-                int duration = frame == null ? 
-                    Convert.ToInt32(music.Properties.Duration.TotalSeconds) :
-                    BitConverter.ToInt32(frame.PrivateData.Data);
+                string title = filename.Split('-')[1].Replace(".mp3", null);
+                string artist = filename.Split('-')[0];
                 DateTime createAt = new FileInfo(file).CreationTime;
-                string path = file.Remove(0, 1);
                 
                 AudioAlbum album = new AudioAlbum();
                 AudioCover thumb = new AudioCover();
@@ -110,7 +98,7 @@ namespace VKMusicApp.Services.Implementation
                     Artist = artist,
                     Album = album, 
                     Duration = duration,
-                    TrackCode = path,
+                    TrackCode = file,
                     Date = createAt
                 };
 
@@ -125,7 +113,7 @@ namespace VKMusicApp.Services.Implementation
             VkPlayerConfig config = await GetConfig();
 
             config.PathFileSave = path;
-            await System.IO.File.WriteAllTextAsync($"{rootPath}/Android/media/VkPlayer/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
+            await File.WriteAllTextAsync($"{rootPath}/Android/media/VkPlayer/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
         }
 
         public async Task DeleteLoginAndPass()
@@ -135,7 +123,7 @@ namespace VKMusicApp.Services.Implementation
             config.Login = "";
             config.Password = "";
 
-            await System.IO.File.WriteAllTextAsync($"{rootPath}/Android/media/VkPlayer/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
+            await File.WriteAllTextAsync($"{rootPath}/Android/media/VkPlayer/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
         }
 
         public async Task SetConfig(string login, string password)
@@ -165,7 +153,7 @@ namespace VKMusicApp.Services.Implementation
                 Directory.CreateDirectory(config.PathFileSave);
             }
 
-            await System.IO.File.WriteAllTextAsync($"{pathToJson}/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
+            await File.WriteAllTextAsync($"{pathToJson}/VkPlayerConfig.json", JsonConvert.SerializeObject(config));
         }
 
         public async Task<VkPlayerConfig> GetConfig()
@@ -178,4 +166,5 @@ namespace VKMusicApp.Services.Implementation
             return config;
         }
     }
+
 }
