@@ -6,17 +6,17 @@ namespace VKMusicApp.Services.M3U8ToMP3
 {
     public class M3U8ToMP3
     {
-        public async Task<byte[]> Convert(string url)
+        public async Task<List<byte[]>> Convert(string url)
         {
             string correctUrl = url.Replace("?siren=1", null);
 
-            byte[] decodedTS = await GetTS(correctUrl);
+            List<byte[]> decodedTS = await GetTS(correctUrl);
 
             return decodedTS;
         }
 
-        // Собирает куски TS файлов в один массив байтов
-        private async Task<byte[]> GetTS(string url)
+        // Собирает куски TS файлов в массив
+        private async Task<List<byte[]>> GetTS(string url)
         {
             // Список с пометками какой TS файл зашифрованн, а какой нет
             List<string> sequence = new List<string>();
@@ -38,14 +38,7 @@ namespace VKMusicApp.Services.M3U8ToMP3
 
             List<byte[]> decryptTS = await DecryptTS(keyUrl, cypherTs, sequence);
 
-            // Сбор кусков TS в один массив байтов
-            foreach (byte[] bytes in decryptTS)
-            {
-                byte[] temp = Combine(outputTS, bytes);
-                outputTS = temp;
-            }
-
-            return outputTS;
+            return decryptTS;
         }
 
         // Комбинирует массивы байтов в один

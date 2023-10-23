@@ -9,6 +9,8 @@ using VKMusicApp.Services.Interfaces;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.Services.AudioPlayer.Implementation;
 using VKMusicApp.Services.M3U8ToMP3;
+using Plugin.LocalNotification;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace VKMusicApp;
 
@@ -16,24 +18,26 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-		var builder = MauiApp.CreateBuilder();
+        var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
 			.UseMauiCommunityToolkit()
-            .UseMauiCommunityToolkitMediaElement()
-            .ConfigureFonts(fonts =>
+			.UseMauiCommunityToolkitMediaElement()
+			.UseLocalNotification()
+			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
         builder.Services.AddAudioBypass();
 		builder.Services.AddSingleton<VkApi>(new VkApi(builder.Services));
 
+		builder.Services.AddSingleton<IMessenger, WeakReferenceMessenger>();
 		builder.Services.AddTransient<IVkService, VkService>();
 		builder.Services.AddSingleton<IAudioPlayerService, AudioPlayerService>();
 		builder.Services.AddSingleton<IFileService, FileService>();

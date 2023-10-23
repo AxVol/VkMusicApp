@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
 using VKMusicApp.Core;
 using VKMusicApp.Models;
-using VKMusicApp.Pages;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.Services.Interfaces;
 using VkNet.Model;
@@ -16,6 +16,7 @@ namespace VKMusicApp.ViewModels
         private MediaSource musicPath;
         private MediaElement player;
         private PlayerAudios playerAudios;
+        private IMessenger messenger;
 
         public MediaElement Player 
         {   get => player; 
@@ -88,11 +89,12 @@ namespace VKMusicApp.ViewModels
         public ICommand RewindCommand { get; set; }
         public ICommand ChangeMusicCommand { get; set; }
 
-        public AudioPlayerViewModel(IAudioPlayerService service, IFileService file)
+        public AudioPlayerViewModel(IAudioPlayerService service, IFileService file, IMessenger Messenger)
         {
             audioPlayerService = service;
             PlayerAudios = audioPlayerService.PlayerAudios;
             fileService = file;
+            messenger = Messenger;
 
             audioPlayerService.MusicSet = true;
 
@@ -106,6 +108,7 @@ namespace VKMusicApp.ViewModels
             ShowPopUpCommand = new Command(ShowPopUp);
 
             audioPlayerService.Player = this;
+            messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
         }
 
         private void Play()
@@ -114,11 +117,13 @@ namespace VKMusicApp.ViewModels
             {
                 Player.Pause();
                 ImageState = "play.png";
+                messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
             }
             else
             {
                 Player.Play();
                 ImageState = "pause.png";
+                messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
             }
         }
 
@@ -133,6 +138,7 @@ namespace VKMusicApp.ViewModels
             PlayerAudios = audioPlayerService.PlayerAudios;
 
             Player.Play();
+            messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
         }
 
         private void Back()
@@ -146,6 +152,7 @@ namespace VKMusicApp.ViewModels
             PlayerAudios = audioPlayerService.PlayerAudios;
 
             Player.Play();
+            messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
         }
 
         private void Shuffle()
@@ -211,6 +218,8 @@ namespace VKMusicApp.ViewModels
             PlayerAudios = audioPlayerService.PlayerAudios;
 
             ImageState = "pause.png";
+
+            messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
         }
     }
 }

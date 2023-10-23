@@ -4,6 +4,8 @@ using VKMusicApp.Services.Interfaces;
 using VkNet.Model;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Collections.ObjectModel;
+using Plugin.LocalNotification;
+using Plugin.LocalNotification.AndroidOption;
 #if ANDROID
 using Android.OS;
 #endif
@@ -44,10 +46,26 @@ namespace VKMusicApp.Services.Implementation
             if (audio.Url != null)
             {
                 string filePath = $"{PathToSave}/{audio.Artist}-{audio.Title}.mp3";
-                byte[] mp3 = await m3U8ToMP3.Convert(audio.Url.ToString());
+                List<byte[]> mp3 = await m3U8ToMP3.Convert(audio.Url.ToString());
 
-                await File.WriteAllBytesAsync(filePath, mp3);
+                using (FileStream fileStream = File.Create(filePath))
+                {
+                    foreach (byte[] ts in mp3)
+                    {
+                        fileStream.Write(ts, 0, ts.Length);
+                    }
+                }
+
+                NotificationRequest notification = new NotificationRequest
+                {
+                    NotificationId = 1,
+                    Title = "Трек скачен",
+                    Description = $"{audio.Artist} - {audio.Title}",
+                    Silent = true,
+                };
+
                 AudioDownloaded?.Invoke(audio);
+                await LocalNotificationCenter.Current.Show(notification);
 
                 return;
             }
@@ -80,12 +98,12 @@ namespace VKMusicApp.Services.Implementation
 
             foreach (string file in files)
             {
-                int duration = 12; //need fix
                 string filename = file.Split('/')[^1];
                 string title = filename.Split('-')[1].Replace(".mp3", null);
                 string artist = filename.Split('-')[0];
+                int duration = 0; //fix this
                 DateTime createAt = new FileInfo(file).CreationTime;
-                
+
                 AudioAlbum album = new AudioAlbum();
                 AudioCover thumb = new AudioCover();
 
