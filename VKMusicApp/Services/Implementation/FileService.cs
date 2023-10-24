@@ -5,7 +5,6 @@ using VkNet.Model;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Collections.ObjectModel;
 using Plugin.LocalNotification;
-using Plugin.LocalNotification.AndroidOption;
 #if ANDROID
 using Android.OS;
 #endif
@@ -58,7 +57,7 @@ namespace VKMusicApp.Services.Implementation
 
                 NotificationRequest notification = new NotificationRequest
                 {
-                    NotificationId = 1,
+                    NotificationId = 3,
                     Title = "Трек скачен",
                     Description = $"{audio.Artist} - {audio.Title}",
                     Silent = true,
@@ -184,5 +183,4 @@ namespace VKMusicApp.Services.Implementation
             return config;
         }
     }
-
 }

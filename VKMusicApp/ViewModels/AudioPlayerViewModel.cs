@@ -47,7 +47,7 @@ namespace VKMusicApp.ViewModels
                 playerAudios = value;
                 if (!playerAudios.IsShuffle)
                 {
-                    if (playerAudios.PathToAudio.StartsWith("storage/emulated"))
+                    if (playerAudios.PathToAudio.StartsWith("/storage/emulated"))
                     {
                         MusicPath = MediaSource.FromFile(playerAudios.PathToAudio);
                     }

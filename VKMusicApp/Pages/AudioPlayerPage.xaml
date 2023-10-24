@@ -130,7 +130,7 @@
                 VerticalOptions="Start"/>
             <Label
                 Style="{StaticResource PlayerText}"
-                Text="{Binding PlayerAudios.PlayingAudio.Title}"
+                Text="{Binding PlayerAudios.PlayingAudio.Title, Converter={StaticResource LongToShortTitle}}"
                 FontSize="24"
                 Margin="0,470,0,0"/>
             <Label

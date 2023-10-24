@@ -46,7 +46,7 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
                 PlayerAudios.AudioIndex = lastIndex;
             }
 
-            SetAudioPath();
+            SetAudioPath("back");
         }
 
         public void SetNewAudio(Audio audio)
@@ -59,7 +59,7 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
                 {
                     PlayerAudios.AudioIndex = counter;
                     PlayerAudios.PlayingAudio = Audio;
-                    SetAudioPath();
+                    SetAudioPath("next");
 
                     return;
                 }
@@ -79,18 +79,33 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
                 PlayerAudios.PlayingAudio = PlayerAudios.Audios[0];
                 PlayerAudios.AudioIndex = 0;
             }
-            SetAudioPath();
+
+            SetAudioPath("next");
         }
 
-        private void SetAudioPath()
+        private void SetAudioPath(string action)
         {
             if (PlayerAudios.PlayingAudio.Url != null)
             {
                 PlayerAudios.PathToAudio = PlayerAudios.PlayingAudio.Url.ToString();
             }
-            else
+            else if (PlayerAudios.PlayingAudio.TrackCode.StartsWith("/storage/emulated"))
             {
                 PlayerAudios.PathToAudio = PlayerAudios.PlayingAudio.TrackCode;
+            }
+            else
+            {
+                switch (action)
+                {
+                    case "next":
+                        SetNextAudio();
+
+                        break;
+                    case "back":
+                        SetBackAudio();
+
+                        break;
+                }
             }
         }
     }
