@@ -1,50 +1,30 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 using VKMusicApp.Models;
 using VKMusicApp.Pages;
 using VkNet.Model;
 
 namespace VKMusicApp.Core
 {
-    public class MusicLibrary : ObservableObject
+    public partial class MusicLibrary : BaseViewModel
     {
-        private ObservableCollection<Audio> viewAudio;
-
-        protected bool searchIsFocus = false;
-
         public delegate void EntryFocusHandler();
-
         public event EntryFocusHandler EntryFocus;
 
-        public ICommand UnFocus { get; set; }
-        public ICommand SearchFocusCommand { get; set; }
-        public ICommand OpenMusicCommand { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<Audio> viewAudio;
 
-        public ObservableCollection<Audio> ViewAudio 
-        {
-            get => viewAudio;
-            set
-            {
-                viewAudio = value;
-                OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        protected bool searchIsFocus = false;
 
-        public bool SearchIsFocus
-        {
-            get => searchIsFocus;
-            set
-            {
-                searchIsFocus = value;
-                OnPropertyChanged();
-            }
-        }
-
-        protected void UnFocused()
+        [RelayCommand]
+        protected void UnFocus()
         {
             SearchIsFocus = false;
         }
 
+        [RelayCommand]
         protected void SearchFocus()
         {
             SearchIsFocus = true;
@@ -52,11 +32,12 @@ namespace VKMusicApp.Core
             EntryFocus.Invoke();
         }
 
+        [RelayCommand]
         protected void OpenMusic(object obj)
         {
-            ObservableCollection<Audio> audios = new ObservableCollection<Audio>();
             CollectionView collectionView = obj as CollectionView;
             Audio audio = collectionView.SelectedItem as Audio;
+            ObservableCollection<Audio> audios = new ObservableCollection<Audio>(collectionView.ItemsSource as ObservableCollection<Audio>);
             int AudioIndex = 0;
 
             if (audio.Url == null && !audio.TrackCode.Contains(audio.Title))
@@ -72,11 +53,6 @@ namespace VKMusicApp.Core
                     break;
 
                 AudioIndex++;
-            }
-
-            foreach (Audio Audio in collectionView.ItemsSource)
-            {
-                audios.Add(Audio);
             }
 
             PlayerAudios playerAudios = new PlayerAudios()
@@ -106,13 +82,8 @@ namespace VKMusicApp.Core
                 && AudioPlayerService.PlayerAudios.PlayingAudio.Artist == audio.Artist)
                 {
                     AudioPlayerService.Player.ImageState = "pause.png";
-
-                    Shell.Current.GoToAsync(nameof(AudioPlayerPage));
-
-                    return;
                 }
             }
-
             Shell.Current.GoToAsync(nameof(AudioPlayerPage));
         }
     }

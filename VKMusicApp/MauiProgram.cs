@@ -11,6 +11,7 @@ using VKMusicApp.Services.AudioPlayer.Implementation;
 using VKMusicApp.Services.M3U8ToMP3;
 using Plugin.LocalNotification;
 using CommunityToolkit.Mvvm.Messaging;
+using VKMusicApp.Services;
 
 namespace VKMusicApp;
 
@@ -42,12 +43,13 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IAudioPlayerService, AudioPlayerService>();
 		builder.Services.AddSingleton<IFileService, FileService>();
 		builder.Services.AddTransient<M3U8ToMP3>();
+		builder.Services.AddSingleton<PlaylistService>();
 
         builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddSingleton<AccountMusicPage>();
 		builder.Services.AddSingleton<PlaylistPage>();
 		builder.Services.AddSingleton<PhoneMusicPage>();
-		builder.Services.AddTransient<SearchMusicPage>();
+		builder.Services.AddSingleton<SearchMusicPage>();
 		builder.Services.AddTransient<MusicPlaylistPage>();
 		builder.Services.AddSingleton<AudioPlayerPage>();
 		builder.Services.AddTransient<SettingsPage>();
@@ -56,9 +58,9 @@ public static class MauiProgram
 		builder.Services.AddSingleton<AccountMusicViewModel>();
 		builder.Services.AddSingleton<PlaylistViewModel>();
 		builder.Services.AddSingleton<PhoneMusicViewModel>();
-		builder.Services.AddTransient<SearchMusicViewModel>();
+		builder.Services.AddSingleton<SearchMusicViewModel>();
 		builder.Services.AddTransient<MusicPlaylistViewModel>();
-		builder.Services.AddTransient<AudioPlayerViewModel>();
+		builder.Services.AddSingleton<AudioPlayerViewModel>();
 		builder.Services.AddTransient<SettingsViewModel>();
 
         return builder.Build();

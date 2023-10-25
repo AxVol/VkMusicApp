@@ -27,7 +27,7 @@
                 Margin="340,10,10,10"
                 Source="settings.png"
                 HorizontalOptions="End"
-                Command="{Binding GoTo}"
+                Command="{Binding GoToCommand}"
                 CommandParameter="SettingsPage"/>
             <ImageButton
                 Source="search.png"
@@ -46,7 +46,7 @@
                 <Entry.Behaviors>
                     <behaviors:EventToCommandBehavior
                         EventName="Unfocused"
-                        Command="{Binding UnFocus}"/>
+                        Command="{Binding UnFocusCommand}"/>
                 </Entry.Behaviors>
             </Entry>
             <Label

@@ -1,23 +1,23 @@
 ﻿using System.Collections.ObjectModel;
 using VKMusicApp.Core;
+using VKMusicApp.Services;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.Services.Interfaces;
 using VkNet.Model;
 
 namespace VKMusicApp.ViewModels
 {
-    [QueryProperty(nameof(ViewAudio), nameof(ViewAudio))]
-    public class MusicPlaylistViewModel : MusicLibrary
+    public partial class MusicPlaylistViewModel : MusicLibrary
     {
-        public MusicPlaylistViewModel(IAudioPlayerService service, IFileService file)
+        private readonly PlaylistService playlistService;
+
+        public MusicPlaylistViewModel(IAudioPlayerService service, IFileService file, PlaylistService playlist)
         {
             AudioPlayerService = service;
-            fileService = file;
+            FileService = file;
+            playlistService = playlist;
 
-            ViewAudio = new ObservableCollection<Audio>();
-
-            OpenMusicCommand = new Command(OpenMusic);
-            ShowPopUpCommand = new Command(ShowPopUp);
+            ViewAudio = new ObservableCollection<Audio>(playlistService.Audios);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace VKMusicApp.Services.Implementation
 {
     public class FileService : IFileService
     {
+        // Корень файловой системы для составления путей
         private readonly string rootPath = String.Empty;
         private readonly M3U8ToMP3.M3U8ToMP3 m3U8ToMP3;
 
@@ -125,6 +126,7 @@ namespace VKMusicApp.Services.Implementation
             return new ObservableCollection<Audio>(audios.OrderByDescending(a => a.Date));
         }
 
+        // Путь для сохранения музыки
         public async Task SetPathToSave(string path)
         {
             VkPlayerConfig config = await GetConfig();

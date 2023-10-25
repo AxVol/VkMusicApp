@@ -1,5 +1,4 @@
-﻿using Plugin.LocalNotification;
-using ProtoBuf.Meta;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using VKMusicApp.Core;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
@@ -8,25 +7,21 @@ using VkNet.Model;
 
 namespace VKMusicApp.ViewModels
 {
-    public class PhoneMusicViewModel : MusicLibrary
+    public partial class PhoneMusicViewModel : MusicLibrary
     {
-        private string searchText;
+        [ObservableProperty]
         private bool viewAudioIsVisable = true;
+
+        [ObservableProperty]
         private bool searchAudioIsVisable = false;
+
+        [ObservableProperty]
         private bool hasEthernet;
 
-        public ObservableCollection<Audio> SearchAudio { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<Audio> searchAudio;
 
-        public bool HasEthernet
-        {
-            get => hasEthernet;
-            set
-            {
-                hasEthernet = value;
-                OnPropertyChanged();
-            }
-        }
-
+        private string searchText;
         public string SearchText
         {
             get => searchText;
@@ -34,47 +29,22 @@ namespace VKMusicApp.ViewModels
             {
                 searchText = value;
                 SortMusic();
-                OnPropertyChanged();
-            }
-        }
-
-        public bool ViewAudioIsVisable
-        {
-            get => viewAudioIsVisable;
-            set
-            {
-                viewAudioIsVisable = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool SearchAudioIsVisable
-        {
-            get => searchAudioIsVisable;
-            set
-            {
-                searchAudioIsVisable = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SearchText));
             }
         }
 
         public PhoneMusicViewModel(IFileService file, IAudioPlayerService service)
         {
-            fileService = file;
+            FileService = file;
             AudioPlayerService = service;
 
             HasEthernet = LoginViewModel.HasEthernet();
 
-            UnFocus = new Command(UnFocused);
-            SearchFocusCommand = new Command(SearchFocus);
-            OpenMusicCommand = new Command(OpenMusic);
-            ShowPopUpCommand = new Command(ShowPopUp);
-
             SearchAudio = new ObservableCollection<Audio>();
-            ViewAudio = new ObservableCollection<Audio>(fileService.GetMusics());
+            ViewAudio = new ObservableCollection<Audio>(FileService.GetMusics());
 
-            fileService.AudioDownloaded += AudioDownload;
-            fileService.AudioDeleted += AudioDelete;
+            FileService.AudioDownloaded += AudioDownload;
+            FileService.AudioDeleted += AudioDelete;
 
             if (!HasEthernet)
             {

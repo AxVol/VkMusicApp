@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 using VKMusicApp.Core;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.Services.Implementation;
@@ -7,15 +8,20 @@ using VkNet.Model;
 
 namespace VKMusicApp.ViewModels
 {
-    public class AccountMusicViewModel : MusicLibrary
+    public partial class AccountMusicViewModel : MusicLibrary
     {
         private readonly IVkService vkService;
-        private string searchText;
+
+        [ObservableProperty]
         private bool viewAudioIsVisable = true;
+
+        [ObservableProperty]
         private bool searchAudioIsVisable = false;
 
-        public ObservableCollection<Audio> SearchAudio { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<Audio> searchAudio;
 
+        private string searchText;
         public string SearchText
         {
             get => searchText;
@@ -23,27 +29,7 @@ namespace VKMusicApp.ViewModels
             {
                 searchText = value;
                 SortMusic();
-                OnPropertyChanged();
-            }
-        }
-
-        public bool ViewAudioIsVisable
-        {
-            get => viewAudioIsVisable;
-            set
-            {
-                viewAudioIsVisable = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool SearchAudioIsVisable
-        {
-            get => searchAudioIsVisable;
-            set
-            {
-                searchAudioIsVisable = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SearchText));
             }
         }
 
@@ -51,12 +37,7 @@ namespace VKMusicApp.ViewModels
         {
             vkService = VkService;
             AudioPlayerService = service;
-            fileService = file;
-
-            UnFocus = new Command(UnFocused);
-            SearchFocusCommand = new Command(SearchFocus);
-            OpenMusicCommand = new Command(OpenMusic);
-            ShowPopUpCommand = new Command(ShowPopUp);
+            FileService = file;
 
             SearchAudio = new ObservableCollection<Audio>();
             ViewAudio = new ObservableCollection<Audio>(vkService.GetAudios());

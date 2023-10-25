@@ -28,7 +28,7 @@
                 Margin="340,10,10,10"
                 Source="settings.png"
                 HorizontalOptions="End"
-                Command="{Binding GoTo}"
+                Command="{Binding GoToCommand}"
                 CommandParameter="SettingsPage"/>
             <Label
             Text="Vk Music"

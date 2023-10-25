@@ -1,4 +1,5 @@
-﻿using VKMusicApp.Core;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using VKMusicApp.Core;
 using VKMusicApp.Models;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
 using VKMusicApp.ViewModels;
@@ -6,30 +7,16 @@ using VkNet.Model;
 
 namespace VKMusicApp.Services.AudioPlayer.Implementation
 {
-    public class AudioPlayerService : ObservableObject, IAudioPlayerService
+    public partial class AudioPlayerService : BaseViewModel, IAudioPlayerService
     {
+        [ObservableProperty]
         private AudioPlayerViewModel player;
+
+        // проверка для того чтобы приложение не начинала трек с начала при его же открытии
+        [ObservableProperty]
         private bool musicSet = false;
 
         public PlayerAudios PlayerAudios { get; set; }
-        public AudioPlayerViewModel Player 
-        { 
-            get => player;
-            set
-            {
-                player ??= value;
-                OnPropertyChanged();
-            }
-        }
-        public bool MusicSet 
-        { 
-            get => musicSet; 
-            set
-            {
-                musicSet = value;
-                OnPropertyChanged();
-            }
-        }
 
         public void SetBackAudio()
         {
@@ -47,6 +34,22 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
             }
 
             SetAudioPath("back");
+        }
+
+        public void SetNextAudio()
+        {
+            try
+            {
+                PlayerAudios.PlayingAudio = PlayerAudios.Audios[PlayerAudios.AudioIndex + 1];
+                PlayerAudios.AudioIndex++;
+            }
+            catch
+            {
+                PlayerAudios.PlayingAudio = PlayerAudios.Audios[0];
+                PlayerAudios.AudioIndex = 0;
+            }
+
+            SetAudioPath("next");
         }
 
         public void SetNewAudio(Audio audio)
@@ -67,22 +70,7 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
             }
         }
 
-        public void SetNextAudio()
-        {
-            try
-            {
-                PlayerAudios.PlayingAudio = PlayerAudios.Audios[PlayerAudios.AudioIndex + 1];
-                PlayerAudios.AudioIndex++;
-            }
-            catch
-            {
-                PlayerAudios.PlayingAudio = PlayerAudios.Audios[0];
-                PlayerAudios.AudioIndex = 0;
-            }
-
-            SetAudioPath("next");
-        }
-
+        // устанавливает путь к трекам в зависимости от того, откуда они были загруженны
         private void SetAudioPath(string action)
         {
             if (PlayerAudios.PlayingAudio.Url != null)

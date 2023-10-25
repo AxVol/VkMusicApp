@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using System.Windows.Input;
 using VKMusicApp.Core;
 using VKMusicApp.Models;
 using VKMusicApp.Services.AudioPlayer.Interfaces;
@@ -9,36 +10,31 @@ using VkNet.Model;
 
 namespace VKMusicApp.ViewModels
 {
-    public class AudioPlayerViewModel : ObservableObject
+    public partial class AudioPlayerViewModel : BaseViewModel
     {
-        private string imageState = "pause.png";
-        private string loopimage = "loop.png";
-        private MediaSource musicPath;
-        private MediaElement player;
-        private PlayerAudios playerAudios;
-        private IMessenger messenger;
+        private readonly IMessenger messenger;
 
+        [ObservableProperty]
+        private string imageState = "pause.png";
+
+        [ObservableProperty]
+        private string loopImage = "loop.png";
+
+        [ObservableProperty]
+        private MediaSource musicPath;
+
+        private MediaElement player;
         public MediaElement Player 
         {   get => player; 
             set
             {
                 player = value;
                 Player.MediaEnded += NextMedia;
-
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Player));
             }
         }
 
-        public string LoopImage
-        {
-            get => loopimage;
-            set
-            {
-                loopimage = value;
-                OnPropertyChanged();
-            }
-        }
-
+        private PlayerAudios playerAudios;
         public PlayerAudios PlayerAudios
         {
             get => playerAudios;
@@ -56,77 +52,41 @@ namespace VKMusicApp.ViewModels
                         MusicPath = MediaSource.FromUri(playerAudios.PathToAudio);
                     }
                 }
-
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(PlayerAudios));
             }
         }
-
-        public string ImageState 
-        { 
-            get => imageState; 
-            set
-            {
-                imageState = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public MediaSource MusicPath
-        {
-            get => musicPath;
-            set
-            {
-                musicPath = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ICommand PlayCommand { get; set; }
-        public ICommand NextCommand { get; set; }
-        public ICommand BackCommand { get; set; }
-        public ICommand ShuffleCommand { get; set; }
-        public ICommand LoopCommand { get; set; }
-        public ICommand RewindCommand { get; set; }
-        public ICommand ChangeMusicCommand { get; set; }
 
         public AudioPlayerViewModel(IAudioPlayerService service, IFileService file, IMessenger Messenger)
         {
-            audioPlayerService = service;
+            AudioPlayerService = service;
             PlayerAudios = audioPlayerService.PlayerAudios;
-            fileService = file;
+            FileService = file;
             messenger = Messenger;
 
-            audioPlayerService.MusicSet = true;
+            AudioPlayerService.MusicSet = true;
+            AudioPlayerService.Player = this;
 
-            PlayCommand = new Command(Play);
-            NextCommand = new Command(Next);
-            BackCommand = new Command(Back);
-            ShuffleCommand = new Command(Shuffle);
-            LoopCommand = new Command(Loop);
-            RewindCommand = new Command(Rewind);
-            ChangeMusicCommand = new Command(ChangeMusic);
-            ShowPopUpCommand = new Command(ShowPopUp);
-
-            audioPlayerService.Player = this;
             messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
         }
 
+        [RelayCommand]
         private void Play()
         {
             if (Player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Playing)
             {
                 Player.Pause();
                 ImageState = "play.png";
-                messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
             }
             else
             {
                 Player.Play();
                 ImageState = "pause.png";
-                messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
             }
+
+            messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
         }
 
+        [RelayCommand]
         private void Next()
         {
             Player.Stop();
@@ -134,13 +94,14 @@ namespace VKMusicApp.ViewModels
             if (Player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Stopped)
                 ImageState = "pause.png";
 
-            audioPlayerService.SetNextAudio();
-            PlayerAudios = audioPlayerService.PlayerAudios;
+            AudioPlayerService.SetNextAudio();
+            PlayerAudios = AudioPlayerService.PlayerAudios;
 
             Player.Play();
             messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
         }
 
+        [RelayCommand]
         private void Back()
         {
             Player.Stop();
@@ -148,36 +109,38 @@ namespace VKMusicApp.ViewModels
             if (Player.CurrentState == CommunityToolkit.Maui.Core.Primitives.MediaElementState.Stopped)
                 ImageState = "pause.png";
 
-            audioPlayerService.SetBackAudio();
-            PlayerAudios = audioPlayerService.PlayerAudios;
+            AudioPlayerService.SetBackAudio();
+            PlayerAudios = AudioPlayerService.PlayerAudios;
 
             Player.Play();
             messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
         }
 
+        [RelayCommand]
         private void Shuffle()
         {
             Random random = new Random();
-            int listLength = audioPlayerService.PlayerAudios.Audios.Count;
+            int listLength = AudioPlayerService.PlayerAudios.Audios.Count;
 
             while (listLength > 1)
             {
                 listLength--;
 
                 int randNumber = random.Next(listLength + 1);
-                (audioPlayerService.PlayerAudios.Audios[randNumber], audioPlayerService.PlayerAudios.Audios[listLength]) = 
-                    (audioPlayerService.PlayerAudios.Audios[listLength], audioPlayerService.PlayerAudios.Audios[randNumber]);
+                (AudioPlayerService.PlayerAudios.Audios[randNumber], AudioPlayerService.PlayerAudios.Audios[listLength]) = 
+                    (AudioPlayerService.PlayerAudios.Audios[listLength], AudioPlayerService.PlayerAudios.Audios[randNumber]);
             }
 
-            audioPlayerService.PlayerAudios.Audios.Remove(audioPlayerService.PlayerAudios.PlayingAudio);
-            audioPlayerService.PlayerAudios.Audios.Insert(0, audioPlayerService.PlayerAudios.PlayingAudio);
-            audioPlayerService.PlayerAudios.AudioIndex = 0;
+            AudioPlayerService.PlayerAudios.Audios.Remove(AudioPlayerService.PlayerAudios.PlayingAudio);
+            AudioPlayerService.PlayerAudios.Audios.Insert(0, AudioPlayerService.PlayerAudios.PlayingAudio);
+            AudioPlayerService.PlayerAudios.AudioIndex = 0;
 
-            audioPlayerService.PlayerAudios.IsShuffle = true;
-            PlayerAudios = audioPlayerService.PlayerAudios;
-            audioPlayerService.PlayerAudios.IsShuffle = false;
+            AudioPlayerService.PlayerAudios.IsShuffle = true;
+            PlayerAudios = AudioPlayerService.PlayerAudios;
+            AudioPlayerService.PlayerAudios.IsShuffle = false;
         }
 
+        [RelayCommand]
         private void Loop()
         {
             if (!Player.ShouldLoopPlayback)
@@ -192,6 +155,7 @@ namespace VKMusicApp.ViewModels
             LoopImage = "loop.png";
         }
 
+        [RelayCommand]
         private void Rewind(object obj) 
         {
             double position = (double)obj;
@@ -201,25 +165,26 @@ namespace VKMusicApp.ViewModels
             Player.SeekTo(time);
         }
 
+        [RelayCommand]
+        private void ChangeMusic(object obj)
+        {
+            CollectionView collectionView = obj as CollectionView;
+            Audio audio = collectionView.SelectedItem as Audio;
+
+            AudioPlayerService.SetNewAudio(audio);
+            PlayerAudios = AudioPlayerService.PlayerAudios;
+
+            ImageState = "pause.png";
+
+            messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
+        }
+
         private void NextMedia(object sender, EventArgs e)
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 Next();
             });
-        }
-
-        private void ChangeMusic(object obj)
-        {
-            CollectionView collectionView = obj as CollectionView;
-            Audio audio = collectionView.SelectedItem as Audio;
-
-            audioPlayerService.SetNewAudio(audio);
-            PlayerAudios = audioPlayerService.PlayerAudios;
-
-            ImageState = "pause.png";
-
-            messenger.Send(new MessageData(1, PlayerAudios.PlayingAudio.Title, PlayerAudios.PlayingAudio.Artist));
         }
     }
 }

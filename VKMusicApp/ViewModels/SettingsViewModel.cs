@@ -1,53 +1,39 @@
-﻿using System.Windows.Input;
-using CommunityToolkit.Maui.Storage;
+﻿using CommunityToolkit.Maui.Storage;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using VKMusicApp.Core;
 using VKMusicApp.Pages;
 using VKMusicApp.Services.Interfaces;
 
 namespace VKMusicApp.ViewModels
 {
-    public class SettingsViewModel : ObservableObject
+    public partial class SettingsViewModel : BaseViewModel
     {
+        [ObservableProperty]
         private string pathToSave;
-
-        public string PathToSave 
-        { 
-            get => pathToSave; 
-            set
-            {
-                pathToSave = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ICommand BackCommand { get; set; }
-        public ICommand SetPathToSaveCommand { get; set; }
-        public ICommand ExitCommand { get; set; }
 
         public SettingsViewModel(IFileService service) 
         {
-            fileService = service;
+            FileService = service;
 
-            PathToSave = fileService.PathToSave;
-
-            BackCommand = new Command(Back);
-            SetPathToSaveCommand = new Command(SetPathToSave);
-            ExitCommand = new Command(Exit);
+            PathToSave = FileService.PathToSave;
         }
 
-        private async void Back()
+        [RelayCommand]
+        private async Task Back()
         {
             await Shell.Current.Navigation.PopAsync();
         }
 
-        private async void SetPathToSave()
+        [RelayCommand]
+        private async Task SetPathToSave()
         {
             try
             {
                 FolderPickerResult folder = await FolderPicker.PickAsync(default);
 
                 PathToSave = folder.Folder.Path;
-                await fileService.SetPathToSave(pathToSave);
+                await FileService.SetPathToSave(PathToSave);
             }
             catch
             {
@@ -55,9 +41,10 @@ namespace VKMusicApp.ViewModels
             }
         }
 
-        private async void Exit()
+        [RelayCommand]
+        private async Task Exit()
         {
-            await fileService.DeleteLoginAndPass();
+            await FileService.DeleteLoginAndPass();
 
             await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
         }

@@ -22,7 +22,7 @@
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer
                     NumberOfTapsRequired="1"
-                    Command="{Binding GoTo}"
+                    Command="{Binding GoToCommand}"
                     CommandParameter="AccountMusicPage"/>
             </Grid.GestureRecognizers>
             <Border
@@ -43,7 +43,7 @@
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer
                     NumberOfTapsRequired="1"
-                    Command="{Binding GoTo}"
+                    Command="{Binding GoToCommand}"
                     CommandParameter="PlaylistPage"/>
             </Grid.GestureRecognizers>
             <Border
@@ -64,7 +64,7 @@
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer
                     NumberOfTapsRequired="1"
-                    Command="{Binding GoTo}"
+                    Command="{Binding GoToCommand}"
                     CommandParameter="PhoneMusicPage"/>
             </Grid.GestureRecognizers>
             <Border
@@ -86,7 +86,7 @@
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer
                     NumberOfTapsRequired="1"
-                    Command="{Binding GoTo}"
+                    Command="{Binding GoToCommand}"
                     CommandParameter="SearchMusicPage"/>
             </Grid.GestureRecognizers>
             <Border

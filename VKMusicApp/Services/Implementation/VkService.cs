@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using VKMusicApp.Services.Implementation;
-using VKMusicApp.ViewModels;
 using VkNet;
 using VkNet.Model;
 using VkNet.Utils;
@@ -83,6 +82,7 @@ namespace VKMusicApp.Services.Interfaces
             return audios;
         }
 
+        // Устанавливает базовую картинку для треков у которых их нету в базах ВК
         private VkCollection<Audio> SetThumb(VkCollection<Audio> audios)
         {
             foreach (Audio audio in audios)
