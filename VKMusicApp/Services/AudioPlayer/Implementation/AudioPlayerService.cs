@@ -77,7 +77,7 @@ namespace VKMusicApp.Services.AudioPlayer.Implementation
             {
                 PlayerAudios.PathToAudio = PlayerAudios.PlayingAudio.Url.ToString();
             }
-            else if (PlayerAudios.PlayingAudio.TrackCode.StartsWith("/storage/emulated"))
+            else if (PlayerAudios.PlayingAudio.TrackCode.StartsWith("storage/emulated"))
             {
                 PlayerAudios.PathToAudio = PlayerAudios.PlayingAudio.TrackCode;
             }
