@@ -96,32 +96,33 @@ namespace VKMusicApp.Services.Implementation
             List<Audio> audios = new List<Audio>();
             string[] files = Directory.GetFiles($"{PathToSave}");
 
-            foreach (string file in files)
-            {
-                string filename = file.Split('/')[^1];
-                string title = filename.Split('-')[1].Replace(".mp3", null);
-                string artist = filename.Split('-')[0];
-                int duration = 0; //fix this
-                DateTime createAt = new FileInfo(file).CreationTime;
-
-                AudioAlbum album = new AudioAlbum();
-                AudioCover thumb = new AudioCover();
-
-                thumb.Photo600 = "player.png";
-                album.Thumb = thumb;
-                    
-                Audio audio = new Audio()
+            ParallelLoopResult parallelLoopResult = Parallel.ForEach<string>(files,
+                (file) =>
                 {
-                    Title = title,
-                    Artist = artist,
-                    Album = album, 
-                    Duration = duration,
-                    TrackCode = file,
-                    Date = createAt
-                };
+                    string filename = file.Split('/')[^1];
+                    string title = filename.Split('-')[1].Replace(".mp3", null);
+                    string artist = filename.Split('-')[0];
+                    int duration = 0; //fix this
+                    DateTime createAt = new FileInfo(file).CreationTime;
 
-                audios.Add(audio);
-            }
+                    AudioAlbum album = new AudioAlbum();
+                    AudioCover thumb = new AudioCover();
+
+                    thumb.Photo600 = "player.png";
+                    album.Thumb = thumb;
+
+                    Audio audio = new Audio()
+                    {
+                        Title = title,
+                        Artist = artist,
+                        Album = album,
+                        Duration = duration,
+                        TrackCode = file,
+                        Date = createAt
+                    };
+
+                    audios.Add(audio);
+                });
 
             return new ObservableCollection<Audio>(audios.OrderByDescending(a => a.Date));
         }

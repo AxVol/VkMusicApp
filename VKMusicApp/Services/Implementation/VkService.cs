@@ -22,7 +22,7 @@ namespace VKMusicApp.Services.Interfaces
                 OwnerId = vkApi.UserId
             });
 
-            music = SetThumb(music);
+            ParallelLoopResult parallelLoopResult = Parallel.ForEach<Audio>(music, SetThumbAsync);
 
             return new ObservableCollection<Audio>(music);
         }
@@ -31,21 +31,23 @@ namespace VKMusicApp.Services.Interfaces
         {
             VkCollection<AudioPlaylist> playlists = vkApi.Audio.GetPlaylists((long)vkApi.UserId);
 
-            foreach (AudioPlaylist playlist in playlists) 
-            {
-                if (playlist.Photo == null)
+            ParallelLoopResult parallelLoopResult = Parallel.ForEach<AudioPlaylist>(playlists, 
+                (playlist) => 
                 {
-                    AudioCover photo = new AudioCover();
+                    if (playlist.Photo == null)
+                    {
+                        AudioCover photo = new AudioCover();
 
-                    photo.Photo600 = "playlist.png";
+                        photo.Photo600 = "playlist.png";
 
-                    playlist.Photo = photo;
-                }
-                else if (playlist.Photo.Photo600 == string.Empty)
-                {
-                    playlist.Photo.Photo600 = "playlist.png";
-                }
-            }
+                        playlist.Photo = photo;
+                    }
+                    else if (playlist.Photo.Photo600 == string.Empty)
+                    {
+                        playlist.Photo.Photo600 = "playlist.png";
+                    }
+                });
+
             return new ObservableCollection<AudioPlaylist>(playlists);
         }
 
@@ -57,7 +59,7 @@ namespace VKMusicApp.Services.Interfaces
                 PlaylistId = id
             });
 
-            music = SetThumb(music);
+            ParallelLoopResult parallelLoopResult = Parallel.ForEach<Audio>(music, SetThumbAsync);
 
             return new ObservableCollection<Audio>(music);
         }
@@ -72,37 +74,29 @@ namespace VKMusicApp.Services.Interfaces
 
             });
 
-            musics = SetThumb(musics);
-
-            foreach (var audio in musics)
-            {
-                audios.Add(audio);
-            }
+            audios = new ObservableCollection<Audio>(musics);
+            ParallelLoopResult parallelLoopResult = Parallel.ForEach<Audio>(audios, SetThumbAsync);
 
             return audios;
         }
 
         // Устанавливает базовую картинку для треков у которых их нету в базах ВК
-        private VkCollection<Audio> SetThumb(VkCollection<Audio> audios)
+        private void SetThumbAsync(Audio audio)
         {
-            foreach (Audio audio in audios)
+            if (audio.Album == null)
             {
-                if (audio.Album == null)
-                {
-                    AudioAlbum album = new AudioAlbum();
-                    AudioCover thumb = new AudioCover();
+                AudioAlbum album = new AudioAlbum();
+                AudioCover thumb = new AudioCover();
 
-                    thumb.Photo600 = "player.png";
-                    album.Thumb = thumb;
+                thumb.Photo600 = "player.png";
+                album.Thumb = thumb;
 
-                    audio.Album = album;
-                }
-                else if (audio.Album.Thumb.Photo600 == String.Empty)
-                {
-                    audio.Album.Thumb.Photo600 = "player.png";
-                }
+                audio.Album = album;
             }
-            return audios;
+            else if (audio.Album.Thumb.Photo600 == String.Empty)
+            {
+                audio.Album.Thumb.Photo600 = "player.png";
+            }
         }
     }
 }
