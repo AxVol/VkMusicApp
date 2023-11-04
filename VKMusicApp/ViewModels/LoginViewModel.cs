@@ -43,20 +43,22 @@ namespace VKMusicApp.ViewModels
                 {
                     ButtonStatus = false;
 
-                    await vkApi.AuthorizeAsync(new ApiAuthParams
+                    if (!(await LoginWithoutTFAsync(Login, Password)))
                     {
-                        Login = Login,
-                        Password = Password,
-                        ApplicationId = 51745723,
-                        Settings = VkNet.Enums.Filters.Settings.Audio
-                    });
+                        string tf = await Shell.Current.CurrentPage.DisplayPromptAsync("Двухфакторная авторизация", "Код", "Войти", "Отмена");
+
+                        if (tf == null || tf == string.Empty)
+                            return;
+
+                        if (!(await LoginWithTFAsync(Login, Password, tf)))
+                            return;                      
+                    }
 
                     await FileService.SetConfig(Login, Password);
                 }
                 catch (Exception ex)
                 {
                     Exception = ex.Message;
-
                     ButtonStatus = true;
 
                     return;
@@ -80,14 +82,13 @@ namespace VKMusicApp.ViewModels
             try
             {
                 VkPlayerConfig config = await FileService.GetConfig();
+                Login = config.Login;
+                Password = config.Password;
 
-                vkApi.Authorize(new ApiAuthParams
+                if (!(LoginWithoutTF(Login, Password)))
                 {
-                    Login = config.Login,
-                   Password = config.Password,
-                    ApplicationId = 51745723,
-                    Settings = VkNet.Enums.Filters.Settings.Audio
-                });
+                    return false;
+                }
 
                 return true;
             }
@@ -95,7 +96,7 @@ namespace VKMusicApp.ViewModels
             {
                 if (ex.Message.StartsWith("Bad"))
                 {
-                    return IsLogin().Result; 
+                    return await IsLogin(); 
                 }
 
                 return false;
@@ -112,6 +113,69 @@ namespace VKMusicApp.ViewModels
             }
 
             return false;
+        }
+
+        private bool LoginWithoutTF(string login, string password)
+        {
+            try
+            {
+                vkApi.Authorize(new ApiAuthParams
+                {
+                    Login = login,
+                    Password = password,
+                    ApplicationId = 51745723,
+                    Settings = VkNet.Enums.Filters.Settings.Audio,
+                });
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> LoginWithTFAsync(string login, string password, string tf)
+        {
+            try
+            {
+                await vkApi.AuthorizeAsync(new ApiAuthParams
+                {
+                    Login = login,
+                    Password = password,
+                    ApplicationId = 51745723,
+                    Settings = VkNet.Enums.Filters.Settings.Audio,
+                    TwoFactorAuthorization = () => tf
+                });
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Exception = e.Message;
+
+                return false;
+            }
+        }
+
+        private async Task<bool> LoginWithoutTFAsync(string login, string password)
+        {
+            try
+            {
+                await vkApi.AuthorizeAsync(new ApiAuthParams
+                {
+                    Login = login,
+                    Password = password,
+                    ApplicationId = 51745723,
+                    Settings = VkNet.Enums.Filters.Settings.Audio,
+                });
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
